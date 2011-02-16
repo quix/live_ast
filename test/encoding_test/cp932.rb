@@ -1,0 +1,6 @@
+# -*- coding: cp932 -*-
+module EncodingTest
+  def cp932_string
+    "‘å‚«‚È” ‚Æ‚Ë‚±B"
+  end
+end

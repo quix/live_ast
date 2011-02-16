@@ -1,0 +1,1 @@
+# encoding: feynman-diagram
