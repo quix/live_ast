@@ -69,6 +69,9 @@ another parser may be easily substituted (in fact the name +to_ast+ is
 used instead of +to_sexp+ because LiveAST has no understanding of what
 the parser outputs).
 
+Note that RubyParser does not currently support the newer Ruby 1.9
+syntax features (<code>Racc::ParseError</code> will be raised).
+
 LiveAST is thread-safe.
 
 Ruby 1.9.2 or higher is required.
@@ -76,7 +79,7 @@ Ruby 1.9.2 or higher is required.
 == Links
 
 * Documentation: http://liveast.rubyforge.org
-* Rubyforge home: http://rubyforge.org/projects/liveast/
+* Rubyforge home: http://rubyforge.org/projects/liveast
 * Repository: http://github.com/quix/live_ast
 
 == +to_ruby+
@@ -240,11 +243,11 @@ give the old AST,
   load "foo.rb"                       # oops! forgot to use ast_load
   p Foo.instance_method(:bar).to_ast  # => stale AST
 
-Realize that +foo.rb+ may be referenced by an unknown number of
-methods and blocks. If the original +foo.rb+ source were dumped in
-favor of the modified +foo.rb+, then an unknown number of those
-references would be invalidated (and some may even point to the wrong
-AST!).
+Realize that <code>foo.rb</code> may be referenced by an unknown
+number of methods and blocks. If the original <code>foo.rb</code>
+source were dumped in favor of the modified <code>foo.rb</code>, then
+an unknown number of those references would be invalidated (and some
+may even point to the wrong AST!).
 
 This is the reason for the caching that results in the stale AST
 above. It should now be clear why the default behavior of
