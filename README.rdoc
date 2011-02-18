@@ -353,8 +353,8 @@ surrounding +eval+, though all restrictions can be trivially
 sidestepped. Nonetheless it does work (it passes rubyspec minus the
 backtrace issue) despite being somewhat impractical.
 
-This (mis)feature is maintained in a separate branch on github (not
-part of the gem). For more info see
+This (mis)feature is maintained in a separate branch named
++replace_eval+ on github (not part of the gem). For more information see
 replace_eval.rb[http://github.com/quix/live_ast/blob/replace_eval/lib/live_ast/replace_eval.rb].
 
 == Author
