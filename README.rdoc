@@ -69,6 +69,9 @@ another parser may be easily substituted (in fact the name +to_ast+ is
 used instead of +to_sexp+ because LiveAST has no understanding of what
 the parser outputs).
 
+Note that RubyParser does not currently support the newer Ruby 1.9
+syntax features (<code>Racc::ParseError</code> will be raised).
+
 LiveAST is thread-safe.
 
 Ruby 1.9.2 or higher is required.
