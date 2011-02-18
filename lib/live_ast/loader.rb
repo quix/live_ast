@@ -6,9 +6,8 @@ module LiveAST
 
     class << self
       def load(file, wrap)
-        if file.index Linker::REVISION_TOKEN
-          raise "refusing to load file with revision token: `#{file}'"
-        end
+        file = find_file(file)
+
         # guards to protect toplevel locals
         header, footer, warnings_ok = header_footer(wrap)
   
@@ -48,6 +47,22 @@ module LiveAST
         ensure
           $VERBOSE = previous
         end
+      end
+
+      def find_file(file)
+        if file.index Linker::REVISION_TOKEN
+          raise "refusing to load file with revision token: `#{file}'"
+        end
+        search_paths(file) or raise LoadError, "no such file to load -- #{file}"
+      end
+
+      def search_paths(file)
+        return file if File.file? file
+        $LOAD_PATH.each do |path|
+          target = path + "/" + file
+          return target if File.file? target
+        end
+        nil
       end
     end
   end

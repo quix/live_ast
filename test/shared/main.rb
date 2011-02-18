@@ -64,7 +64,7 @@ end
 class BaseTest < JLMiniTest
   include ASTGenerators
 
-  DATA_DIR = File.dirname(__FILE__) + "/data"
+  DATA_DIR = File.expand_path(File.dirname(__FILE__) + "/../data")
 
   def return_block(&block)
     block
