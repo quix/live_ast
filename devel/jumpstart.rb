@@ -796,7 +796,7 @@ class Jumpstart
   def define_ping
     task :ping do
       require 'rbconfig'
-      %w[github.com rubyforge.org].each { |server|
+      %w[github.com].each { |server|
         cmd = "ping " + (
           if RbConfig::CONFIG["host"] =~ %r!darwin!
             "-c2 #{server}"
@@ -837,33 +837,11 @@ class Jumpstart
     }
   end
 
-  def rubyforge(mode, file, *options)
-    command = ["rubyforge", mode] + options + [
-      rubyforge_name,
-      rubyforge_name,
-      version.to_s,
-      file,
-    ]
-    sh(*command)
-  end
-
   def define_release
     task :prerelease => [:clean, :check_directory, :ping, history_file]
 
     task :finish_release do
-      gem_md5, tgz_md5 = [gem, tgz].map { |file|
-        md5 = "#{file}.md5"
-        sh("md5sum #{file} > #{md5}")
-        md5
-      }
-
-      rubyforge(
-        "add_release", gem, "--release_changes", history_file, "--preformatted"
-      )
-      [gem_md5, tgz, tgz_md5].each { |file|
-        rubyforge("add_file", file)
-      }
-
+      sh("gem", "push", gem)
       git("tag", "#{name}-" + version.to_s)
       git(*%w(push --tags origin master))
     end
