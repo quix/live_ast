@@ -277,6 +277,11 @@ desired.
 Calling +to_ast+ prevents the object's AST from being flushed (since
 it grafts the AST onto the object).
 
+ASTs of procs and methods whose sources lie in <code>require</code>d
+files will never be flushed. However a method redefined via +ast_eval+
+or +load+ is susceptible to +flush_cache+ even when its original
+definition pointed to a <code>require</code>d file.
+
 === About +require+
 
 No measures have been taken to detect manipulations of

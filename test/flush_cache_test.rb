@@ -70,8 +70,8 @@ define_unsorted_test_case "FlushCacheTest", RegularTest do
       def g ; end
     end
 
-    # was already flushed above
-    assert_raise LiveAST::FlushedError do
+    # check that previous flushing did not cause side effect
+    assert_nothing_raised do
       klass.instance_method(:f).to_ast
     end
   end
