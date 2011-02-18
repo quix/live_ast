@@ -39,8 +39,7 @@ module LiveAST
       def find_proc_ast(obj)
         @mutex.synchronize do
           fetch_proc_attachment(obj) or (
-            ast = find_ast(*obj.source_location)
-            raise FlushedError if ast == :flushed
+            ast = find_ast(*obj.source_location) or raise FlushedError
             attach_to_proc(obj, ast)
           )
         end
@@ -49,10 +48,8 @@ module LiveAST
       def find_method_ast(klass, name, *location)
         @mutex.synchronize do
           case ast = find_ast(*location)
-          when :flushed
-            fetch_method_attachment(klass, name) or raise FlushedError
           when nil
-            fetch_method_attachment(klass, name)
+            fetch_method_attachment(klass, name) or raise FlushedError
           else
             attach_to_method(klass, name, ast)
           end
@@ -68,14 +65,15 @@ module LiveAST
       end
 
       def fetch_from_cache(file, line)
-        unless cache = @caches[file]
+        cache = @caches[file]
+        if !cache and !file.index(REVISION_TOKEN)
           #
           # File was loaded by 'require'.
           # Play catch-up: assume it has not changed in the meantime.
           #
           _, cache = new_cache(Loader.read(file), file, 1, true)
         end
-        cache.fetch_ast(line)
+        cache.fetch_ast(line) if cache
       end
 
       #
@@ -96,14 +94,9 @@ module LiveAST
       end
 
       def flush_cache
-        #
-        # We can't dump @caches because it may cause modified files to
-        # be read.
-        #
         @mutex.synchronize do
-          @caches.each_value { |cache| cache.flush }
+          @caches.delete_if { |key, _| key.index REVISION_TOKEN }
         end
-        nil
       end
 
       def strip_token(file)

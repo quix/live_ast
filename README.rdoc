@@ -76,8 +76,7 @@ Ruby 1.9.2 or higher is required.
 == Links
 
 * Documentation: http://liveast.rubyforge.org
-* Download: http://rubyforge.org/frs/?group_id=9999999
-* Rubyforge home: http://rubyforge.org/projects/liveast
+* Rubyforge home: http://rubyforge.org/projects/liveast/
 * Repository: http://github.com/quix/live_ast
 
 == +to_ruby+
@@ -277,6 +276,11 @@ desired.
 Calling +to_ast+ prevents the object's AST from being flushed (since
 it grafts the AST onto the object).
 
+ASTs of procs and methods whose sources lie in <code>require</code>d
+files will never be flushed. However a method redefined via +ast_eval+
+or +load+ is susceptible to +flush_cache+ even when its original
+definition pointed to a <code>require</code>d file.
+
 === About +require+
 
 No measures have been taken to detect manipulations of
@@ -328,10 +332,12 @@ redefined to strip these tokens,
   f.call
   # => test.rb:4:in `block in <main>': boom (RuntimeError)
 
-However this will only apply to +raise+ calls in Ruby code; exceptions
-from C code (e.g. <code>1/0</code>) will continue to have the token.
-In principle this could be fixed by having the Ruby interpreter
-dynamically call +raise+.
+However this only applies to a +raise+ call originating from Ruby
+code. An exception raised within a native method will likely still
+contain the token in its backtrace (e.g., in MRI the exception raised
+by <code>1/0</code> comes from C). In principle this could be fixed by
+having the Ruby interpreter dynamically call +raise+.
+
 
 === Replacing +eval+
 
@@ -347,8 +353,8 @@ surrounding +eval+, though all restrictions can be trivially
 sidestepped. Nonetheless it does work (it passes rubyspec minus the
 backtrace issue) despite being somewhat impractical.
 
-This (mis)feature is maintained in a separate branch on github (not
-part of the gem). For more info see
+This (mis)feature is maintained in a separate branch named
++replace_eval+ on github (not part of the gem). For more info see
 replace_eval.rb[http://github.com/quix/live_ast/blob/replace_eval/lib/live_ast/replace_eval.rb].
 
 == Author

@@ -64,7 +64,30 @@ end
 class BaseTest < JLMiniTest
   include ASTGenerators
 
-  DATA_DIR = File.dirname(__FILE__) + "/data"
+  DATA_DIR = File.expand_path(File.dirname(__FILE__) + "/../data")
+
+  def temp_file(basename = nil)
+    unless basename
+      basename = ('a'..'z').to_a.shuffle.join + ".rb"
+    end
+
+    path = DATA_DIR + "/" + basename
+    FileUtils.mkdir DATA_DIR unless File.directory? DATA_DIR
+
+    begin
+      FileUtils.rm_f path
+      yield path
+    ensure
+      unless defined? SimpleCov
+        FileUtils.rm_f path
+        FileUtils.rmdir DATA_DIR rescue nil
+      end
+    end
+  end
+
+  def write_file(file, contents)
+    File.open(file, "w") { |f| f.print contents }
+  end
 
   def return_block(&block)
     block
