@@ -766,7 +766,6 @@ class Jumpstart
         }
       }
     end
-    task :prerelease => :check_columns
   end
 
   def define_comments
