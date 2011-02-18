@@ -333,10 +333,12 @@ redefined to strip these tokens,
   f.call
   # => test.rb:4:in `block in <main>': boom (RuntimeError)
 
-However this will only apply to +raise+ calls in Ruby code; exceptions
-from C code (e.g. <code>1/0</code>) will continue to have the token.
-In principle this could be fixed by having the Ruby interpreter
-dynamically call +raise+.
+However this only applies to a +raise+ call originating from Ruby
+code. An exception raised within a native method will likely still
+contain the token in its backtrace (e.g., in MRI the exception raised
+by <code>1/0</code> comes from C). In principle this could be fixed by
+having the Ruby interpreter dynamically call +raise+.
+
 
 === Replacing +eval+
 
