@@ -13,9 +13,9 @@ module LiveAST
     #
     # For use in noninvasive mode (<code>require 'live_ast/base'</code>).
     #
-    # Extract an object's AST.
+    # Equivalent to <code>obj.to_ast</code>.
     #
-    def ast(obj)
+    def ast(obj)  #:nodoc:
       case obj
       when Method, UnboundMethod
         Linker.find_method_ast(obj.owner, obj.name, *obj.source_location)
@@ -37,18 +37,18 @@ module LiveAST
     #
     # For use in noninvasive mode (<code>require 'live_ast/base'</code>).
     #
-    # Equivalent to Kernel#ast_eval.
+    # Equivalent to <code>Kernel#ast_eval</code>.
     #
-    def eval(*args)
+    def eval(*args)  #:nodoc:
       Evaler.eval(args[0], *args)
     end
 
     #
     # For use in noninvasive mode (<code>require 'live_ast/base'</code>).
     #
-    # Equivalent to Kernel#ast_load.
+    # Equivalent to <code>Kernel#ast_load</code>.
     #
-    def load(file, wrap = false)
+    def load(file, wrap = false)  #:nodoc:
       Loader.load(file, wrap)
     end
   end

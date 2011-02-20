@@ -255,8 +255,7 @@ above. It should now be clear why the default behavior of
 <code>require 'live_ast'</code> is to redefine +load+: doing so
 prevents this problem entirely. On the other hand if it is fully known
 where and when files are being reloaded (if at all) then there's no
-need for paranoia; this noninvasive option may be most the
-appropriate.
+need for paranoia; the noninvasive option may be the most appropriate.
 
 === The Source/AST Cache
 
