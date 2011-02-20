@@ -8,7 +8,7 @@ Jumpstart.new "live_ast" do |s|
   s.rdoc_title = "LiveAST: Live Abstract Syntax Trees"
   
   # my code compensates for a ruby_parser bug; make this equal for now
-  s.dependency("ruby_parser", "= 2.0.5")
+  s.dependency("ruby_parser", "= 2.0.6")
 
   s.rdoc_files = %w[
     README.rdoc
