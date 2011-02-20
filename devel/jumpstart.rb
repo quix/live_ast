@@ -638,8 +638,14 @@ class Jumpstart
       
       desc "run full_test then open browser"
       task :show_test => :full_test do
+        show = lambda { open_browser(cov_dir + "/index.html") }
         if ruby_18?
-          open_browser(cov_dir + "/index.html")
+          show.call
+        else
+          SimpleCov.at_exit do
+            SimpleCov.result.format!
+            show.call
+          end
         end
       end
       
