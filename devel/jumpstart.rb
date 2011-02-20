@@ -328,7 +328,7 @@ class Jumpstart
   end
   
   attribute :doc_dir do
-    "documentation"
+    "doc"
   end
   
   attribute :spec_files do
@@ -418,6 +418,10 @@ class Jumpstart
     ] + (files - rdoc_files).inject(Array.new) { |acc, file|
       acc + ["--exclude", file]
     }
+  end
+
+  attribute :extra_rdoc_options do
+    []
   end
 
   attribute :browser do
@@ -662,9 +666,11 @@ class Jumpstart
   def define_doc
     desc "run rdoc"
     task :doc => :clean_doc do
+      Kernel.send :gem, 'rdoc' rescue nil
       require 'rdoc/rdoc'
       args = (
         gemspec.rdoc_options +
+        extra_rdoc_options +
         gemspec.require_paths.clone +
         gemspec.extra_rdoc_files +
         ["-o", doc_dir]
