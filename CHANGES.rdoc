@@ -1,6 +1,13 @@
 
 = LiveAST ChangeLog
 
+== Version 0.2.1
+
+* fixed some rdoc issues
+* removed rubyforge references
+* update ruby_parser
+* less MRI-centric tests
+
 == Version 0.2.0
 
 * initial release
