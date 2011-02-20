@@ -78,9 +78,10 @@ Ruby 1.9.2 or higher is required.
 
 == Links
 
-* Documentation: http://liveast.rubyforge.org
-* Rubyforge home: http://rubyforge.org/projects/liveast
-* Repository: http://github.com/quix/live_ast
+* Documentation: http://quix.github.com/live_ast
+* Feature Requests, Bug Reports: http://github.com/quix/live_ast/issues
+* Manual Downloads: http://github.com/quix/live_ast/archives/master
+* Home: https://github.com/quix/live_ast
 
 == +to_ruby+
 
