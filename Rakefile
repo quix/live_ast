@@ -2,8 +2,7 @@ require_relative 'devel/jumpstart'
 
 Jumpstart.new "live_ast" do |s|
   s.developer "James M. Lawrence", "quixoticsycophant@gmail.com"
-  s.rubyforge_user = "quix"
-  s.rubyforge_name = "liveast"
+  s.github_user = "quix"
   s.camel_name = "LiveAST"
   s.rdoc_title = "LiveAST: Live Abstract Syntax Trees"
   s.extra_rdoc_options = ["-a"]
