@@ -16,7 +16,7 @@ module LiveAST
     #
     # Extract an object's AST.
     #
-    def ast(obj)  #:nodoc:
+    def ast(obj)
       case obj
       when Method, UnboundMethod
         Linker.find_method_ast(obj.owner, obj.name, *obj.source_location)
@@ -40,7 +40,7 @@ module LiveAST
     #
     # Equivalent to Kernel#ast_eval.
     #
-    def eval(*args)  #:nodoc:
+    def eval(*args)
       Evaler.eval(args[0], *args)
     end
 
@@ -49,7 +49,7 @@ module LiveAST
     #
     # Equivalent to Kernel#ast_load.
     #
-    def load(file, wrap = false)  #:nodoc:
+    def load(file, wrap = false)
       Loader.load(file, wrap)
     end
   end
