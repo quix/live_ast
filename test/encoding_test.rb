@@ -3,6 +3,9 @@ require_relative 'shared/main'
 require_relative 'encoding_test/default.rb'
 require_relative 'encoding_test/usascii.rb'
 require_relative 'encoding_test/utf8.rb'
+require_relative 'encoding_test/utf8bom.rb'
+require_relative 'encoding_test/usascii_with_utf8bom.rb'
+require_relative 'encoding_test/koi8_with_utf8bom.rb'
 require_relative 'encoding_test/cp932.rb'
 require_relative 'encoding_test/eucjp.rb'
 require_relative 'encoding_test/koi8.rb'
@@ -16,6 +19,9 @@ class AllEncodingTest < RegularTest
     default US-ASCII
     usascii US-ASCII
     utf8 UTF-8
+    utf8bom UTF-8
+    usascii_with_utf8bom US-ASCII
+    koi8_with_utf8bom KOI8-R
     cp932 Windows-31J
     eucjp EUC-JP
     koi8 KOI8-R

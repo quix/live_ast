@@ -1,9 +1,10 @@
 require 'thread'
 
+require 'live_ast/reader'
 require 'live_ast/parser'
-require 'live_ast/loader'
 require 'live_ast/evaler'
 require 'live_ast/linker'
+require 'live_ast/loader'
 require 'live_ast/error'
 
 module LiveAST

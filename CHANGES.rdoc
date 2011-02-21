@@ -1,6 +1,10 @@
 
 = LiveAST ChangeLog
 
+== Version 0.2.2
+
+* handle utf-8 BOMs in loading
+
 == Version 0.2.1
 
 * fixed some rdoc issues
