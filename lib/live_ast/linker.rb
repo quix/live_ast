@@ -85,7 +85,7 @@ module LiveAST
           # File was loaded by 'require'.
           # Play catch-up: assume it has not changed in the meantime.
           #
-          _, cache = new_cache(Loader.read(file), file, 1, true)
+          _, cache = new_cache(Reader.read(file), file, 1, true)
         end
         cache.fetch_ast(line) if cache
       end
