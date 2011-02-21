@@ -1,4 +1,18 @@
 module LiveAST
+  class Cache
+    def initialize(*args)
+      @source, @user_line = args
+      @asts = nil
+    end
+
+    def fetch_ast(line)
+      @asts ||= Parser.new.parse(@source).tap do
+        @source = nil
+      end
+      @asts.delete(line - @user_line + 1)
+    end
+  end
+
   module Attacher
     VAR_NAME = :@_live_ast
       
@@ -77,7 +91,7 @@ module LiveAST
       end
 
       #
-      # create a cache along with a uniquely-identifing key for it
+      # create a cache along with a unique key for it
       #
       def new_cache(contents, file, user_line, file_is_key)
         key = file_is_key ? file : file + REVISION_TOKEN + @counter

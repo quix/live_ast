@@ -56,6 +56,8 @@ methods and procs.
 
   % gem install live_ast
 
+A manual install option is also available.
+
 == Description
 
 LiveAST enables a program to find the ASTs of objects created by
@@ -78,9 +80,9 @@ Ruby 1.9.2 or higher is required.
 
 == Links
 
-* Documentation: http://liveast.rubyforge.org
-* Rubyforge home: http://rubyforge.org/projects/liveast
-* Repository: http://github.com/quix/live_ast
+* Home: https://github.com/quix/live_ast
+* Documentation: http://quix.github.com/live_ast
+* Feature Requests, Bug Reports: http://github.com/quix/live_ast/issues
 
 == +to_ruby+
 
@@ -151,6 +153,18 @@ or blocks in order for its AST to be available.
   
   a = lambda { } ; b = lambda { }
   a.to_ast # => raises LiveAST::MultipleDefinitionsOnSameLineError
+
+== Manual Download/Install
+
+http://github.com/quix/live_ast/archives/master
+
+  % tar zxvf live_ast-x.x.x.tgz
+  % cd live_ast-x.x.x
+  % rake install
+
+To uninstall,
+
+  % rake uninstall
 
 == Technical Issues
 
@@ -254,8 +268,7 @@ above. It should now be clear why the default behavior of
 <code>require 'live_ast'</code> is to redefine +load+: doing so
 prevents this problem entirely. On the other hand if it is fully known
 where and when files are being reloaded (if at all) then there's no
-need for paranoia; this noninvasive option may be most the
-appropriate.
+need for paranoia; the noninvasive option may be the most appropriate.
 
 === The Source/AST Cache
 
@@ -354,7 +367,7 @@ to fill in the missing binding argument. Unfortunately a limitation
 with tracing events in MRI places a few odd restrictions on the syntax
 surrounding +eval+, though all restrictions can be trivially
 sidestepped. Nonetheless it does work (it passes rubyspec minus the
-backtrace issue) despite being somewhat impractical.
+above backtrace issue) despite being somewhat impractical.
 
 This (mis)feature is maintained in a separate branch named
 +replace_eval+ on github (not part of the gem). For more information see

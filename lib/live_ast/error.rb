@@ -17,8 +17,7 @@ module LiveAST
   
   class NoSourceError < ASTNotFoundError
     def message
-      "No source found for the requested AST. " <<
-      "Are you sure it was written in ruby?"
+      "No source found for the requested AST."
     end
   end
 

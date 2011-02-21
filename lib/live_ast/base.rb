@@ -4,7 +4,6 @@ require 'live_ast/parser'
 require 'live_ast/loader'
 require 'live_ast/evaler'
 require 'live_ast/linker'
-require 'live_ast/cache'
 require 'live_ast/error'
 
 module LiveAST
@@ -14,7 +13,7 @@ module LiveAST
     #
     # For use in noninvasive mode (<code>require 'live_ast/base'</code>).
     #
-    # Extract an object's AST.
+    # Equivalent to <code>obj.to_ast</code>.
     #
     def ast(obj)  #:nodoc:
       case obj
@@ -38,7 +37,7 @@ module LiveAST
     #
     # For use in noninvasive mode (<code>require 'live_ast/base'</code>).
     #
-    # Equivalent to Kernel#ast_eval.
+    # Equivalent to <code>Kernel#ast_eval</code>.
     #
     def eval(*args)  #:nodoc:
       Evaler.eval(args[0], *args)
@@ -47,7 +46,7 @@ module LiveAST
     #
     # For use in noninvasive mode (<code>require 'live_ast/base'</code>).
     #
-    # Equivalent to Kernel#ast_load.
+    # Equivalent to <code>Kernel#ast_load</code>.
     #
     def load(file, wrap = false)  #:nodoc:
       Loader.load(file, wrap)
