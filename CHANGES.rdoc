@@ -1,6 +1,10 @@
 
 = LiveAST ChangeLog
 
+== Version 0.2.3
+
+* fix a utf-8 BOM issue
+
 == Version 0.2.2
 
 * handle utf-8 BOMs in loading
