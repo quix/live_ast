@@ -80,9 +80,9 @@ Ruby 1.9.2 or higher is required.
 
 == Links
 
-* Home: https://github.com/quix/live_ast
-* Documentation: http://quix.github.com/live_ast
+* Home: http://quix.github.com/live_ast
 * Feature Requests, Bug Reports: http://github.com/quix/live_ast/issues
+* Repository: http://github.com/quix/live_ast
 
 == +to_ruby+
 
