@@ -56,7 +56,9 @@ methods and procs.
 
   % gem install live_ast
 
-A manual install option is also available.
+Or from the (non-gem) .tgz package,
+
+  % rake install
 
 == Description
 
@@ -82,6 +84,7 @@ Ruby 1.9.2 or higher is required.
 
 * Home: http://quix.github.com/live_ast
 * Feature Requests, Bug Reports: http://github.com/quix/live_ast/issues
+* Manual Download: http://github.com/quix/live_ast/archives/master
 * Repository: http://github.com/quix/live_ast
 
 == +to_ruby+
@@ -153,18 +156,6 @@ or blocks in order for its AST to be available.
   
   a = lambda { } ; b = lambda { }
   a.to_ast # => raises LiveAST::MultipleDefinitionsOnSameLineError
-
-== Manual Download/Install
-
-http://github.com/quix/live_ast/archives/master
-
-  % tar zxvf live_ast-x.x.x.tgz
-  % cd live_ast-x.x.x
-  % rake install
-
-To uninstall,
-
-  % rake uninstall
 
 == Technical Issues
 
