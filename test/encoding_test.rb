@@ -44,10 +44,10 @@ class AllEncodingTest < RegularTest
   end
 
   def test_bad
-    orig = assert_raise ArgumentError do
+    orig = assert_raises ArgumentError do
       require "./test/encoding_test/bad.rb"
     end
-    live = assert_raise ArgumentError do
+    live = assert_raises ArgumentError do
       LiveAST.load "./test/encoding_test/bad.rb"
     end
     # inconsistent punctuation from Ruby

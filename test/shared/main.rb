@@ -7,10 +7,10 @@ require 'fileutils'
 
 require 'minitest/unit'
 require 'minitest/mock'
-require 'minitest/autorun'
+require 'minitest/autorun' unless defined?(Rake)
 require 'live_ast/base'
 
-require_relative "ast_generators"
+require_relative 'ast_generators'
 
 def define_unsorted_test_case(name, superclass, &block)
   klass = Class.new superclass, &block
@@ -48,17 +48,30 @@ class JLMiniTest < MiniTest::Unit::TestCase
     end
   end
 
-  alias_method :assert_raise, :assert_raises
-  alias_method :assert_not_equal, :refute_equal
-  alias_method :assert_not_nil, :refute_nil
-
   def assert_nothing_raised
     assert_equal 3, 3
     yield
   rescue => ex
     raise MiniTest::Assertion,
-      exception_details(ex, "Expected nothing raised, but got:")
+    exception_details(ex, "Expected nothing raised, but got:")
   end
+
+  %w[
+    empty
+    equal
+    in_delta
+    in_epsilon
+    includes
+    instance_of
+    kind_of
+    match
+    nil
+    operator
+    respond_to
+    same
+  ].each { |name|
+    alias_method "assert_not_#{name}", "refute_#{name}"
+  }
 end
 
 class BaseTest < JLMiniTest

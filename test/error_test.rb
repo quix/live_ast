@@ -4,7 +4,7 @@ class ErrorTest < RegularTest
   def test_multiple_lambda_same_line
     a = lambda { } ; b = lambda { }
     
-    assert_raise LiveAST::MultipleDefinitionsOnSameLineError do
+    assert_raises LiveAST::MultipleDefinitionsOnSameLineError do
       a.to_ast
     end
   end
@@ -17,13 +17,13 @@ class ErrorTest < RegularTest
 
   def test_multi_defs
     DEFINE_A.call
-    assert_raise LiveAST::MultipleDefinitionsOnSameLineError do
+    assert_raises LiveAST::MultipleDefinitionsOnSameLineError do
       A.instance_method(:f).to_ast
     end
   end
 
   def test_ast_not_found
-    assert_raise LiveAST::NoSourceError do
+    assert_raises LiveAST::NoSourceError do
       File.method(:open).to_ast
     end
   end

@@ -20,7 +20,7 @@ class AAA_LoadFileTest < BaseTest
       assert_equal true, ret
       assert_equal :code_a, AAA_LoadFileTest.flag
       
-      assert_raise NameError do
+      assert_raises NameError do
         eval("x", TOPLEVEL_BINDING)
       end
 
