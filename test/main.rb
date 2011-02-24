@@ -8,6 +8,7 @@ require 'fileutils'
 require 'minitest/unit'
 require 'minitest/mock'
 require 'minitest/autorun' unless defined? Rake
+
 require 'live_ast/base'
 
 def define_unsorted_test_case(name, superclass, &block)
@@ -75,7 +76,7 @@ end
 class BaseTest < JLMiniTest
   include LiveAST::Parser::TestForms
 
-  DATA_DIR = File.expand_path(File.dirname(__FILE__) + "/../data")
+  DATA_DIR = File.expand_path(File.dirname(__FILE__) + "/data")
 
   def self.stdlib_has_source?
     case RUBY_ENGINE
@@ -89,14 +90,12 @@ class BaseTest < JLMiniTest
     path = DATA_DIR + "/" + basename
     FileUtils.mkdir DATA_DIR unless File.directory? DATA_DIR
 
+    FileUtils.rm_f path
     begin
-      FileUtils.rm_f path
       yield path
     ensure
-      unless defined? SimpleCov
-        FileUtils.rm_f path
-        FileUtils.rmdir DATA_DIR rescue nil
-      end
+      FileUtils.rm_f path
+      FileUtils.rmdir DATA_DIR rescue nil
     end
   end
 
