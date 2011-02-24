@@ -75,6 +75,10 @@ the parser outputs).
 Note that RubyParser does not currently support the newer Ruby 1.9
 syntax features (<code>Racc::ParseError</code> will be raised).
 
+To use the Ripper parser instead, <code>gem install
+live_ast_ripper</code> and then <code>require
+'live_ast_ripper'</code>.
+
 LiveAST is thread-safe.
 
 Ruby 1.9.2 or higher is required.
@@ -172,11 +176,12 @@ what it finds in the line-to-AST hash obtained from
 therefore easy: the only specification is that the +parse+ method
 return such a hash.
 
-Since the default parser is set for +autoload+, defining your
-<code>LiveAST::Parser</code> before calling +to_ast+ will override the
-default. To test it, provide some examples of what your ASTs look like
-in <code>LiveAST::Parser::TestForms</code> (which should be on
-+autoload+). See the +live_ast_ruby_parser+.
+The +live_ast_ruby_parser+ gem, which contains the default parser, is
+set for +autoload+. To override it, define your
+<code>LiveAST::Parser</code> class before LiveAST is used (e.g. before
++to_ast+ is called). To test your parser, provide some examples of
+what its ASTs look like in <code>LiveAST::Parser::TestForms</code>.
+See the +live_ast_ruby_parser+ gem for reference.
 
 == Noninvasive Mode
 
