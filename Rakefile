@@ -3,7 +3,7 @@ require_relative 'devel/jumpstart'
 Jumpstart.new "live_ast" do |s|
   s.developers << ["James M. Lawrence", "quixoticsycophant@gmail.com"]
   s.github_user = "quix"
-
+  s.rubyforge_info = ["quix", "liveast"]
   s.camel_name = "LiveAST"
 
   s.rdoc_title = "LiveAST: Live Abstract Syntax Trees"

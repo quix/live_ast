@@ -176,7 +176,7 @@ Since the default parser is set for +autoload+, defining your
 <code>LiveAST::Parser</code> before calling +to_ast+ will override the
 default. To test it, provide some examples of what your ASTs look like
 in <code>LiveAST::Parser::TestForms</code> (which should be on
-+autoload+).
++autoload+). See the +live_ast_ruby_parser+.
 
 == Noninvasive Mode
 

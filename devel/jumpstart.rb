@@ -502,6 +502,10 @@ class Jumpstart
     raise "github_user not set"
   end
 
+  attribute :rubyforge_info do
+    nil
+  end
+
   attribute :authors do
     developers.map { |d| d[0] }
   end
@@ -672,6 +676,14 @@ class Jumpstart
     if source_control?
       desc "publish docs"
       task :publish => [:clean, :check_directory, :doc] do
+        if rubyforge_info
+          user, project = rubyforge_info
+          Dir.chdir(doc_dir) do
+            sh "scp", "-r",
+               ".",
+               "#{user}@rubyforge.org:/var/www/gforge-projects/#{project}"
+          end
+        end
         git "branch", "-D", "gh-pages"
         git "checkout", "--orphan", "gh-pages"
         FileUtils.rm ".git/index"
