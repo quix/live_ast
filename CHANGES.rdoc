@@ -1,6 +1,10 @@
 
 = LiveAST ChangeLog
 
+== Version 0.5.2
+
+* fix default plugin version
+
 == Version 0.5.1
 
 * protect against user needlessly requiring default parser
