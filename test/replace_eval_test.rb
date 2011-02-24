@@ -1,4 +1,4 @@
-require_relative 'shared/main'
+require_relative 'main'
 
 class ZZZ_ReplaceEvalTest < RegularTest
   def setup
@@ -125,10 +125,10 @@ class ZZZ_ReplaceEvalTest < RegularTest
   end
 
   def test_instance_eval_arg_error
-    orig = assert_raise ArgumentError do
+    orig = assert_raises ArgumentError do
       Object.new.live_ast_original_instance_eval
     end
-    live = assert_raise ArgumentError do
+    live = assert_raises ArgumentError do
       Object.new.instance_eval
     end
     assert_equal orig.message, live.message
@@ -272,14 +272,14 @@ class ZZZ_ReplaceEvalTest < RegularTest
   end
   
   def test_eval_usage_error
-    assert_raise LiveAST::EvalUsageError do
+    assert_raises LiveAST::EvalUsageError do
       foo(1, eval("2 + 3"))
     end
 
     result = eval("2 + 3")
     foo(1, result)
 
-    assert_raise LiveAST::EvalUsageError do
+    assert_raises LiveAST::EvalUsageError do
       1.times do
         eval("1 + 2")
       end
@@ -290,7 +290,7 @@ class ZZZ_ReplaceEvalTest < RegularTest
       result
     end
 
-    assert_raise LiveAST::EvalUsageError do
+    assert_raises LiveAST::EvalUsageError do
       eval %{ eval("1 + 2") } 
     end
 
