@@ -1,4 +1,4 @@
-$LOAD_PATH.unshift File.dirname(__FILE__) + '/../../lib'
+$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
 
 # require first for stdlib_test
 require 'pp'
@@ -7,10 +7,9 @@ require 'fileutils'
 
 require 'minitest/unit'
 require 'minitest/mock'
-require 'minitest/autorun'
-require 'live_ast/base'
+require 'minitest/autorun' unless defined? Rake
 
-require_relative "ast_generators"
+require 'live_ast/base'
 
 def define_unsorted_test_case(name, superclass, &block)
   klass = Class.new superclass, &block
@@ -48,23 +47,36 @@ class JLMiniTest < MiniTest::Unit::TestCase
     end
   end
 
-  alias_method :assert_raise, :assert_raises
-  alias_method :assert_not_equal, :refute_equal
-  alias_method :assert_not_nil, :refute_nil
-
   def assert_nothing_raised
     assert_equal 3, 3
     yield
   rescue => ex
     raise MiniTest::Assertion,
-      exception_details(ex, "Expected nothing raised, but got:")
+    exception_details(ex, "Expected nothing raised, but got:")
   end
+
+  %w[
+    empty
+    equal
+    in_delta
+    in_epsilon
+    includes
+    instance_of
+    kind_of
+    match
+    nil
+    operator
+    respond_to
+    same
+  ].each { |name|
+    alias_method "assert_not_#{name}", "refute_#{name}"
+  }
 end
 
 class BaseTest < JLMiniTest
-  include ASTGenerators
+  include LiveAST.parser::TestForms
 
-  DATA_DIR = File.expand_path(File.dirname(__FILE__) + "/../data")
+  DATA_DIR = File.expand_path(File.dirname(__FILE__) + "/data")
 
   def self.stdlib_has_source?
     case RUBY_ENGINE
@@ -78,14 +90,12 @@ class BaseTest < JLMiniTest
     path = DATA_DIR + "/" + basename
     FileUtils.mkdir DATA_DIR unless File.directory? DATA_DIR
 
+    FileUtils.rm_f path
     begin
-      FileUtils.rm_f path
       yield path
     ensure
-      unless defined? SimpleCov
-        FileUtils.rm_f path
-        FileUtils.rmdir DATA_DIR rescue nil
-      end
+      FileUtils.rm_f path
+      FileUtils.rmdir DATA_DIR rescue nil
     end
   end
 

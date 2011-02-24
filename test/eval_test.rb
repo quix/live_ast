@@ -1,4 +1,4 @@
-require_relative 'shared/main'
+require_relative 'main'
 
 class EvalTest < RegularTest
   DEFINE_A = lambda do

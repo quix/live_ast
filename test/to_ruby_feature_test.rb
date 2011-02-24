@@ -1,4 +1,4 @@
-require_relative 'shared/main'
+require_relative 'main'
 
 class AAB_ToRubyFeatureTest < BaseTest
   def test_require

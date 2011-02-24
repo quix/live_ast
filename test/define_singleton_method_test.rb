@@ -1,4 +1,4 @@
-require_relative 'shared/main'
+require_relative 'main'
 
 class DefineSingletonMethodTest < RegularTest
   def test_define_singleton_method

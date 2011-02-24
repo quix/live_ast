@@ -6,7 +6,7 @@ module LiveAST
     end
 
     def fetch_ast(line)
-      @asts ||= Parser.new.parse(@source).tap do
+      @asts ||= LiveAST.parser.new.parse(@source).tap do
         @source = nil
       end
       @asts.delete(line - @user_line + 1)

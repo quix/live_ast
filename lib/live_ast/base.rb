@@ -1,7 +1,6 @@
 require 'thread'
 
 require 'live_ast/reader'
-require 'live_ast/parser'
 require 'live_ast/evaler'
 require 'live_ast/linker'
 require 'live_ast/loader'
@@ -11,6 +10,12 @@ module LiveAST
   NATIVE_EVAL = Kernel.method(:eval)  #:nodoc:
 
   class << self
+    attr_writer :parser  #:nodoc:
+
+    def parser  #:nodoc:
+      @parser ||= require('live_ast_ruby_parser') && LiveASTRubyParser
+    end
+
     #
     # For use in noninvasive mode (<code>require 'live_ast/base'</code>).
     #

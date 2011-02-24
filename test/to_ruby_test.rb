@@ -1,4 +1,4 @@
-require_relative 'shared/main'
+require_relative 'main'
 
 class AAC_ToRubyTest < RegularTest
   def setup
@@ -83,4 +83,6 @@ class AAC_ToRubyTest < RegularTest
     end.instance_method(:f).to_ruby
     assert_equal src, dst
   end
-end
+end if (un = LiveAST.parser::Unparser rescue nil) &&
+       un.respond_to?(:ruby2ruby?) &&
+       un.ruby2ruby?

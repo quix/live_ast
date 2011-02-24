@@ -1,4 +1,4 @@
-require_relative 'shared/main'
+require_relative 'main'
 
 class LambdaTest < RegularTest
   def test_block_braces_multiline

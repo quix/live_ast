@@ -1,4 +1,4 @@
-require_relative 'shared/main'
+require_relative 'main'
 
 class CovertDefineMethodTest < RegularTest
   DEFINE = lambda do
@@ -17,7 +17,7 @@ class CovertDefineMethodTest < RegularTest
     DEFINE.call
     assert_equal 77, A.new.h(33, 44)
 
-    assert_equal binop_covert_define_method(:h, :+, :my_def),
+    assert_equal binop_define_method(:h, :+, :my_def),
                  A.instance_method(:h).to_ast
   end
 end

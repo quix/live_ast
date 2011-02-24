@@ -1,4 +1,4 @@
-require_relative 'shared/main'
+require_relative 'main'
 
 require_relative 'encoding_test/default.rb'
 require_relative 'encoding_test/usascii.rb'
@@ -44,10 +44,10 @@ class AllEncodingTest < RegularTest
   end
 
   def test_bad
-    orig = assert_raise ArgumentError do
+    orig = assert_raises ArgumentError do
       require "./test/encoding_test/bad.rb"
     end
-    live = assert_raise ArgumentError do
+    live = assert_raises ArgumentError do
       LiveAST.load "./test/encoding_test/bad.rb"
     end
     # inconsistent punctuation from Ruby

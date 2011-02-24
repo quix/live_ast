@@ -56,7 +56,8 @@ methods and procs.
 
   % gem install live_ast
 
-A manual install option is also available.
+Or from inside an unpacked .tgz download, <code>rake install</code> /
+<code>rake uninstall</code>.
 
 == Description
 
@@ -74,26 +75,30 @@ the parser outputs).
 Note that RubyParser does not currently support the newer Ruby 1.9
 syntax features (<code>Racc::ParseError</code> will be raised).
 
+To use the Ripper parser instead, <code>gem install
+live_ast_ripper</code> and then <code>require
+'live_ast_ripper'</code>.
+
 LiveAST is thread-safe.
 
 Ruby 1.9.2 or higher is required.
 
 == Links
 
-* Home: https://github.com/quix/live_ast
-* Documentation: http://quix.github.com/live_ast
+* Home: http://quix.github.com/live_ast
 * Feature Requests, Bug Reports: http://github.com/quix/live_ast/issues
+* Manual Download: http://github.com/quix/live_ast/archives/master
+* Repository: http://github.com/quix/live_ast
 
 == +to_ruby+
 
-Although the ruby2ruby package (<code>gem install ruby2ruby</code>) is
-not an official dependency of LiveAST, for convenience
+Although +ruby2ruby+ is not required by default,
 
   require 'live_ast/to_ruby'
 
-will require ruby2ruby and define the +to_ruby+ method for +Method+,
+will require +ruby2ruby+ and define the +to_ruby+ method for +Method+,
 +UnboundMethod+, and +Proc+. These methods are one-liners which pass
-the extracted ASTs to ruby2ruby.
+the extracted ASTs to +ruby2ruby+.
 
   require 'live_ast'
   require 'live_ast/to_ruby'
@@ -107,6 +112,9 @@ the extracted ASTs to ruby2ruby.
   end
 
   p A.instance_method(:f).to_ruby # => "def f\n  \"A#f\"\nend"
+
+In general, +to_ruby+ will hook into the unparser provided by the
+parser, if one is found.
 
 == Loading Source
 
@@ -154,41 +162,30 @@ or blocks in order for its AST to be available.
   a = lambda { } ; b = lambda { }
   a.to_ast # => raises LiveAST::MultipleDefinitionsOnSameLineError
 
-== Manual Download/Install
+----
 
-http://github.com/quix/live_ast/archives/master
+== <em>Technical Issues</em>
 
-  % tar zxvf live_ast-x.x.x.tgz
-  % cd live_ast-x.x.x
-  % rake install
+You can probably skip these next sections. Goodbye.
 
-To uninstall,
+----
 
-  % rake uninstall
-
-== Technical Issues
-
-You can probably ignore this section. Goodbye.
-
-=== Replacing the Parser
+== Replacing the Parser
 
 Despite its name, LiveAST knows nothing about ASTs. It merely reports
-what it finds in the line-to-AST hash obtained from
-<code>LiveAST::Parser#parse</code>. Replacing the +Parser+ class is
-therefore easy: the only specification is that the +parse+ method
-return such a hash.
+what it finds in the line-to-AST hash returned by the parser's +parse+
+method. Replacing the parser class is therefore easy: the only
+specification is that the +parse+ instance method return such a hash.
 
-Supposing your new <code>LiveAST::Parser</code> is defined in
-<code>/path/to/my/code/live_ast/parser.rb</code>,
+To override the default parser,
 
-  $LOAD_PATH.unshift '/path/to/my/code'
-  require 'live_ast'
+  LiveAST.parser = YourParser
 
-will override LiveAST's default parser with your own. To test it,
-provide some examples of what your ASTs look like in
-<code>tests/shared/ast_generators.rb</code>.
+To test it, provide some examples of what the ASTs look like in
+<code>YourParser::TestForms</code>. See the +live_ast_ruby_parser+ gem
+for reference.
 
-=== Noninvasive Mode
+== Noninvasive Mode
 
 For safety purposes, <code>require 'live_ast'</code> performs the
 invasive act of redefining +load+ (but not +require+); otherwise bad
@@ -210,7 +207,7 @@ To select features individually,
   require 'live_ast/ast_load'     # define Kernel#ast_load (mentioned below)
   require 'live_ast/replace_load' # redefine Kernel#load
 
-=== Noninvasive Interface
+== Noninvasive Interface
 
 The following alternative interface is available.
 
@@ -235,7 +232,7 @@ The following alternative interface is available.
   
   ast_eval  # => raises NameError
 
-=== Reloading Files In Noninvasive Mode
+== Reloading Files In Noninvasive Mode
 
 Use +ast_load+ or (equivalently) <code>LiveAST.load</code> when
 reloading an AST-aware file.
@@ -261,16 +258,16 @@ Realize that <code>foo.rb</code> may be referenced by an unknown
 number of methods and blocks. If the original <code>foo.rb</code>
 source were dumped in favor of the modified <code>foo.rb</code>, then
 an unknown number of those references would be invalidated (and some
-may even point to the wrong AST!).
+may even point to the wrong AST).
 
 This is the reason for the caching that results in the stale AST
 above. It should now be clear why the default behavior of
 <code>require 'live_ast'</code> is to redefine +load+: doing so
 prevents this problem entirely. On the other hand if it is fully known
-where and when files are being reloaded (if at all) then there's no
-need for paranoia; the noninvasive option may be the most appropriate.
+where files are being reloaded (if at all) then there's no need for
+paranoia; the noninvasive option may be the most appropriate.
 
-=== The Source/AST Cache
+== The Source/AST Cache
 
 +ast_eval+ and +load+ cache all incoming code, while
 <code>require</code>d files are cached on a need-to-know basis. When
@@ -297,13 +294,13 @@ files will never be flushed. However a method redefined via +ast_eval+
 or +load+ is susceptible to +flush_cache+ even when its original
 definition pointed to a <code>require</code>d file.
 
-=== About +require+
+== About +require+
 
 No measures have been taken to detect manipulations of
 <code>$LOADED_FEATURES</code> which would cause +require+ to load the
 same file twice. Though +require+ <em>could</em> be replaced in
-similar fashion to +load+--heading off problems arising from such
-"raw" reloads--the overhead would seem inappropriate in relation to
+similar fashion to +load+---heading off problems arising from such
+"raw" reloads---the overhead would seem inappropriate in relation to
 the rarity of this case.
 
 Therefore the working assumption is that +require+ will load a file
@@ -311,10 +308,11 @@ only once. Furthermore, if a file has not been reloaded then it is
 assumed that the file is unmodified between the moment it is
 <code>require</code>d and the moment the first AST is pulled from it.
 
-=== Backtraces
+== Backtraces
 
 +ast_eval+ is meant to be compatible with +eval+. For instance the
-first line of the backtrace should be identical to that of +eval+:
+first line of +ast_eval+'s backtrace should be identical to that of
++eval+:
 
   require 'live_ast'
   
@@ -329,17 +327,17 @@ Let's make a slight change,
   f.call
   # => test.rb|ast@a:3:in `block in <main>': boom (RuntimeError)
 
-Oh no! What the heck is '<code>|ast@a</code>' doing there? LiveAST's
+What the heck is '<code>|ast@a</code>' doing there? LiveAST's
 implementation has just been exposed: each source input is assigned a
-unique key that enables a Ruby object to find its own definition.
+unique key which enables a Ruby object to find its own definition.
 
 In the first case above, +ast_eval+ has removed the key from the
 exception backtrace. But in the second case there is no opportunity to
 remove it since +ast_eval+ has already returned.
 
-If you find this to be problem--for example if you cannot add a filter
-for the jump-to-location feature in your editor--then +raise+ may be
-redefined to strip these tokens,
+If you find this to be problem---for example if you cannot add a
+filter for the jump-to-location feature in your editor---then +raise+
+may be redefined to strip these tokens,
 
   require 'live_ast'
   require 'live_ast/replace_raise'
@@ -355,7 +353,7 @@ by <code>1/0</code> comes from C). In principle this could be fixed by
 having the Ruby interpreter dynamically call +raise+.
 
 
-=== Replacing +eval+
+== Replacing +eval+
 
 If +ast_eval+ did not require a binding argument then it could assume
 the role of +eval+, thereby making LiveAST fully transparent to the

@@ -1,6 +1,6 @@
 
 class Jumpstart
-  class SimpleInstaller
+  class Installer
     def initialize
       require 'fileutils'
       require 'rbconfig'
@@ -219,17 +219,6 @@ class Jumpstart
       }
       contents
     end
-
-    def replace_file(file)
-      old_contents = File.read(file)
-      new_contents = yield(old_contents)
-      if old_contents != new_contents
-        File.open(file, "wb") { |output|
-          output.print(new_contents)
-        }
-      end
-      new_contents
-    end
   end
 
   module InstanceEvalWithArgs
@@ -264,7 +253,6 @@ class Jumpstart
     $LOAD_PATH.unshift File.dirname(__FILE__) + '/../lib'
 
     require 'rubygems/package_task'
-    require 'rake/clean'
 
     @project_name = project_name
 
@@ -272,7 +260,7 @@ class Jumpstart
 
     self.class.instance_methods(false).select { |t|
       t.to_s =~ %r!\Adefine_!
-    }.each { |method_name|
+    }.sort.each { |method_name|
       send(method_name)
     }
   end
@@ -295,9 +283,9 @@ class Jumpstart
 
   attribute :version do
     catch :bail do
-      if File.exist?(version_file = "./lib/#{name}/version.rb")
+      if File.file?(version_file = "./lib/#{name}/version.rb")
         require version_file
-      elsif File.exist?("./lib/#{name}.rb")
+      elsif File.file?("./lib/#{name}.rb")
         require name
       else
         throw :bail
@@ -377,43 +365,46 @@ class Jumpstart
   end
 
   attribute :files do
-    if File.exist?(manifest_file)
+    if File.file? manifest_file
       File.read(manifest_file).split("\n")
-    else
-      `git ls-files`.split("\n") + [manifest_file] + generated_files
-    end
+    elsif source_control?
+      IO.popen("git ls-files") { |pipe| pipe.read.split "\n" }
+    end.to_a + [manifest_file] + generated_files
+  end
+
+  def files_in_require_paths
+    require_paths.inject([]) { |acc, dir|
+      acc + Dir.glob("#{dir}/**/*.rb")
+    }
   end
 
   attribute :rdoc_files do
-    Dir["lib/**/*.rb"]
+    files_in_require_paths
   end
     
-  attribute :extra_rdoc_files do
-    if File.exist?(readme_file)
-      [readme_file]
-    else
-      []
-    end
-  end
-
   attribute :rdoc_title do
     "#{name}: #{summary}"
   end
 
+  attribute :require_paths do
+    ["lib"]
+  end
+
   attribute :rdoc_options do
-    if File.exist?(readme_file)
+    if File.file?(readme_file)
       ["--main", readme_file]
     else
       []
     end + [
      "--title", rdoc_title,
-    ] + (files - rdoc_files).inject(Array.new) { |acc, file|
+    ] + (files_in_require_paths - rdoc_files).inject(Array.new) {
+      |acc, file|
       acc + ["--exclude", file]
     }
   end
 
-  attribute :extra_rdoc_options do
-    []
+  attribute :extra_rdoc_files do
+    File.file?(readme_file) ? [readme_file] : []
   end
 
   attribute :browser do
@@ -426,7 +417,7 @@ class Jumpstart
   end
 
   attribute :gemspec do
-    Gem::Specification.new { |g|
+    Gem::Specification.new do |g|
       g.has_rdoc = true
       %w[
         name
@@ -436,26 +427,25 @@ class Jumpstart
         version
         description
         files
-        extra_rdoc_files
         rdoc_options
+        extra_rdoc_files
+        require_paths
       ].each { |param|
         value = send(param) and (
           g.send("#{param}=", value)
         )
       }
 
-      if url
-        g.homepage = url
-      end
+      g.homepage = url if url
 
-      extra_deps.each { |dep|
+      dependencies.each { |dep|
         g.add_dependency(*dep)
       }
 
-      extra_dev_deps.each { |dep|
+      development_dependencies.each { |dep|
         g.add_development_dependency(*dep)
       }
-    }
+    end
   end
 
   attribute :readme_contents do
@@ -505,57 +495,53 @@ class Jumpstart
   }
 
   attribute :url do
-    begin
-      readme_contents.match(%r!^\*.*?(http://\S+)!)[1]
-    rescue
-      "http://#{github_user}.github.com/#{name}"
-    end
+    "http://#{github_user}.github.com/#{name}"
   end
 
   attribute :github_user do
-    "FIXME"
+    raise "github_user not set"
   end
 
-  attribute :extra_deps do
-    []
-  end
-
-  attribute :extra_dev_deps do
-    []
+  attribute :rubyforge_info do
+    nil
   end
 
   attribute :authors do
-    Array.new
+    developers.map { |d| d[0] }
   end
 
   attribute :email do
-    Array.new
+    developers.map { |d| d[1] }
   end
 
-  def developer(name, email)
-    authors << name
-    self.email << email
+  attribute :dependencies do
+    []
   end
 
-  def dependency(name, version)
-    extra_deps << [name, version]
+  attribute :development_dependencies do
+    []
+  end
+
+  attribute :developers do
+    []
   end
 
   def define_clean
-    task :clean do
+    require 'rake/clean'
+    task :clean do 
       Rake::Task[:clobber].invoke
     end
   end
 
   def define_package
-    task manifest_file do
-      create_manifest
+    if source_control?
+      task manifest_file do
+        create_manifest
+      end
+      CLEAN.add manifest_file
+      task :package => :clean
+      Gem::PackageTask.new(gemspec).define
     end
-    CLEAN.include manifest_file
-    task :package => :clean
-    Gem::PackageTask.new(gemspec) { |t|
-      t.need_tar = true
-    }
   end
 
   def define_spec
@@ -598,21 +584,18 @@ class Jumpstart
       task :prerelease => [:spec, :spec_deps]
       task :default => :spec
 
-      CLEAN.include spec_output_dir
+      CLEAN.add spec_output_dir
     end
-  end
-
-  def ruby_18?
-    RUBY_VERSION =~ %r!\A1\.8!
   end
 
   def define_test
     unless test_files.empty?
       desc "run tests"
       task :test do
-        test_files.each { |file|
-          require file
-        }
+        test_files.each { |file| require file }
+
+        # if we use at_exit hook instead, it won't run before :release
+        MiniTest::Unit.new.run ARGV
       end
       
       desc "run tests with coverage"
@@ -625,7 +608,7 @@ class Jumpstart
           }
         end
       else
-        task :full_test do |t, *args|
+        task :full_test do
           rm_rf cov_dir
           require 'simplecov'
           SimpleCov.start do
@@ -657,7 +640,7 @@ class Jumpstart
       task :prerelease => [:test, :test_deps]
       task :default => :test
       
-      CLEAN.include cov_dir
+      CLEAN.add cov_dir
     end
   end
 
@@ -668,7 +651,6 @@ class Jumpstart
       require 'rdoc/rdoc'
       args = (
         gemspec.rdoc_options +
-        extra_rdoc_options +
         gemspec.require_paths.clone +
         gemspec.extra_rdoc_files +
         ["-o", doc_dir]
@@ -691,112 +673,48 @@ class Jumpstart
   end
 
   def define_publish
-    desc "publish docs"
-    task :publish => [:clean, :check_directory, :doc] do
-      git "branch", "-D", "gh-pages"
-      git "checkout", "--orphan", "gh-pages"
-      FileUtils.rm ".git/index"
-      git "clean", "-fdx", "-e", "doc"
-      Dir["doc/*"].each { |path|
-        FileUtils.mv path, "."
-      }
-      FileUtils.rmdir "doc"
-      git "add", "."
-      git "commit", "-m", "generated by rdoc"
-      git "push", "-f", "origin", "gh-pages"
+    if source_control?
+      desc "publish docs"
+      task :publish => [:clean, :check_directory, :doc] do
+        if rubyforge_info
+          user, project = rubyforge_info
+          Dir.chdir(doc_dir) do
+            sh "scp", "-r",
+               ".",
+               "#{user}@rubyforge.org:/var/www/gforge-projects/#{project}"
+          end
+        end
+        git "branch", "-D", "gh-pages"
+        git "checkout", "--orphan", "gh-pages"
+        FileUtils.rm ".git/index"
+        git "clean", "-fdx", "-e", "doc"
+        Dir["doc/*"].each { |path|
+          FileUtils.mv path, "."
+        }
+        FileUtils.rmdir "doc"
+        git "add", "."
+        git "commit", "-m", "generated by rdoc"
+        git "push", "-f", "origin", "gh-pages"
+      end
     end
   end
 
   def define_install
     desc "direct install (no gem)"
     task :install do
-      SimpleInstaller.new.run([])
+      Installer.new.run([])
     end
 
     desc "direct uninstall (no gem)"
     task :uninstall do
-      SimpleInstaller.new.run(["--uninstall"])
+      Installer.new.run(["--uninstall"])
     end
   end
   
-  def define_debug
-    runner = Class.new do
-      def comment_src_dst(on)
-        on ? ["", "#"] : ["#", ""]
-      end
-      
-      def comment_regions(on, contents, start)
-        src, dst = comment_src_dst(on)
-        contents.gsub(%r!^(\s+)#{src}#{start}.*?^\1#{src}(\}|end)!m) { |chunk|
-          indent = $1
-          chunk.gsub(%r!^#{indent}#{src}!, "#{indent}#{dst}")
-        }
-      end
-      
-      def comment_lines(on, contents, start)
-        src, dst = comment_src_dst(on)
-        contents.gsub(%r!^(\s*)#{src}#{start}!) { 
-          $1 + dst + start
-        }
-      end
-
-      def debug_info(enable)
-        require 'find'
-        Find.find("lib", "test") { |path|
-          if path =~ %r!\.rb\Z!
-            replace_file(path) { |contents|
-              result = comment_regions(!enable, contents, "debug")
-              comment_lines(!enable, result, "trace")
-            }
-          end
-        }
-      end
-    end
-    
-    desc "enable debug and trace calls"
-    task :debug_on do
-      runner.new.debug_info(true)
-    end
-    
-    desc "disable debug and trace calls"
-    task :debug_off do
-      runner.new.debug_info(false)
-    end
-  end
-
-  def define_columns
-    desc "check for columns > 80"
-    task :check_columns do
-      Dir["**/*.rb"].each { |file|
-        File.read(file).scan(%r!^.{81}!) { |match|
-          unless match =~ %r!http://!
-            raise "#{file} greater than 80 columns: #{match}"
-          end
-        }
-      }
-    end
-  end
-
-  def define_comments
-    task :comments do
-      file = "comments.txt"
-      write_file(file) {
-        result = Array.new
-        (["Rakefile"] + Dir["**/*.{rb,rake}"]).each { |f|
-          File.read(f).scan(%r!\#[^\{].*$!) { |match|
-            result << match
-          }
-        }
-        result.join("\n")
-      }
-      CLEAN.include file
-    end
-  end
-
   def define_check_directory
     task :check_directory do
       unless `git status` =~ %r!nothing to commit \(working directory clean\)!
-        raise "Directory not clean"
+        raise "directory not clean"
       end
     end
   end
@@ -819,24 +737,8 @@ class Jumpstart
     end
   end
 
-  def define_update_jumpstart
-    url = ENV["RUBY_JUMPSTART"] || "git://github.com/quix/jumpstart.git"
-    task :update_jumpstart do
-      git "clone", url
-      rm_rf "devel/jumpstart"
-      Dir["jumpstart/**/*.rb"].each { |source|
-        dest = source.sub(%r!\Ajumpstart/!, "devel/")
-        dest_dir = File.dirname(dest)
-        mkdir_p(dest_dir) unless File.directory?(dest_dir)
-        cp source, dest
-      }
-      rm_r "jumpstart"
-      git "commit", "devel", "-m", "update jumpstart"
-    end
-  end
-
   def git(*args)
-    sh("git", *args)
+    sh "git", *args
   end
 
   def create_manifest
@@ -849,9 +751,9 @@ class Jumpstart
     task :prerelease => [:clean, :check_directory, :ping, history_file]
 
     task :finish_release do
-      sh("gem", "push", gem)
-      git("tag", "#{name}-" + version.to_s)
-      git(*%w(push --tags origin master))
+      git "tag", "#{name}-" + version.to_s
+      git "push", "--tags", "origin", "master"
+      sh "gem", "push", gem
     end
 
     task :release => [:prerelease, :package, :finish_release]
@@ -877,6 +779,14 @@ class Jumpstart
         }
       }
     }
+  end
+
+  def ruby_18?
+    RUBY_VERSION =~ %r!\A1\.8!
+  end
+
+  def source_control?
+    File.directory? ".git"
   end
 
   class << self
@@ -971,8 +881,7 @@ class Jumpstart
 
     def doc_to_test(file, *sections, &block)
       jump = self
-      test_class = defined?(Test) ? Test : MiniTest
-      klass = Class.new test_class::Unit::TestCase do
+      klass = Class.new MiniTest::Unit::TestCase do
         sections.each { |section|
           define_method "test_#{file}_#{section}" do
             if block
@@ -986,7 +895,7 @@ class Jumpstart
           end
         }
       end
-      Object.const_set("#{test_class.name}#{file}".gsub(".", ""), klass)
+      Object.const_set("Test#{file}".gsub(".", ""), klass)
     end
   end
 end
