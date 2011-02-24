@@ -172,15 +172,11 @@ what it finds in the line-to-AST hash obtained from
 therefore easy: the only specification is that the +parse+ method
 return such a hash.
 
-Supposing your new <code>LiveAST::Parser</code> is defined in
-<code>/path/to/my/code/live_ast/parser.rb</code>,
-
-  $LOAD_PATH.unshift '/path/to/my/code'
-  require 'live_ast'
-
-will override LiveAST's default parser with your own. To test it,
-provide some examples of what your ASTs look like in
-<code>tests/shared/ast_generators.rb</code>.
+Since the default parser is set for +autoload+, defining your
+<code>LiveAST::Parser</code> before calling +to_ast+ will override the
+default. To test it, provide some examples of what your ASTs look like
+in <code>LiveAST::Parser::TestForms</code> (which should be on
++autoload+).
 
 == Noninvasive Mode
 

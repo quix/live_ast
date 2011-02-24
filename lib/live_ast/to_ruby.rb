@@ -1,11 +1,9 @@
-require 'ruby2ruby'
-
 require 'live_ast/base'
 
 [Method, UnboundMethod, Proc].each do |klass|
   klass.class_eval do
     def to_ruby  #:nodoc:
-      Ruby2Ruby.new.process(LiveAST.ast(self))
+      LiveAST::Parser::Unparser.unparse(LiveAST.ast(self))
     end
   end
 end

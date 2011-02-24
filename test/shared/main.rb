@@ -1,4 +1,4 @@
-$LOAD_PATH.unshift File.dirname(__FILE__) + '/../../lib'
+$LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../../lib')
 
 # require first for stdlib_test
 require 'pp'
@@ -9,8 +9,6 @@ require 'minitest/unit'
 require 'minitest/mock'
 require 'minitest/autorun' unless defined? Rake
 require 'live_ast/base'
-
-require_relative 'ast_generators'
 
 def define_unsorted_test_case(name, superclass, &block)
   klass = Class.new superclass, &block
@@ -75,7 +73,7 @@ class JLMiniTest < MiniTest::Unit::TestCase
 end
 
 class BaseTest < JLMiniTest
-  include ASTGenerators
+  include LiveAST::Parser::TestForms
 
   DATA_DIR = File.expand_path(File.dirname(__FILE__) + "/../data")
 

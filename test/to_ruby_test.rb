@@ -83,4 +83,6 @@ class AAC_ToRubyTest < RegularTest
     end.instance_method(:f).to_ruby
     assert_equal src, dst
   end
-end
+end if (un = LiveAST::Parser::Unparser rescue nil) &&
+       un.respond_to?(:ruby2ruby?) &&
+       un.ruby2ruby?

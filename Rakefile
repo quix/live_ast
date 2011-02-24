@@ -16,8 +16,5 @@ Jumpstart.new "live_ast" do |s|
   ]
   s.rdoc_options << "-a"
   
-  # my code compensates for a ruby_parser bug; make this equal for now
-  s.dependencies << ["ruby_parser", "= 2.0.6"]
-
-  s.development_dependencies << ["ruby2ruby"]
+  s.dependencies = ["live_ast_ruby_parser"]
 end
