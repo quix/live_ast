@@ -74,7 +74,7 @@ class JLMiniTest < MiniTest::Unit::TestCase
 end
 
 class BaseTest < JLMiniTest
-  include LiveAST::Parser::TestForms
+  include LiveAST.parser::TestForms
 
   DATA_DIR = File.expand_path(File.dirname(__FILE__) + "/data")
 

@@ -1,6 +1,10 @@
 
 = LiveAST ChangeLog
 
+== Version 0.4.0
+
+* new parser plugin design to work around obscure autoload failure
+
 == Version 0.3.0
 
 * parser is now an external plugin

@@ -3,7 +3,7 @@ require 'live_ast/base'
 [Method, UnboundMethod, Proc].each do |klass|
   klass.class_eval do
     def to_ruby  #:nodoc:
-      LiveAST::Parser::Unparser.unparse(LiveAST.ast(self))
+      LiveAST.parser::Unparser.unparse(LiveAST.ast(self))
     end
   end
 end

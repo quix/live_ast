@@ -173,17 +173,19 @@ You can probably skip these next sections. Goodbye.
 == Replacing the Parser
 
 Despite its name, LiveAST knows nothing about ASTs. It merely reports
-what it finds in the line-to-AST hash returned by
-<code>LiveAST::Parser#parse</code>. Replacing the +Parser+ class is
-therefore easy: the only specification is that the +parse+ method
-return such a hash.
+what it finds in the line-to-AST hash returned by the parser's +parse+
+method. Replacing the parser class is therefore easy: the only
+specification is that the +parse+ instance method return such a hash.
 
-The default parser is in the +live_ast_ruby_parser+ gem which is
-registered for +autoload+. To override it, define your
-<code>LiveAST::Parser</code> class before LiveAST is used (e.g.,
-before +to_ast+ is called). To test your parser, provide some examples
-of what its ASTs look like in <code>LiveAST::Parser::TestForms</code>.
-See the +live_ast_ruby_parser+ gem for reference.
+To override the default parser,
+
+  module LiveAST
+    @parser = YourParser
+  end
+
+To test it, provide some examples of what the ASTs look like in
+<code>YourParser::TestForms</code>. See the +live_ast_ruby_parser+ gem
+for reference.
 
 == Noninvasive Mode
 
