@@ -13,7 +13,10 @@ module LiveAST
     attr_writer :parser  #:nodoc:
 
     def parser  #:nodoc:
-      @parser ||= require('live_ast_ruby_parser') && LiveASTRubyParser
+      @parser ||= (
+        require 'live_ast_ruby_parser'
+        LiveASTRubyParser
+      )
     end
 
     #
