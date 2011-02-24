@@ -92,14 +92,13 @@ Ruby 1.9.2 or higher is required.
 
 == +to_ruby+
 
-Although the ruby2ruby package (<code>gem install ruby2ruby</code>) is
-not an official dependency of LiveAST, for convenience
+Although +ruby2ruby+ is not required by default,
 
   require 'live_ast/to_ruby'
 
-will require ruby2ruby and define the +to_ruby+ method for +Method+,
+will require +ruby2ruby+ and define the +to_ruby+ method for +Method+,
 +UnboundMethod+, and +Proc+. These methods are one-liners which pass
-the extracted ASTs to ruby2ruby.
+the extracted ASTs to +ruby2ruby+.
 
   require 'live_ast'
   require 'live_ast/to_ruby'
@@ -113,6 +112,9 @@ the extracted ASTs to ruby2ruby.
   end
 
   p A.instance_method(:f).to_ruby # => "def f\n  \"A#f\"\nend"
+
+In general, +to_ruby+ will hook into the unparser provided by the
+parser, if one is found.
 
 == Loading Source
 
@@ -171,16 +173,16 @@ You can probably skip these next sections. Goodbye.
 == Replacing the Parser
 
 Despite its name, LiveAST knows nothing about ASTs. It merely reports
-what it finds in the line-to-AST hash obtained from
+what it finds in the line-to-AST hash returned by
 <code>LiveAST::Parser#parse</code>. Replacing the +Parser+ class is
 therefore easy: the only specification is that the +parse+ method
 return such a hash.
 
-The +live_ast_ruby_parser+ gem, which contains the default parser, is
-set for +autoload+. To override it, define your
-<code>LiveAST::Parser</code> class before LiveAST is used (e.g. before
-+to_ast+ is called). To test your parser, provide some examples of
-what its ASTs look like in <code>LiveAST::Parser::TestForms</code>.
+The default parser is in the +live_ast_ruby_parser+ gem, which is
+registered for +autoload+. To override it, define your
+<code>LiveAST::Parser</code> class before LiveAST is used (e.g.,
+before +to_ast+ is called). To test your parser, provide some examples
+of what its ASTs look like in <code>LiveAST::Parser::TestForms</code>.
 See the +live_ast_ruby_parser+ gem for reference.
 
 == Noninvasive Mode

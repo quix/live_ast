@@ -6,7 +6,14 @@ require 'live_ast/linker'
 require 'live_ast/loader'
 require 'live_ast/error'
 
-LiveAST.autoload :Parser, 'live_ast_ruby_parser'
+begin
+  # autoload bug -- http://redmine.ruby-lang.org/issues/show/4233
+  # it is not necessary to have the default parser installed
+  if gem 'live_ast_ruby_parser'
+    LiveAST.autoload :Parser, 'live_ast_ruby_parser'
+  end
+rescue LoadError
+end
 
 module LiveAST
   NATIVE_EVAL = Kernel.method(:eval)  #:nodoc:
