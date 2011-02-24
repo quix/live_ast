@@ -178,7 +178,7 @@ what it finds in the line-to-AST hash returned by
 therefore easy: the only specification is that the +parse+ method
 return such a hash.
 
-The default parser is in the +live_ast_ruby_parser+ gem, which is
+The default parser is in the +live_ast_ruby_parser+ gem which is
 registered for +autoload+. To override it, define your
 <code>LiveAST::Parser</code> class before LiveAST is used (e.g.,
 before +to_ast+ is called). To test your parser, provide some examples
@@ -258,14 +258,14 @@ Realize that <code>foo.rb</code> may be referenced by an unknown
 number of methods and blocks. If the original <code>foo.rb</code>
 source were dumped in favor of the modified <code>foo.rb</code>, then
 an unknown number of those references would be invalidated (and some
-may even point to the wrong AST!).
+may even point to the wrong AST).
 
 This is the reason for the caching that results in the stale AST
 above. It should now be clear why the default behavior of
 <code>require 'live_ast'</code> is to redefine +load+: doing so
 prevents this problem entirely. On the other hand if it is fully known
-where and when files are being reloaded (if at all) then there's no
-need for paranoia; the noninvasive option may be the most appropriate.
+where files are being reloaded (if at all) then there's no need for
+paranoia; the noninvasive option may be the most appropriate.
 
 == The Source/AST Cache
 
@@ -299,8 +299,8 @@ definition pointed to a <code>require</code>d file.
 No measures have been taken to detect manipulations of
 <code>$LOADED_FEATURES</code> which would cause +require+ to load the
 same file twice. Though +require+ <em>could</em> be replaced in
-similar fashion to +load+--heading off problems arising from such
-"raw" reloads--the overhead would seem inappropriate in relation to
+similar fashion to +load+---heading off problems arising from such
+"raw" reloads---the overhead would seem inappropriate in relation to
 the rarity of this case.
 
 Therefore the working assumption is that +require+ will load a file
@@ -311,7 +311,8 @@ assumed that the file is unmodified between the moment it is
 == Backtraces
 
 +ast_eval+ is meant to be compatible with +eval+. For instance the
-first line of the backtrace should be identical to that of +eval+:
+first line of +ast_eval+'s backtrace should be identical to that of
++eval+:
 
   require 'live_ast'
   
@@ -326,17 +327,17 @@ Let's make a slight change,
   f.call
   # => test.rb|ast@a:3:in `block in <main>': boom (RuntimeError)
 
-Oh no! What the heck is '<code>|ast@a</code>' doing there? LiveAST's
+What the heck is '<code>|ast@a</code>' doing there? LiveAST's
 implementation has just been exposed: each source input is assigned a
-unique key that enables a Ruby object to find its own definition.
+unique key which enables a Ruby object to find its own definition.
 
 In the first case above, +ast_eval+ has removed the key from the
 exception backtrace. But in the second case there is no opportunity to
 remove it since +ast_eval+ has already returned.
 
-If you find this to be problem--for example if you cannot add a filter
-for the jump-to-location feature in your editor--then +raise+ may be
-redefined to strip these tokens,
+If you find this to be problem---for example if you cannot add a
+filter for the jump-to-location feature in your editor---then +raise+
+may be redefined to strip these tokens,
 
   require 'live_ast'
   require 'live_ast/replace_raise'
