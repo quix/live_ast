@@ -10,6 +10,8 @@ module LiveAST
   NATIVE_EVAL = Kernel.method(:eval)  #:nodoc:
 
   class << self
+    attr_writer :parser  #:nodoc:
+
     def parser  #:nodoc:
       @parser ||= require('live_ast_ruby_parser') && LiveASTRubyParser
     end
