@@ -1,4 +1,4 @@
-require_relative 'shared/main'
+require_relative 'main'
 
 require 'thread'
 

@@ -1,4 +1,4 @@
-require_relative 'shared/main'
+require_relative 'main'
 
 require_relative 'encoding_test/default.rb'
 require_relative 'encoding_test/usascii.rb'

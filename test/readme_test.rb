@@ -1,4 +1,4 @@
-require_relative 'shared/main'
+require_relative 'main'
 require_relative '../devel/jumpstart'
 
 if LiveAST::Parser.respond_to?(:unified?) and LiveAST::Parser.unified?

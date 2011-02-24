@@ -1,4 +1,4 @@
-require_relative 'shared/main'
+require_relative 'main'
 
 class AAA_LoadFileTest < BaseTest
   class << self

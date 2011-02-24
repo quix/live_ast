@@ -1,4 +1,4 @@
-require_relative 'shared/main'
+require_relative 'main'
 
 class AAC_ToRubyTest < RegularTest
   def setup

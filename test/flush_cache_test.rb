@@ -1,4 +1,4 @@
-require_relative 'shared/main'
+require_relative 'main'
 
 # test for flushing side-effects: unsort this TestCase from other
 # TestCases.

@@ -1,4 +1,4 @@
-require_relative 'shared/main'
+require_relative 'main'
 
 class ErrorTest < RegularTest
   def test_multiple_lambda_same_line
