@@ -1,6 +1,11 @@
 
 = LiveAST ChangeLog
 
+== Version 0.3.0
+
+* parser is now an external plugin
+* default parser has been moved to live_ast_ruby_parser gem
+
 == Version 0.2.3
 
 * fix a utf-8 BOM issue
