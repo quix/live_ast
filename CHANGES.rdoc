@@ -1,6 +1,12 @@
 
 = LiveAST ChangeLog
 
+== Version 0.6.0
+
+* removed FlushError and NoSourceError -- not possible to distinguish these
+* added more tests
+* refined testing API for plugins
+
 == Version 0.5.2
 
 * fix default plugin version

@@ -16,5 +16,5 @@ Levitate.new "live_ast" do |s|
   ]
   s.rdoc_options << "-a"
   
-  s.dependencies << ["live_ast_ruby_parser", ">= 0.5.1"]
+  s.dependencies << ["live_ast_ruby_parser", ">= 0.6.0"]
 end
