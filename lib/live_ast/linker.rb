@@ -53,7 +53,7 @@ module LiveAST
       def find_proc_ast(obj)
         @mutex.synchronize do
           fetch_proc_attachment(obj) or (
-            ast = find_ast(*obj.source_location) or raise FlushedError
+            ast = find_ast(*obj.source_location) or raise ASTNotFoundError
             attach_to_proc(obj, ast)
           )
         end
@@ -63,7 +63,7 @@ module LiveAST
         @mutex.synchronize do
           case ast = find_ast(*location)
           when nil
-            fetch_method_attachment(klass, name) or raise FlushedError
+            fetch_method_attachment(klass, name) or raise ASTNotFoundError
           else
             attach_to_method(klass, name, ast)
           end
@@ -71,7 +71,7 @@ module LiveAST
       end
 
       def find_ast(*location)
-        raise NoSourceError unless location.size == 2
+        raise ASTNotFoundError unless location.size == 2
         raise RawEvalError if location.first == "(eval)"
         ast = fetch_from_cache(*location)
         raise MultipleDefinitionsOnSameLineError if ast == :multiple

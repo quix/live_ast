@@ -39,7 +39,7 @@ define_unsorted_test_case "FlushCacheTest", RegularTest do
 
     LiveAST.flush_cache
 
-    assert_raises LiveAST::FlushedError do
+    assert_raises LiveAST::ASTNotFoundError do
       klass.instance_method(:g).to_ast
     end
   end
@@ -59,7 +59,7 @@ define_unsorted_test_case "FlushCacheTest", RegularTest do
     assert_equal f_ast.object_id,
                  klass.instance_method(:f).to_ast.object_id
 
-    assert_raises LiveAST::FlushedError do
+    assert_raises LiveAST::ASTNotFoundError do
       klass.instance_method(:g).to_ast
     end
   end
@@ -91,7 +91,7 @@ define_unsorted_test_case "FlushCacheTest", RegularTest do
 
     assert_equal a_ast.object_id, a.to_ast.object_id
     
-    assert_raises LiveAST::FlushedError do
+    assert_raises LiveAST::ASTNotFoundError do
       b.to_ast
     end
   end

@@ -7,23 +7,14 @@ module LiveAST
   end
 
   class ASTNotFoundError < StandardError
+    def message
+      "The requested AST could not be found (AST flushed or compiled code)."
+    end
   end
 
   class RawEvalError < ASTNotFoundError
     def message
       "Must use ast_eval instead of eval in order to obtain AST."
-    end
-  end
-  
-  class NoSourceError < ASTNotFoundError
-    def message
-      "No source found for the requested AST."
-    end
-  end
-
-  class FlushedError < ASTNotFoundError
-    def message
-      "The requested AST was flushed from the cache."
     end
   end
 end
