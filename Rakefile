@@ -1,6 +1,6 @@
-require_relative 'devel/jumpstart'
+require_relative 'devel/levitate'
 
-Jumpstart.new "live_ast" do |s|
+Levitate.new "live_ast" do |s|
   s.developers << ["James M. Lawrence", "quixoticsycophant@gmail.com"]
   s.github_user = "quix"
   s.rubyforge_info = ["quix", "liveast"]

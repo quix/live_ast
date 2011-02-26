@@ -1,5 +1,5 @@
 require_relative 'main'
-require_relative '../devel/jumpstart'
+require_relative '../devel/levitate'
 
 if LiveAST.parser::Test.respond_to?(:unified_sexp?) and
     LiveAST.parser::Test.unified_sexp?
@@ -10,5 +10,5 @@ if LiveAST.parser::Test.respond_to?(:unified_sexp?) and
     "+to_ruby+",
   ]
 
-  Jumpstart.doc_to_test("README.rdoc", *sections)
+  Levitate.doc_to_test("README.rdoc", *sections)
 end
