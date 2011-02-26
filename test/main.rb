@@ -30,7 +30,7 @@ class JLMiniTest < MiniTest::Unit::TestCase
   end
 
   def delim(char)
-    ":\n" << (char*72) << "\n"
+    "\n" << (char*72) << "\n"
   end
 
   def mu_pp(obj)
