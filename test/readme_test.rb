@@ -1,7 +1,8 @@
 require_relative 'main'
 require_relative '../devel/jumpstart'
 
-if LiveAST.parser.respond_to?(:unified?) and LiveAST.parser.unified?
+if LiveAST.parser::Test.respond_to?(:unified_sexp?) and
+    LiveAST.parser::Test.unified_sexp?
   sections = [
     "Synopsis",
     "Loading Source",

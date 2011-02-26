@@ -182,8 +182,8 @@ To override the default parser,
   LiveAST.parser = YourParser
 
 To test it, provide some examples of what the ASTs look like in
-<code>YourParser::TestForms</code>. See the +live_ast_ruby_parser+ gem
-for reference.
+<code>YourParser::Test</code>. See the +live_ast_ruby_parser+ gem for
+reference.
 
 == Noninvasive Mode
 
