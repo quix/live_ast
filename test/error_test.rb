@@ -23,7 +23,7 @@ class ErrorTest < RegularTest
   end
 
   def test_ast_not_found
-    assert_raises LiveAST::NoSourceError do
+    assert_raises LiveAST::ASTNotFoundError do
       File.method(:open).to_ast
     end
   end

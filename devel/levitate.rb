@@ -1,5 +1,5 @@
 
-class Jumpstart
+class Levitate
   class Installer
     def initialize
       require 'fileutils'
@@ -816,8 +816,8 @@ class Jumpstart
         begin
       }
       footer = %{
-        rescue Exception => __jumpstart_exception
-          puts "raises \#{__jumpstart_exception.class}"
+        rescue Exception => __levitate_exception
+          puts "raises \#{__levitate_exception.class}"
         end
       }
       final_code = header + code + footer
@@ -860,15 +860,15 @@ class Jumpstart
     end
 
     def doc_to_spec(file, *sections, &block)
-      jump = self
+      levitate = self
       describe file do
         sections.each { |section|
           describe "section `#{section}'" do
             it "should run as claimed" do
               if block
-                jump.run_doc_section(file, section, self, &block)
+                levitate.run_doc_section(file, section, self, &block)
               else
-                jump.run_doc_section(file, section, self) {
+                levitate.run_doc_section(file, section, self) {
                   |expected, actual, index|
                   actual.should == expected
                 }
@@ -880,14 +880,14 @@ class Jumpstart
     end
 
     def doc_to_test(file, *sections, &block)
-      jump = self
+      levitate = self
       klass = Class.new MiniTest::Unit::TestCase do
         sections.each { |section|
           define_method "test_#{file}_#{section}" do
             if block
-              jump.run_doc_section(file, section, self, &block)
+              levitate.run_doc_section(file, section, self, &block)
             else
-              jump.run_doc_section(file, section, self) {
+              levitate.run_doc_section(file, section, self) {
                 |expected, actual, index|
                 assert_equal expected, actual
               }

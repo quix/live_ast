@@ -1,6 +1,6 @@
-require_relative 'devel/jumpstart'
+require_relative 'devel/levitate'
 
-Jumpstart.new "live_ast" do |s|
+Levitate.new "live_ast" do |s|
   s.developers << ["James M. Lawrence", "quixoticsycophant@gmail.com"]
   s.github_user = "quix"
   s.rubyforge_info = ["quix", "liveast"]
@@ -16,5 +16,5 @@ Jumpstart.new "live_ast" do |s|
   ]
   s.rdoc_options << "-a"
   
-  s.dependencies << ["live_ast_ruby_parser", ">= 0.5.1"]
+  s.dependencies << ["live_ast_ruby_parser", ">= 0.6.0"]
 end

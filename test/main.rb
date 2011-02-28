@@ -30,7 +30,7 @@ class JLMiniTest < MiniTest::Unit::TestCase
   end
 
   def delim(char)
-    ":\n" << (char*72) << "\n"
+    "\n" << (char*72) << "\n"
   end
 
   def mu_pp(obj)
@@ -74,7 +74,7 @@ class JLMiniTest < MiniTest::Unit::TestCase
 end
 
 class BaseTest < JLMiniTest
-  include LiveAST.parser::TestForms
+  include LiveAST.parser::Test
 
   DATA_DIR = File.expand_path(File.dirname(__FILE__) + "/data")
 
