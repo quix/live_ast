@@ -5,6 +5,7 @@ require 'live_ast/evaler'
 require 'live_ast/linker'
 require 'live_ast/loader'
 require 'live_ast/error'
+require 'live_ast/irb_spy' if defined?(IRB) && defined?(Readline::HISTORY)
 
 module LiveAST
   NATIVE_EVAL = Kernel.method(:eval)  #:nodoc:

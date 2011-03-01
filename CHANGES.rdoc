@@ -1,5 +1,9 @@
 
-= LiveAST ChangeLog
+= live_ast Changes
+
+== Version 0.6.1
+
+* enable usage inside irb
 
 == Version 0.6.0
 

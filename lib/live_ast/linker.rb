@@ -81,11 +81,19 @@ module LiveAST
       def fetch_from_cache(file, line)
         cache = @caches[file]
         if !cache and !file.index(REVISION_TOKEN)
-          #
-          # File was loaded by 'require'.
-          # Play catch-up: assume it has not changed in the meantime.
-          #
-          _, cache = new_cache(Reader.read(file), file, 1, true)
+          _, cache =
+            if defined?(IRB) and file == "(irb)"
+              unless defined? Readline::HISTORY
+                raise "LiveAST requires readline enabled in irb."
+              end
+              new_cache(IRBSpy.code_at(line), file, line, false)
+            else
+              #
+              # File was loaded by 'require'.
+              # Play catch-up: assume it has not changed in the meantime.
+              #
+              new_cache(Reader.read(file), file, 1, true)
+            end
         end
         cache.fetch_ast(line) if cache
       end
