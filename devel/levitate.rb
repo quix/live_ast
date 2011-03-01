@@ -249,12 +249,12 @@ class Levitate
   include AttrLazy
   include Util
 
-  def initialize(project_name)
+  def initialize(gem_name)
     $LOAD_PATH.unshift File.dirname(__FILE__) + '/../lib'
 
     require 'rubygems/package_task'
 
-    @project_name = project_name
+    @gem_name = gem_name
 
     yield self
 
@@ -269,24 +269,22 @@ class Levitate
     alias_method :attribute, :attr_lazy_accessor
   end
 
-  attribute :name do
-    @project_name
-  end
+  attr_reader :gem_name
 
   attribute :version_constant_name do
     "VERSION"
   end
 
   attribute :camel_name do
-    to_camel_case(name)
+    to_camel_case(gem_name)
   end
 
   attribute :version do
     catch :bail do
-      if File.file?(version_file = "./lib/#{name}/version.rb")
+      if File.file?(version_file = "./lib/#{gem_name}/version.rb")
         require version_file
-      elsif File.file?("./lib/#{name}.rb")
-        require name
+      elsif File.file?("./lib/#{gem_name}.rb")
+        require gem_name
       else
         throw :bail
       end
@@ -337,7 +335,7 @@ class Levitate
 
   [:gem, :tgz].each { |ext|
     attribute ext do
-      "pkg/#{name}-#{version}.#{ext}"
+      "pkg/#{gem_name}-#{version}.#{ext}"
     end
   }
 
@@ -383,7 +381,7 @@ class Levitate
   end
     
   attribute :rdoc_title do
-    "#{name}: #{summary}"
+    "#{gem_name}: #{summary}"
   end
 
   attribute :require_paths do
@@ -418,9 +416,7 @@ class Levitate
 
   attribute :gemspec do
     Gem::Specification.new do |g|
-      g.has_rdoc = true
       %w[
-        name
         authors
         email
         summary
@@ -430,18 +426,15 @@ class Levitate
         rdoc_options
         extra_rdoc_files
         require_paths
-      ].each { |param|
-        value = send(param) and (
-          g.send("#{param}=", value)
-        )
-      }
-
+      ].each do |param|
+        t = send(param) and g.send("#{param}=", t)
+      end
+      g.name = gem_name
+      g.has_rdoc = true
       g.homepage = url if url
-
       dependencies.each { |dep|
         g.add_dependency(*dep)
       }
-
       development_dependencies.each { |dep|
         g.add_development_dependency(*dep)
       }
@@ -495,7 +488,7 @@ class Levitate
   }
 
   attribute :url do
-    "http://#{github_user}.github.com/#{name}"
+    "http://#{github_user}.github.com/#{gem_name}"
   end
 
   attribute :github_user do
@@ -737,6 +730,43 @@ class Levitate
     end
   end
 
+  def define_update_levitate
+    url = ENV["LEVITATE"] ||
+      "https://github.com/quix/levitate/raw/master/levitate.rb"
+    task :update_levitate do
+      if system "curl", "-s", "-o", __FILE__, url
+        if `git diff #{__FILE__}` == ""
+          puts "Already up-to-date."
+        else
+          git "commit", __FILE__, "-m", "updated levitate"
+          puts "Updated levitate."
+        end
+      else
+        raise "levitate download failed"
+      end
+    end
+  end
+
+  def define_changes
+    task :changes do
+      header = "\n\n== Version ____\n\n"
+
+      bullets = `git log --format=%s #{last_release}..HEAD`.lines.map { |line|
+        "* #{line}"
+      }.join.chomp
+
+      write_file(history_file) do
+        File.read(history_file).sub(/(?<=#{gem_name} Changes)/) {
+          header + bullets
+        }
+      end
+    end
+  end
+
+  def last_release
+    `git tag`.lines.select { |t| t.index(gem_name) == 0 }.last.chomp
+  end
+
   def git(*args)
     sh "git", *args
   end
@@ -751,7 +781,7 @@ class Levitate
     task :prerelease => [:clean, :check_directory, :ping, history_file]
 
     task :finish_release do
-      git "tag", "#{name}-" + version.to_s
+      git "tag", "#{gem_name}-" + version.to_s
       git "push", "--tags", "origin", "master"
       sh "gem", "push", gem
     end
