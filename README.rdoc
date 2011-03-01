@@ -162,6 +162,13 @@ or blocks in order for its AST to be available.
   a = lambda { } ; b = lambda { }
   a.to_ast # => raises LiveAST::MultipleDefinitionsOnSameLineError
 
+Code given to the <code>-e</code> command-line switch is not
+AST-accessible.
+
+In order for LiveAST to operate inside +irb+, the Ruby interpreter
+must have readline support (the Ruby on your machine likely has
+readline unless it was specifically compiled without it).
+
 ----
 
 == <em>Technical Issues</em>
