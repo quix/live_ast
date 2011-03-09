@@ -43,7 +43,8 @@ module LiveAST
         if file.index Linker::REVISION_TOKEN
           raise "refusing to load file with revision token: `#{file}'"
         end
-        search_paths(file) or raise LoadError, "no such file to load -- #{file}"
+        search_paths(file) or
+          raise LoadError, "cannot load such file -- #{file}"
       end
 
       def search_paths(file)

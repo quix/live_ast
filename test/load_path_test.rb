@@ -58,13 +58,10 @@ class AAA_LoadPathTest < BaseTest
   end
 
   def compare_load_errors(file)
-    orig = assert_raises LoadError do
-      load file
-    end
-    live = assert_raises LoadError do
+    error = assert_raises LoadError do
       LiveAST.load file
     end
-    assert_equal orig.message, live.message
+    assert_equal "cannot load such file -- #{file}", error.message
   end
 
   def check_errors
