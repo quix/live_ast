@@ -83,9 +83,6 @@ module LiveAST
         if !cache and !file.index(REVISION_TOKEN)
           _, cache =
             if defined?(IRB) and file == "(irb)"
-              unless defined? Readline::HISTORY
-                raise "LiveAST requires readline enabled in irb."
-              end
               new_cache(IRBSpy.code_at(line), file, line, false)
             else
               #

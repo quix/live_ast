@@ -1,6 +1,11 @@
 
 = live_ast Changes
 
+== Version 0.6.2
+
+* simplified irb handling; readline no longer required
+* add -e notes to readme
+
 == Version 0.6.1
 
 * enable usage inside irb
