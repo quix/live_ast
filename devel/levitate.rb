@@ -250,7 +250,7 @@ class Levitate
   include Util
 
   def initialize(gem_name)
-    $LOAD_PATH.unshift File.dirname(__FILE__) + '/../lib'
+    $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
 
     require 'rubygems/package_task'
 
@@ -402,7 +402,7 @@ class Levitate
   end
 
   attribute :extra_rdoc_files do
-    File.file?(readme_file) ? [readme_file] : []
+    [readme_file, history_file].select { |file| File.file?(file) }
   end
 
   attribute :browser do
@@ -478,9 +478,11 @@ class Levitate
       begin
         sections[send("#{section}_section")].
         gsub("\n", " ").
-        split(%r!\.\s*!m).
+        split(%r!\.\s+!m).
         first(send("#{section}_sentences")).
-        join(".  ") << "."
+        join(". ").
+        concat(".").
+        sub(%r!\.+\Z!, ".")
       rescue
         "FIXME: #{section}"
       end
@@ -749,7 +751,11 @@ class Levitate
 
   def define_changes
     task :changes do
-      header = "\n\n== Version ____\n\n"
+      if File.read(history_file).index version
+        raise "version not updated"
+      end
+
+      header = "\n\n== Version #{version}\n\n"
 
       bullets = `git log --format=%s #{last_release}..HEAD`.lines.map { |line|
         "* #{line}"
