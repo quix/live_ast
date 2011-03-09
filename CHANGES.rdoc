@@ -1,6 +1,10 @@
 
 = live_ast Changes
 
+== Version 0.6.3
+
+* minor change for Ruby 1.9.3
+
 == Version 0.6.2
 
 * simplified irb handling; readline no longer required
@@ -26,16 +30,7 @@
 
 == Version 0.5.0
 
-* use non-stupid parser plugin API
-
-== Version 0.4.0  X yanked
-
-* new parser plugin design to work around obscure autoload failure
-
-== Version 0.3.0  X yanked
-
-* parser is now an external plugin
-* default parser has been moved to live_ast_ruby_parser gem
+* new parser plugin API
 
 == Version 0.2.3
 
