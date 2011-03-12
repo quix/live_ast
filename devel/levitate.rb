@@ -296,6 +296,10 @@ class Levitate
       mod.const_get(version_constant_name)
     end or "0.0.0"
   end
+
+  attribute :required_ruby_version do
+    ">= 0"
+  end
   
   attribute :readme_file do
     "README.rdoc"
@@ -362,6 +366,10 @@ class Levitate
     []
   end
 
+  attribute :extra_gemspec do
+    lambda { |spec| }
+  end
+
   attribute :files do
     if File.file? manifest_file
       File.read(manifest_file).split("\n")
@@ -426,6 +434,8 @@ class Levitate
         rdoc_options
         extra_rdoc_files
         require_paths
+        required_ruby_version
+        extensions
       ].each do |param|
         t = send(param) and g.send("#{param}=", t)
       end
@@ -438,6 +448,7 @@ class Levitate
       development_dependencies.each { |dep|
         g.add_development_dependency(*dep)
       }
+      extra_gemspec.call(g)
     end
   end
 
@@ -490,22 +501,22 @@ class Levitate
   }
 
   attribute :url do
-    "http://#{github_user}.github.com/#{gem_name}"
+    "http://#{username}.github.com/#{gem_name}"
   end
 
-  attribute :github_user do
-    raise "github_user not set"
+  attribute :username do
+    raise "username not set"
   end
 
   attribute :rubyforge_info do
     nil
   end
 
-  attribute :authors do
+  def authors
     developers.map { |d| d[0] }
   end
 
-  attribute :email do
+  def email
     developers.map { |d| d[1] }
   end
 
@@ -519,6 +530,10 @@ class Levitate
 
   attribute :developers do
     []
+  end
+
+  attribute :extensions do
+    ["ext/#{gem_name}/extconf.rb"].select { |f| File.file? f }
   end
 
   def define_clean
@@ -798,6 +813,35 @@ class Levitate
   def define_debug_gem
     task :debug_gem do
       puts gemspec.to_ruby
+    end
+  end
+
+  def define_extension
+    unless extensions.empty?
+      require 'rbconfig'
+      require 'rake/extensiontask'
+      
+      Rake::ExtensionTask.new gem_name, gemspec do |ext|
+        ext.cross_compile = true
+        ext.cross_platform = 'i386-mswin32'
+        ext.cross_compiling do |gemspec|
+          gemspec.post_install_message =
+            "U got dat binary versionation of this gemination!"
+        end
+      end
+
+      so = "lib/#{gem_name}.#{RbConfig::CONFIG["DLEXT"]}"
+      if Rake::Task[so].needed?
+        task :test => so
+      end
+
+      task :cross_native_gem do
+        Rake::Task[:gem].reenable
+        Rake.application.top_level_tasks.replace %w[cross native gem]
+        Rake.application.top_level
+      end
+
+      task :gem => :cross_native_gem
     end
   end
   
