@@ -24,7 +24,7 @@ class JLMiniTest < MiniTest::Unit::TestCase
     if onlies.empty?
       default
     else
-      puts "\n!!! NOTE: running ONLY *__only tests for #{self}"
+      puts "\nNOTE: running ONLY *__only tests for #{self}"
       onlies
     end
   end
@@ -48,26 +48,16 @@ class JLMiniTest < MiniTest::Unit::TestCase
   end
 
   def assert_nothing_raised
-    assert_equal 3, 3
     yield
+    assert_nil nil
   rescue => ex
     raise MiniTest::Assertion,
     exception_details(ex, "Expected nothing raised, but got:")
   end
 
   %w[
-    empty
-    equal
-    in_delta
-    in_epsilon
-    includes
-    instance_of
-    kind_of
-    match
-    nil
-    operator
-    respond_to
-    same
+    empty equal in_delta in_epsilon includes instance_of
+    kind_of match nil operator respond_to same
   ].each { |name|
     alias_method "assert_not_#{name}", "refute_#{name}"
   }
@@ -120,5 +110,29 @@ class RegularTest < BaseTest
   def setup
     super
     require 'live_ast'
+  end
+end
+
+class ReplaceEvalTest < BaseTest
+  def initialize(*args)
+    super
+    ok = begin
+           require 'live_ast/full'
+           true
+         rescue LoadError
+           if RUBY_ENGINE == "ruby"
+             raise "need: gem install boc"
+           end
+           false
+         end
+
+    unless ok
+      self.class.class_eval do
+        instance_methods(false).each do |m|
+          remove_method(m)
+          define_method(m) { }
+        end
+      end
+    end
   end
 end

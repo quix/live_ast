@@ -45,7 +45,7 @@ class AllEncodingTest < RegularTest
 
   def test_bad
     orig = assert_raises ArgumentError do
-      require "./test/encoding_test/bad.rb"
+      live_ast_original_load "./test/encoding_test/bad.rb"
     end
     live = assert_raises ArgumentError do
       LiveAST.load "./test/encoding_test/bad.rb"

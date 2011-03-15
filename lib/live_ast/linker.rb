@@ -117,10 +117,6 @@ module LiveAST
           @caches.delete_if { |key, _| key.index REVISION_TOKEN }
         end
       end
-
-      def strip_token(file)
-        file.sub(/#{Regexp.quote REVISION_TOKEN}[a-z]+/, "")
-      end
     end
   end
 end

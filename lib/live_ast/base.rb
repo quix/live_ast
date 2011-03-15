@@ -1,5 +1,6 @@
 require 'thread'
 
+require 'live_ast/common'
 require 'live_ast/reader'
 require 'live_ast/evaler'
 require 'live_ast/linker'
@@ -60,6 +61,13 @@ module LiveAST
     #
     def load(file, wrap = false)  #:nodoc:
       Loader.load(file, wrap)
+    end
+
+    #
+    # strip the revision token from a string
+    #
+    def strip_token(file)  #:nodoc:
+      file.sub(/#{Regexp.quote Linker::REVISION_TOKEN}[a-z]+/, "")
     end
   end
 end

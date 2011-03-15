@@ -136,7 +136,7 @@ define_unsorted_test_case "BacktraceTest", RegularTest do
       orig_top = exception_backtrace { orig.call }.first
       live_top = exception_backtrace { live.call }.first
 
-      assert_equal orig_top, LiveAST::Linker.strip_token(live_top)
+      assert_equal orig_top, LiveAST.strip_token(live_top)
 
       if will_succeed
         assert_equal orig_top, live_top

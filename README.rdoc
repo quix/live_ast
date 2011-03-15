@@ -3,8 +3,7 @@
 
 == Summary
 
-A pure Ruby library for obtaining live abstract syntax trees of
-methods and procs.
+Live abstract syntax trees of methods and procs.
 
 == Synopsis
 
@@ -18,15 +17,12 @@ methods and procs.
 
   #### ASTs of methods
   
-  m = Greet.instance_method(:default)
-
-  p m.to_ast
+  p Greet.instance_method(:default).to_ast
   # => s(:defn, :default, s(:args), s(:scope, s(:block, s(:str, "hello"))))
 
   #### ASTs of lambdas, procs, blocks
 
   f = lambda { "foo" }
-
   p f.to_ast
   # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "foo"))
 
@@ -39,18 +35,27 @@ methods and procs.
     "bar"
   end
 
-  #### ASTs from dynamic code
+  #### ASTs from dynamic code -- fully integrated version
 
-  f = ast_eval "lambda { 'dynamic' }", binding
+  require 'live_ast/full'
 
+  f = eval "lambda { 'dynamic1' }"
   p f.to_ast
-  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "dynamic"))
+  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "dynamic1"))
 
-  ast_eval "def g ; 'dynamic' ; end", binding
-  m = method(:g)
+  eval "def g ; 'dynamic2' ; end"
+  p method(:g).to_ast
+  # => s(:defn, :g, s(:args), s(:scope, s(:block, s(:str, "dynamic2"))))
+  
+  #### ASTs from dynamic code -- pure ruby version
 
-  p m.to_ast
-  # => s(:defn, :g, s(:args), s(:scope, s(:block, s(:str, "dynamic"))))
+  u = ast_eval "lambda { 'dynamic3' }", binding
+  p u.to_ast
+  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "dynamic3"))
+
+  ast_eval "def v ; 'dynamic4' ; end", binding
+  p method(:v).to_ast
+  # => s(:defn, :v, s(:args), s(:scope, s(:block, s(:str, "dynamic4"))))
   
 == Install
 
@@ -64,20 +69,19 @@ Or from inside an unpacked .tgz download, <code>rake install</code> /
 LiveAST enables a program to find the ASTs of objects created by
 dynamically generated code. It may be used in a strictly noninvasive
 manner, where no standard classes or methods are modified, or it may
-be transparently integrated into Ruby (experimental). The default
-setting is in between.
+be transparently integrated into Ruby. The default setting is in
+between.
 
-RubyParser is responsible for parsing and building the ASTs, though
-another parser may be easily substituted (in fact the name +to_ast+ is
-used instead of +to_sexp+ because LiveAST has no understanding of what
-the parser outputs).
+RubyParser is the default parsing engine. To replace it with Ripper,
+<code>gem install live_ast_ripper</code> and then <code>require
+'live_ast_ripper'</code>. A simple plug-in interface allows LiveAST to
+work with any parser.
 
-Note that RubyParser does not currently support the newer Ruby 1.9
-syntax features (<code>Racc::ParseError</code> will be raised).
-
-To use the Ripper parser instead, <code>gem install
-live_ast_ripper</code> and then <code>require
-'live_ast_ripper'</code>.
+The advantage of RubyParser is that it gives the traditional ParseTree
+sexps used by tools such as <code>ruby2ruby</code>. The disadvantage
+is that the newer Ruby 1.9 syntax is not supported. However the 1.8
+syntax restriction only applies to files from which ASTs are actually
+requested. All other files may use 1.9 syntax.
 
 LiveAST is thread-safe.
 
@@ -92,15 +96,14 @@ Ruby 1.9.2 or higher is required.
 
 == +to_ruby+
 
-Although +ruby2ruby+ is not required by default,
+When the default parser is active,
 
   require 'live_ast/to_ruby'
 
-will require +ruby2ruby+ and define the +to_ruby+ method for +Method+,
-+UnboundMethod+, and +Proc+. These methods are one-liners which pass
-the extracted ASTs to +ruby2ruby+.
+will define the +to_ruby+ method for the +Method+, +UnboundMethod+,
+and +Proc+ classes. These methods are one-liners which pass the
+extracted ASTs to <code>ruby2ruby</code>.
 
-  require 'live_ast'
   require 'live_ast/to_ruby'
 
   p lambda { |x, y| x + y }.to_ruby # => "lambda { |x, y| (x + y) }"
@@ -114,38 +117,50 @@ the extracted ASTs to +ruby2ruby+.
   p A.instance_method(:f).to_ruby # => "def f\n  \"A#f\"\nend"
 
 In general, +to_ruby+ will hook into the unparser provided by the
-parser, if one is found.
+parser plug-in, if one is found.
 
-== Loading Source
+== Pure Ruby and +ast_eval+
 
-Objects created via +require+ and +load+ will be AST-accessible.
-However +ast_eval+ must be used instead of +eval+ for AST-accessible
-objects. +ast_eval+ has the same semantics as +eval+ except that the
-binding argument is required.
+An essential feature of <code>require 'live_ast'</code> is that it is
+implemented in pure ruby. However since pure ruby is not powerful
+enough to replace +eval+, one must use +ast_eval+ instead of +eval+
+for AST-accessible objects. +ast_eval+ has the same semantics as
++eval+ except that the binding argument is required.
 
   require 'live_ast'
+
+  u = ast_eval "lambda { 'dynamic3' }", binding
+  p u.to_ast
+  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "dynamic3"))
   
-  class A
-    ast_eval %{
-      def f
-        "A#f"
-      end
+== Full integration
 
-      # nested evals OK
-      ast_eval %{
-        def g
-          "A#g"
-        end
-      }, binding
+In order for LiveAST to be transparent to the user, +eval+ must be
+replaced. This requires the +boc+ gem (http://quix.github.com/boc)
+which at present only targets MRI 1.9.2 (other platforms are planned).
 
-    }, binding
-  end
+To replace +eval+,
 
-  p A.instance_method(:f).to_ast
-  # => s(:defn, :f, s(:args), s(:scope, s(:block, s(:str, "A#f"))))
+  % gem install boc
 
-  p A.instance_method(:g).to_ast
-  # => s(:defn, :g, s(:args), s(:scope, s(:block, s(:str, "A#g"))))
+and then
+
+  require 'live_ast/full'
+
+The new AST-electrified +eval+, +instance_eval+, +module_eval+,
++class_eval+, and <code>Binding#eval</code> all pass RubySpec
+(http://rubyspec.org) with the minor exception of backtraces sometimes
+not matching that of the original +eval+. See the "Backtraces" section
+below for details.
+
+  require 'live_ast/full'
+
+  f = eval "lambda { 'dynamic1' }"
+  p f.to_ast
+  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "dynamic1"))
+
+Since LiveAST itself is pure ruby, any new platforms supported by
++boc+ will automatically work with <code>live_ast/full</code>.
 
 == Limitations
 
@@ -173,6 +188,49 @@ You can probably skip these next sections. Goodbye.
 
 ----
 
+== Backtraces
+
++ast_eval+ is meant to be compatible with +eval+. For instance the
+first line of +ast_eval+'s backtrace should be identical to that of
++eval+:
+
+  require 'live_ast'
+  
+  ast_eval %{ raise "boom" }, binding
+  # => test.rb:3:in `<main>': boom (RuntimeError)
+
+Let's make a slight change,
+
+  require 'live_ast'
+  
+  f = ast_eval %{ lambda { raise "boom" } }, binding
+  f.call
+  # => test.rb|ast@a:3:in `block in <main>': boom (RuntimeError)
+
+What the heck is '<code>|ast@a</code>' doing there? LiveAST's
+implementation has just been exposed: each source input is assigned a
+unique key which enables a Ruby object to find its own definition.
+
+In the first case above, +ast_eval+ has removed the key from the
+exception backtrace. But in the second case there is no opportunity to
+remove it since +ast_eval+ has already returned.
+
+If you find this to be problem---for example if you cannot add a
+filter for the jump-to-location feature in your editor---then +raise+
+may be redefined to strip these tokens,
+
+  require 'live_ast'
+  require 'live_ast/replace_raise'
+
+  f = ast_eval %{ lambda { raise "boom" } }, binding
+  f.call
+  # => test.rb:4:in `block in <main>': boom (RuntimeError)
+
+However this only applies to a +raise+ call originating from Ruby
+code. An exception from within a native method will likely still
+contain the token in its backtrace (e.g., in MRI the exception raised
+by <code>1/0</code> comes from C).
+
 == Replacing the Parser
 
 Despite its name, LiveAST knows nothing about ASTs. It merely reports
@@ -180,7 +238,7 @@ what it finds in the line-to-AST hash returned by the parser's +parse+
 method. Replacing the parser class is therefore easy: the only
 specification is that the +parse+ instance method return such a hash.
 
-To override the default parser,
+To override the default parser with your own,
 
   LiveAST.parser = YourParser
 
@@ -274,9 +332,10 @@ paranoia; the noninvasive option may be the most appropriate.
 
 +ast_eval+ and +load+ cache all incoming code, while
 <code>require</code>d files are cached on a need-to-know basis. When
-an AST is requested, the corresponding source is parsed and discarded,
-leaving behind method and block ASTs. +to_ast+ removes an AST from the
-cache and attaches it to the appropriate object (a Proc or Module).
+an AST is requested, the corresponding source file is parsed and
+discarded, leaving behind method and block ASTs. +to_ast+ removes an
+AST from the cache and attaches it to the appropriate object (a Proc
+or Module).
 
 Ignored, unextracted ASTs will therefore linger in the cache. Since
 sexps are generally small there is little need for concern unless one
@@ -310,69 +369,6 @@ Therefore the working assumption is that +require+ will load a file
 only once. Furthermore, if a file has not been reloaded then it is
 assumed that the file is unmodified between the moment it is
 <code>require</code>d and the moment the first AST is pulled from it.
-
-== Backtraces
-
-+ast_eval+ is meant to be compatible with +eval+. For instance the
-first line of +ast_eval+'s backtrace should be identical to that of
-+eval+:
-
-  require 'live_ast'
-  
-  ast_eval %{ raise "boom" }, binding
-  # => test.rb:3:in `<main>': boom (RuntimeError)
-
-Let's make a slight change,
-
-  require 'live_ast'
-  
-  f = ast_eval %{ lambda { raise "boom" } }, binding
-  f.call
-  # => test.rb|ast@a:3:in `block in <main>': boom (RuntimeError)
-
-What the heck is '<code>|ast@a</code>' doing there? LiveAST's
-implementation has just been exposed: each source input is assigned a
-unique key which enables a Ruby object to find its own definition.
-
-In the first case above, +ast_eval+ has removed the key from the
-exception backtrace. But in the second case there is no opportunity to
-remove it since +ast_eval+ has already returned.
-
-If you find this to be problem---for example if you cannot add a
-filter for the jump-to-location feature in your editor---then +raise+
-may be redefined to strip these tokens,
-
-  require 'live_ast'
-  require 'live_ast/replace_raise'
-
-  f = ast_eval %{ lambda { raise "boom" } }, binding
-  f.call
-  # => test.rb:4:in `block in <main>': boom (RuntimeError)
-
-However this only applies to a +raise+ call originating from Ruby
-code. An exception raised within a native method will likely still
-contain the token in its backtrace (e.g., in MRI the exception raised
-by <code>1/0</code> comes from C). In principle this could be fixed by
-having the Ruby interpreter dynamically call +raise+.
-
-
-== Replacing +eval+
-
-If +ast_eval+ did not require a binding argument then it could assume
-the role of +eval+, thereby making LiveAST fully transparent to the
-user. Is this possible in pure Ruby?
-
-The only option which has been investigated thus far is MRI, which can
-summon <code>Binding.of_caller</code> (recently rewritten for 1.9.2)
-to fill in the missing binding argument. Unfortunately a limitation
-with tracing events in MRI places a few odd restrictions on the syntax
-surrounding +eval+, though all restrictions can be trivially
-sidestepped. Nonetheless it does work (it passes rubyspec minus the
-above backtrace issue) despite being somewhat impractical.
-
-This (mis)feature is maintained in a separate branch named
-+replace_eval+ on github (not part of the gem). For more information see
-replace_eval.rb[http://github.com/quix/live_ast/blob/replace_eval/lib/live_ast/replace_eval.rb].
 
 == Author
 
