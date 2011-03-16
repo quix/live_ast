@@ -5,79 +5,47 @@ class Levitate
       require 'fileutils'
       require 'rbconfig'
       require 'find'
-      dest_root = RbConfig::CONFIG["sitelibdir"]
-      sources = []
-      Find.find("./lib") { |source|
-        if install_file?(source)
-          sources << source
-        end
-      }
-      @spec = sources.inject(Array.new) { |acc, source|
-        if source == "./lib"
-          acc
-        else
-          dest = File.join(dest_root, source.sub(%r!\A\./lib!, ""))
-  
-          install = lambda {
-            if File.directory?(source)
-              unless File.directory?(dest)
-                puts "mkdir #{dest}"
-                FileUtils.mkdir(dest)
-              end
-            else
-              puts "install #{source} --> #{dest}"
-              FileUtils.install(source, dest)
-            end
-          }
-            
-          uninstall = lambda {
-            if File.directory?(source)
-              if File.directory?(dest)
-                puts "rmdir #{dest}"
-                FileUtils.rmdir(dest)
-              end
-            else
-              if File.file?(dest)
-                puts "rm #{dest}"
-                FileUtils.rm(dest)
-              end
-            end
-          }
-  
-          acc << {
-            :source => source,
-            :dest => dest,
-            :install => install,
-            :uninstall => uninstall,
-          }
-        end
-      }
-    end
-  
-    def install_file?(source)
-      File.directory?(source) or
-      (File.file?(source) and File.extname(source) == ".rb")
-    end
 
+      rb_root = RbConfig::CONFIG["sitelibdir"]
+      @spec = []
+
+      Find.find "lib" do |source|
+        next if source == "lib"
+        next unless File.directory?(source) || File.extname(source) == ".rb"
+        dest = File.join(rb_root, source.sub(%r!\Alib/!, ""))
+        @spec << { :source => source, :dest => dest }
+      end
+    end
+  
     def install
-      @spec.each { |entry|
-        entry[:install].call
-      }
+      @spec.each do |entry|
+        source, dest = entry.values_at(:source, :dest)
+        if File.directory?(source)
+          unless File.directory?(dest)
+            puts "mkdir #{dest}"
+            FileUtils.mkdir(dest)
+          end
+        else
+          puts "install #{source} --> #{dest}"
+          FileUtils.install(source, dest)
+        end
+      end
     end
   
     def uninstall
-      @spec.reverse.each { |entry|
-        entry[:uninstall].call
-      }
-    end
-
-    def run(args = ARGV)
-      if args.empty?
-        install
-      elsif args.size == 1 and args.first == "--uninstall"
-        uninstall
-      else
-        raise "unrecognized arguments: #{args.inspect}"
+      @spec.reverse.each do |entry|
+        source, dest = entry.values_at(:source, :dest)
+        if File.directory?(source)
+          if File.directory?(dest)
+            puts "rmdir #{dest}"
+            FileUtils.rmdir(dest)
+          end
+        else
+          if File.file?(dest)
+            puts "rm #{dest}"
+            FileUtils.rm(dest)
+          end
+        end
       end
     end
   end
@@ -522,6 +490,13 @@ class Levitate
   attribute :extensions do
     ["ext/#{gem_name}/extconf.rb"].select { |f| File.file? f }
   end
+  
+  attribute :so_file do
+    unless extensions.empty?
+      require 'rbconfig'
+      "lib/" + gem_name + "." + RbConfig::CONFIG["DLEXT"]
+    end
+  end
 
   def define_clean
     require 'rake/clean'
@@ -699,12 +674,28 @@ class Levitate
   def define_install
     desc "direct install (no gem)"
     task :install do
-      Installer.new.run([])
+      Installer.new.install
     end
 
     desc "direct uninstall (no gem)"
     task :uninstall do
-      Installer.new.run(["--uninstall"])
+      Installer.new.uninstall
+    end
+
+    if so_file
+      dest = File.join(RbConfig::CONFIG["sitearchdir"], File.basename(so_file))
+
+      task :install => so_file do
+        puts "install #{so_file} --> #{dest}"
+        FileUtils.install(so_file, dest)
+      end
+
+      task :uninstall do
+        if File.file?(dest)
+          puts "rm #{dest}"
+          FileUtils.rm(dest)
+        end
+      end
     end
   end
   
@@ -804,7 +795,7 @@ class Levitate
   end
 
   def define_extension
-    unless extensions.empty?
+    if so_file and (source_control? or !File.file?(so_file))
       require 'rbconfig'
       require 'rake/extensiontask'
       
@@ -817,9 +808,8 @@ class Levitate
         end
       end
 
-      so = "lib/#{gem_name}.#{RbConfig::CONFIG["DLEXT"]}"
-      if Rake::Task[so].needed?
-        task :test => so
+      if Rake::Task[so_file].needed?
+        task :test => so_file
       end
 
       task :cross_native_gem do
@@ -917,6 +907,7 @@ class Levitate
               raise "parse error"
             end
           )
+          code.gsub!(/^\s*%.*$/, "") # ignore shell command examples
           run_doc_code(code, expected, index, instance, &block)
           index += 1
         }
