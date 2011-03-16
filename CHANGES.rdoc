@@ -1,11 +1,15 @@
 
 = live_ast Changes
 
+== Version 0.7.1
+
+* fix rubygems problem when parser not loaded after live_ast/full
+
 == Version 0.7.0
 
 * eval replacement option now included in the gem
 * new 'boc' gem for eval replacement -- no more syntax restrictions
-* add require 'live_ast/full' -- shortcut for 'live_ast' + 'live_ast/replace_eval'
+* add require 'live_ast/full' -- shortcut for live_ast + live_ast/replace_eval
 * rubyspec conformance for require 'live_ast/full'
 * added required_ruby_version to gemspec
 * fixed error when IRB is partially required
