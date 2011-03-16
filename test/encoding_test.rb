@@ -1,34 +1,23 @@
 require_relative 'main'
 
-require_relative 'encoding_test/default.rb'
-require_relative 'encoding_test/usascii.rb'
-require_relative 'encoding_test/utf8.rb'
-require_relative 'encoding_test/utf8bom.rb'
-require_relative 'encoding_test/utf8bom_only.rb'
-require_relative 'encoding_test/usascii_with_utf8bom.rb'
-require_relative 'encoding_test/koi8_with_utf8bom.rb'
-require_relative 'encoding_test/cp932.rb'
-require_relative 'encoding_test/eucjp.rb'
-require_relative 'encoding_test/koi8.rb'
-require_relative 'encoding_test/koi8_shebang.rb'
-
 class AllEncodingTest < RegularTest
-  include EncodingTest
-
-  %w[
-
+  ENC_TESTS = Hash[*%w[
     default US-ASCII
     usascii US-ASCII
     utf8 UTF-8
     utf8bom UTF-8
+    utf8bom_only UTF-8
     usascii_with_utf8bom US-ASCII
     koi8_with_utf8bom KOI8-R
     cp932 Windows-31J
     eucjp EUC-JP
     koi8 KOI8-R
     koi8_shebang KOI8-R
+  ]]
 
-  ].each_slice(2) do |abbr, name|
+  ENC_TESTS.each_pair do |abbr, name|
+    require_relative "encoding_test/#{abbr}"
+
     define_method "test_#{abbr}" do
       str = send("#{abbr}_string")
       assert_equal name, str.encoding.to_s
@@ -42,6 +31,8 @@ class AllEncodingTest < RegularTest
       assert_equal name, no_arg_def_return(ast).encoding.to_s
     end
   end
+
+  include EncodingTest
 
   def test_bad
     orig = assert_raises ArgumentError do
