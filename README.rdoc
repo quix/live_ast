@@ -165,7 +165,7 @@ Since LiveAST itself is pure ruby, any new platforms supported by
 == Limitations
 
 A method or block definition must not share a line with other methods
-or blocks in order for its AST to be available.
+or blocks in order for its AST to be accessible.
 
   require 'live_ast'
   
@@ -176,16 +176,20 @@ or blocks in order for its AST to be available.
   
   a = lambda { } ; b = lambda { }
   a.to_ast # => raises LiveAST::MultipleDefinitionsOnSameLineError
-
+  
 Code given to the <code>-e</code> command-line switch is not
 AST-accessible.
 
-----
+Evaled code appearing before <code>require 'live_ast/full'</code> is
+not AST-accessible.
 
+In some circumstances +ast_eval+ and the replaced +eval+ will not give
+the same backtrace as the original +eval+ (next section).
+
+----
 == <em>Technical Issues</em>
 
 You can probably skip these next sections. Goodbye.
-
 ----
 
 == Backtraces
