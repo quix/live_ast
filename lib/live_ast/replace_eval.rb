@@ -45,6 +45,9 @@ module LiveAST
       end
     end
   end
+  
+  # ensure the parser is loaded -- rubygems calls eval
+  parser
 end
 
 module Kernel
