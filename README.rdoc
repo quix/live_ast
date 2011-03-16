@@ -133,7 +133,7 @@ for AST-accessible objects. +ast_eval+ has the same semantics as
   p u.to_ast
   # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "dynamic3"))
   
-== Full integration
+== Full Integration
 
 In order for LiveAST to be transparent to the user, +eval+ must be
 replaced. This requires the +boc+ gem (http://quix.github.com/boc)
