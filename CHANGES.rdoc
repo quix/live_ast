@@ -1,6 +1,10 @@
 
 = live_ast Changes
 
+== Version 0.7.2
+
+* fix old find&replace accident with boc; rubyspec test now enabled by default
+
 == Version 0.7.1
 
 * fix rubygems problem when parser not loaded after live_ast/full
