@@ -50,6 +50,10 @@ module LiveAST
   parser
 end
 
+# squelch alias warnings
+prev_verbose = $VERBOSE
+$VERBOSE = nil
+
 module Kernel
   class << self
     alias_method :live_ast_original_singleton_eval, :eval
@@ -120,3 +124,6 @@ class Module
   remove_method :class_eval
   alias_method :class_eval, :module_eval
 end
+
+# unsquelch alias warnings
+$VERBOSE = prev_verbose
