@@ -24,5 +24,4 @@ class ZZZ_RubySpecTest < ReplaceEvalTest
       end
     end
   end
-end if ENV["LIVE_AST_RUBYSPEC"]
-
+end if [ENV["USER"], ENV["USERNAME"]].include? "jlawrence"

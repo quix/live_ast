@@ -113,7 +113,7 @@ end
 Boc.enable Kernel, :eval
 Boc.enable Kernel.singleton_class, :eval
 Boc.enable Module, :module_eval
-Boc.enable BasicObject, :instance_eval
+Boc.enable_basic_object BasicObject, :instance_eval
 
 class Module
   remove_method :class_eval
