@@ -16,9 +16,10 @@ class AllEncodingTest < RegularTest
   ]]
 
   ENC_TESTS.each_pair do |abbr, name|
-    require_relative "encoding_test/#{abbr}"
-
     define_method "test_#{abbr}" do
+      require_relative "encoding_test/#{abbr}"
+      self.class.class_eval { include EncodingTest }
+
       str = send("#{abbr}_string")
       assert_equal name, str.encoding.to_s
 
@@ -31,8 +32,6 @@ class AllEncodingTest < RegularTest
       assert_equal name, no_arg_def_return(ast).encoding.to_s
     end
   end
-
-  include EncodingTest
 
   def test_bad
     orig = assert_raises ArgumentError do

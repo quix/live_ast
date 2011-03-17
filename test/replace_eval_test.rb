@@ -387,4 +387,15 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
     }
     assert_equal 77, RESULT[:bo_test]
   end
+
+  class Z
+    def initialize
+      @t = 99
+    end
+  end
+
+  def test_instance_variables
+    assert_equal 99, Z.new.instance_eval{ @t }
+    assert_equal 99, Z.new.instance_eval("@t")
+  end
 end

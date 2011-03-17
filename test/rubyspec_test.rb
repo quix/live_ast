@@ -1,12 +1,10 @@
 require_relative 'main'
 require_relative '../devel/levitate'
 
-class ZZZ_RubySpecTest < ReplaceEvalTest
-  def setup
-    super
-    puts "\n==== rubyspec"
-  end
-
+#
+# Tests against rubyspec branch which discards '|ast@' tokens
+#
+class ZZZ_RubySpecTest < RegularTest
   FILES = [
     'core/basicobject/instance_eval_spec.rb',
     'core/binding/eval_spec.rb',
@@ -15,13 +13,27 @@ class ZZZ_RubySpecTest < ReplaceEvalTest
     'core/module/class_eval_spec.rb',
     'core/module/module_eval_spec.rb',
   ]
+  
+  def setup
+    super
+    puts "\n==== rubyspec"
+  end
 
-  def test_rubyspec
-    Dir.chdir(ENV["RUBYSPEC_HOME"] || "../rubyspec") do
-      FILES.each do |file|
-        cmd = %w[mspec -I../live_ast/lib -t] + [Levitate.ruby_bin, file]
+  FILES.each do |file|
+    mname = "test_" + file.gsub("/", "_").chop!.chop!.chop!
+    define_method mname do
+      Dir.chdir ENV["LIVE_AST_RUBYSPEC_HOME"] do
+        cmd =
+          ["mspec", "-t", Levitate.ruby_bin] +
+
+          (["-T"]*Levitate.ruby_opts.size).
+          zip(Levitate.ruby_opts).
+          flatten +
+
+          [file]
+
         assert system(*cmd)
       end
     end
   end
-end if [ENV["USER"], ENV["USERNAME"]].include? "jlawrence"
+end if ENV["LIVE_AST_RUBYSPEC_HOME"]

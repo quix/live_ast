@@ -69,10 +69,7 @@ class BaseTest < JLMiniTest
   DATA_DIR = File.expand_path(File.dirname(__FILE__) + "/data")
 
   def self.stdlib_has_source?
-    case RUBY_ENGINE
-    when "ruby"  # MRI; possibly others; not jruby
-      true
-    end
+    RUBY_ENGINE != "jruby"
   end
 
   def temp_file(basename = nil)
