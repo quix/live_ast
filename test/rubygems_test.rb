@@ -4,7 +4,7 @@ require_relative '../devel/levitate'
 class RubygemsTest < RegularTest
   def test_rubygems
     lib = File.expand_path(File.dirname(__FILE__) + "/../lib")
-    result = Levitate::Ruby.run_code_and_capture %{
+    result = Levitate.run_code_and_capture %{
       $LOAD_PATH.unshift '#{lib}'
       require 'live_ast/full'
       LiveAST.parser::Test

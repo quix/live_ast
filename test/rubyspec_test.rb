@@ -19,7 +19,7 @@ class ZZZ_RubySpecTest < ReplaceEvalTest
   def test_rubyspec
     Dir.chdir(ENV["RUBYSPEC_HOME"] || "../rubyspec") do
       FILES.each do |file|
-        cmd = %w[mspec -I../live_ast/lib -t] + [Levitate::Ruby.executable, file]
+        cmd = %w[mspec -I../live_ast/lib -t] + [Levitate.ruby_bin, file]
         assert system(*cmd)
       end
     end
