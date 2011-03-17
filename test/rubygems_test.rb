@@ -7,7 +7,7 @@ class RubygemsTest < RegularTest
     result = Levitate::Ruby.run_code_and_capture %{
       $LOAD_PATH.unshift '#{lib}'
       require 'live_ast/full'
-      defined?(LiveASTRipper) and LiveASTRipper.steamroll = true
+      LiveAST.parser::Test
       f = eval %{
         lambda { 'abc' }
       }
