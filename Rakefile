@@ -7,6 +7,7 @@ Levitate.new "live_ast" do |s|
   s.camel_name = "LiveAST"
   s.required_ruby_version = ">= 1.9.2"
   s.dependencies << ["live_ast_ruby_parser", ">= 0.6.0"]
+  s.rdoc_title = "LiveAST: Live Abstract Syntax Trees"
   s.rdoc_files = %w[
     lib/live_ast/ast_eval.rb
     lib/live_ast/base.rb

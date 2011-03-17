@@ -123,9 +123,9 @@ parser plug-in, if one is found.
 
 An essential feature of <code>require 'live_ast'</code> is that it is
 implemented in pure ruby. However since pure ruby is not powerful
-enough to replace +eval+, one must use +ast_eval+ instead of +eval+
-for AST-accessible objects. +ast_eval+ has the same semantics as
-+eval+ except that the binding argument is required.
+enough to replace +eval+, in this case +ast_eval+ must be used instead
+of +eval+ for AST-accessible objects. +ast_eval+ has the same
+semantics as +eval+ except that the binding argument is required.
 
   require 'live_ast'
 
@@ -136,8 +136,8 @@ for AST-accessible objects. +ast_eval+ has the same semantics as
 == Full Integration
 
 In order for LiveAST to be transparent to the user, +eval+ must be
-replaced. This requires the +boc+ gem (http://quix.github.com/boc)
-which at present only targets MRI 1.9.2 (other platforms are planned).
+replaced. This is accomplished with the help of the +boc+ gem
+(http://quix.github.com/boc).
 
 To replace +eval+,
 
@@ -150,8 +150,8 @@ and then
 The new AST-electrified +eval+, +instance_eval+, +module_eval+,
 +class_eval+, and <code>Binding#eval</code> all pass RubySpec
 (http://rubyspec.org) with the minor exception of backtraces sometimes
-not matching that of the original +eval+. See the "Backtraces" section
-below for details.
+not matching that of the original +eval+ (see the "Backtraces" section
+below for details).
 
   require 'live_ast/full'
 
@@ -160,7 +160,7 @@ below for details.
   # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "dynamic1"))
 
 Since LiveAST itself is pure ruby, any new platforms supported by
-+boc+ will automatically work with <code>live_ast/full</code>.
++boc+ should work with <code>live_ast/full</code>.
 
 == Limitations
 
