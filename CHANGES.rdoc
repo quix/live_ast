@@ -1,6 +1,11 @@
 
 = live_ast Changes
 
+== Version 0.7.3
+
+* live_ast/full now available for jruby (via boc gem)
+* fix instance_eval with BasicObject instance
+
 == Version 0.7.2
 
 * fix old find&replace accident with boc; rubyspec test now enabled by default
