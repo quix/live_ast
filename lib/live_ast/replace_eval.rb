@@ -91,8 +91,8 @@ class BasicObject
     if block
       live_ast_original_instance_eval(*args, &block)
     else
-      ::LiveAST::ReplaceEval.module_or_instance_eval(
-        :instance, self, ::Boc.value, args)
+      ::LiveAST::ReplaceEval.
+      module_or_instance_eval(:instance, self, ::Boc.value, args)
     end
   end
 end
@@ -104,8 +104,8 @@ class Module
     if block
       live_ast_original_module_eval(*args, &block)
     else
-      LiveAST::ReplaceEval.module_or_instance_eval(
-        :module, self, Boc.value, args)
+      LiveAST::ReplaceEval.
+      module_or_instance_eval(:module, self, Boc.value, args)
     end
   end
 end
