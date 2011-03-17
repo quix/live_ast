@@ -34,7 +34,7 @@ module LiveAST
             live_ast_original_#{which}_eval %{
               ::LiveAST.eval(
                 ::LiveAST::ReplaceEval.cache[:args][0],
-                binding,
+                ::Kernel.binding,
                 *::LiveAST::ReplaceEval.cache[:args][1..-1])
             }
           }

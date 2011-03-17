@@ -373,4 +373,18 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
 
     assert_equal expected, [file, line]
   end
+
+  DEFINE_BO_TEST = lambda do
+    class BasicObject
+      Kernel.eval("1 + 1")
+    end
+  end
+
+  def test_basic_object
+    ::BasicObject.new.instance_eval %{
+      t = 33
+      ::ZZY_ReplaceEvalTest::RESULT[:bo_test] = t + 44
+    }
+    assert_equal 77, RESULT[:bo_test]
+  end
 end
