@@ -8,7 +8,7 @@ class AAA_LoadPathTest < BaseTest
     begin
       check_load
       check_errors
-      temp_file "foo.rb" do
+      temp_file nil, "foo.rb" do
         Dir.chdir(DATA_DIR) do
           compare_load_errors("/foo.rb")
         end
@@ -39,9 +39,7 @@ class AAA_LoadPathTest < BaseTest
       end
     }
 
-    temp_file "foo.rb" do |path|
-      write_file(path, code_1)
-
+    temp_file code_1, "foo.rb" do |path|
       Object.send(:remove_method, :hello) rescue nil
       load "foo.rb"
       assert_equal "password", hello
@@ -65,8 +63,7 @@ class AAA_LoadPathTest < BaseTest
   end
 
   def check_errors
-    temp_file "foo.rb" do |path|
-      touch path, :verbose => false
+    temp_file "# do nothing", "foo.rb" do |path|
       [
        "foo",
        "",

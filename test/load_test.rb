@@ -13,9 +13,7 @@ class AAA_LoadFileTest < BaseTest
       y = 99
     }
 
-    temp_file do |file|
-      write_file file, code
-
+    temp_file code do |file|
       ret = LiveAST.load file
       assert_equal true, ret
       assert_equal :code_a, AAA_LoadFileTest.flag
@@ -34,10 +32,8 @@ class AAA_LoadFileTest < BaseTest
       r = 55
     }
 
-    temp_file do |file|
+    temp_file code do |file|
       eval("r = 66", TOPLEVEL_BINDING)
-      
-      write_file file, code
       
       ret = LiveAST.load file
       assert_equal true, ret
@@ -54,9 +50,7 @@ class AAA_LoadFileTest < BaseTest
       ZOOM = 111
     }
 
-    temp_file do |file|
-      write_file file, code
-      
+    temp_file code do |file|
       ret = LiveAST.load file, true
       assert_equal true, ret
       assert_equal :code_c, AAA_LoadFileTest.flag
@@ -76,8 +70,7 @@ class AAA_LoadFileTest < BaseTest
       AAA_LoadFileTest.from_d
     }
     
-    temp_file do |file|
-      write_file file, code
+    temp_file code do |file|
       LiveAST.load file
       assert_equal :code_d, AAA_LoadFileTest.flag
     end

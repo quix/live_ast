@@ -74,12 +74,12 @@ class BaseTest < JLMiniTest
     RUBY_ENGINE != "jruby"
   end
 
-  def temp_file(basename = nil)
+  def temp_file(code, basename = nil)
     basename ||= ('a'..'z').to_a.shuffle.join + ".rb"
     path = DATA_DIR + "/" + basename
     FileUtils.mkdir DATA_DIR unless File.directory? DATA_DIR
 
-    FileUtils.rm_f path
+    write_file path, code if code
     begin
       yield path
     ensure

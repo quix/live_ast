@@ -28,8 +28,7 @@ class AAB_ReloadTest < BaseTest
       end
     }
 
-    temp_file do |file|
-      write_file file, code_1
+    temp_file code_1 do |file|
       load file
 
       LiveAST.ast(A.instance_method(:f))
@@ -61,8 +60,7 @@ class AAB_ReloadTest < BaseTest
       end
     }
 
-    temp_file do |file|
-      write_file file, code_1
+    temp_file code_1 do |file|
       load file
     
       LiveAST.ast(B.instance_method(:f))
@@ -92,8 +90,7 @@ class AAB_ReloadTest < BaseTest
       end
     }
 
-    temp_file do |file|
-      write_file file, code_1
+    temp_file code_1 do |file|
       load file
     
       LiveAST.ast(C.instance_method(:f))
