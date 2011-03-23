@@ -35,7 +35,7 @@ module LiveAST
         begin
           yield
         ensure
-          $VERBOSE = previous
+          $VERBOSE ||= previous
         end
       end
 

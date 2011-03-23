@@ -1,4 +1,5 @@
 require_relative 'main'
+require_relative '../devel/levitate'
 
 class AAA_LoadFileTest < BaseTest
   class << self
@@ -73,6 +74,50 @@ class AAA_LoadFileTest < BaseTest
     temp_file code do |file|
       LiveAST.load file
       assert_equal :code_d, AAA_LoadFileTest.flag
+    end
+  end
+
+  def test_verbose_respected
+    lib = File.expand_path(File.dirname(__FILE__) + "/../lib")
+
+    [
+     # respects a loaded file setting $VERBOSE = true
+     [
+      "false",
+      "true",
+      lambda { |file|
+        Levitate.run file
+      }
+     ],
+
+     # unfixable: does not respect a loaded file setting $VERBOSE = nil
+     [
+      "true",
+      "false",
+      lambda { |file|
+        unfixable do
+          assert_nothing_raised do
+            Levitate.run file
+          end
+        end
+      }
+     ]
+    ].each do |main_value, loaded_value, action|
+      loaded_code = %{
+        $VERBOSE = #{loaded_value}
+      }
+
+      temp_file loaded_code do |loaded_file|
+        main_code = %{
+          $LOAD_PATH.unshift '#{lib}'
+          require 'live_ast/base'
+          toplevel_local = 444
+          $VERBOSE = #{main_value}
+          LiveAST.load '#{loaded_file}'
+          $VERBOSE == #{loaded_value} or exit(1)
+        }
+        temp_file main_code, &action
+      end
     end
   end
 end
