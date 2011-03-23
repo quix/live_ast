@@ -9,6 +9,8 @@ require 'minitest/unit'
 require 'minitest/mock'
 require 'minitest/autorun' unless defined? Rake
 
+$VERBOSE = true
+
 require 'live_ast/base'
 
 def define_unsorted_test_case(name, superclass, &block)
