@@ -1,6 +1,10 @@
 
 = live_ast Changes
 
+== Version 1.0.1
+
+* add tests for "def self.f" and "def A.f" (plugins were missing this construct)
+
 == Version 1.0.0
 
 * no known bugs; API is settled
