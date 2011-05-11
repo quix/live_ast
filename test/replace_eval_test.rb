@@ -40,6 +40,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
 
   def moo
     a = 22
+    ignore(a)
     binding
   end
 
@@ -265,6 +266,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
 
   def test_module_eval_binding
     x = 33
+    ignore(x)
     orig = Class.new
     orig.live_ast_original_module_eval %{
       define_method :value do
@@ -278,6 +280,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
     assert orig.new.f.is_a?(Proc)
 
     y = 44
+    ignore(y)
     live = Class.new
     live.module_eval %{
       define_method :value do
@@ -339,6 +342,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
 
   def test_local_var_collision
     args = 33
+    ignore(args)
 
     assert_equal 33, live_ast_original_eval("args")
     assert_equal 33, eval("args")

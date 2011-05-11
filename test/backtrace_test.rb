@@ -140,7 +140,6 @@ define_unsorted_test_case "BacktraceTest", RegularTest do
 
       if will_succeed
         assert_equal orig_top, live_top
-        here = Regexp.quote __FILE__
         assert_match(/somewhere:1002/, live_top)
       else
         assert_not_equal orig_top, live_top

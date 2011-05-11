@@ -103,6 +103,9 @@ class BaseTest < JLMiniTest
       e.backtrace
     end
   end
+
+  def ignore(*args)
+  end
 end
 
 class RegularTest < BaseTest
