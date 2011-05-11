@@ -172,7 +172,6 @@ class Levitate
         t = send(param) and g.send("#{param}=", t)
       end
       g.name = gem_name
-      g.has_rdoc = true
       g.homepage = url if url
       dependencies.each { |dep|
         g.add_dependency(*dep)
