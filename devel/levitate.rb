@@ -1,5 +1,7 @@
 
 class Levitate
+  include Rake::DSL if defined? Rake::DSL
+
   def initialize(gem_name)
     @gem_name = gem_name
 
@@ -7,7 +9,7 @@ class Levitate
 
     yield self
 
-    self.class.instance_methods(false).each do |name|
+    self.class.instance_methods(false).sort.each do |name|
       if name.to_s =~ %r!\Adefine_!
         send(name)
       end
@@ -259,7 +261,7 @@ class Levitate
 
   attribute :remote_levitate do
     url = ENV["LEVITATE"] ||
-      "https://github.com/quix/levitate/raw/master/levitate.rb"
+      "https://raw.github.com/quix/levitate/master/levitate.rb"
     IO.popen("curl -s #{url}") { |f| f.read }
   end
 
@@ -497,7 +499,7 @@ class Levitate
         puts "Already up-to-date."
       else
         File.open(__FILE__, "w") { |f| f.print(remote_levitate) }
-        git "commit", __FILE__, "-m", "update levitate"
+        git "commit", __FILE__, "-m", "update tools"
         puts "Updated levitate."
       end
     end
