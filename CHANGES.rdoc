@@ -1,6 +1,10 @@
 
 = live_ast Changes
 
+== Version 1.0.2
+
+* handle -unix, -dos, -mac special encoding suffixes
+
 == Version 1.0.1
 
 * add tests for "def self.f" and "def A.f" (plugins were missing this construct)
