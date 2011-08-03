@@ -5,6 +5,10 @@ class AllEncodingTest < RegularTest
     default US-ASCII
     usascii US-ASCII
     utf8 UTF-8
+    utf8unix UTF-8
+    utf8mac UTF-8
+    utf8mac_alt UTF8-MAC
+    utf8dos UTF-8
     utf8bom UTF-8
     utf8bom_only UTF-8
     usascii_with_utf8bom US-ASCII

@@ -12,7 +12,15 @@ module LiveAST
       # magic comment overrides BOM
       encoding = contents[MAGIC_COMMENT, 1] || utf8 || "US-ASCII"
 
-      contents.force_encoding(encoding)
+      contents.force_encoding(strip_special(encoding))
+    end
+
+    def self.strip_special(encoding)
+      if encoding =~ /\Autf8-mac\Z/i
+        "UTF8-MAC"
+      else
+        encoding.sub(/-(unix|dos|mac)\Z/i, "")
+      end
     end
   end
 end
