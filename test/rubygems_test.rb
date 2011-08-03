@@ -4,8 +4,15 @@ require_relative '../devel/levitate'
 class RubygemsTest < RegularTest
   def test_rubygems
     lib = File.expand_path(File.dirname(__FILE__) + "/../lib")
+    extra_req =
+      if defined?(LiveASTRipper) and LiveAST.parser == LiveASTRipper
+        %{require 'live_ast_ripper'}
+      else
+        ""
+      end
     result = Levitate.run_code_and_capture %{
       $LOAD_PATH.unshift '#{lib}'
+      #{extra_req}
       require 'live_ast/full'
       LiveAST.parser::Test
       f = eval %{
