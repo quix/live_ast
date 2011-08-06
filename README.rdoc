@@ -35,7 +35,18 @@ Live abstract syntax trees of methods and procs.
     "bar"
   end
 
+  #### ASTs from dynamic code -- pure ruby version
+
+  u = ast_eval "lambda { 'dynamic3' }", binding
+  p u.to_ast
+  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "dynamic3"))
+
+  ast_eval "def v ; 'dynamic4' ; end", binding
+  p method(:v).to_ast
+  # => s(:defn, :v, s(:args), s(:scope, s(:block, s(:str, "dynamic4"))))
+  
   #### ASTs from dynamic code -- fully integrated version
+  #### The code below here needs "gem install boc"
 
   require 'live_ast/full'
 
@@ -46,16 +57,6 @@ Live abstract syntax trees of methods and procs.
   eval "def g ; 'dynamic2' ; end"
   p method(:g).to_ast
   # => s(:defn, :g, s(:args), s(:scope, s(:block, s(:str, "dynamic2"))))
-  
-  #### ASTs from dynamic code -- pure ruby version
-
-  u = ast_eval "lambda { 'dynamic3' }", binding
-  p u.to_ast
-  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "dynamic3"))
-
-  ast_eval "def v ; 'dynamic4' ; end", binding
-  p method(:v).to_ast
-  # => s(:defn, :v, s(:args), s(:scope, s(:block, s(:str, "dynamic4"))))
   
 == Install
 
