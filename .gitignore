@@ -1,4 +1,5 @@
 doc/
+html/
 pkg/
 Gemfile.lock
 *.gem
