@@ -7,7 +7,7 @@ require 'fileutils'
 
 require 'minitest/unit'
 require 'minitest/mock'
-require 'minitest/autorun' unless defined? Rake
+require 'minitest/autorun'
 
 $VERBOSE = true
 
