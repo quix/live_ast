@@ -1,5 +1,5 @@
 require 'live_ast/base'
-require 'boc'
+require 'binding_of_caller'
 
 module LiveAST
   module ReplaceEval
@@ -62,11 +62,9 @@ module Kernel
       LiveAST::Common.check_arity(args, 1..4)
       LiveAST.eval(
         "::Kernel.live_ast_original_instance_eval do;" << args[0] << ";end",
-        args[1] || Boc.value,
+        args[1] || binding.of_caller(1),
         *LiveAST::Common.location_for_eval(*args[1..3]))
     end
-
-    Boc.enable self, :eval
   end
 
   private
@@ -77,11 +75,9 @@ module Kernel
     LiveAST::Common.check_arity(args, 1..4)
     LiveAST.eval(
       args[0],
-      args[1] || Boc.value,
+      args[1] || binding.of_caller(1),
       *LiveAST::Common.location_for_eval(*args[1..3]))
   end
-
-  Boc.enable self, :eval
 end
 
 class Binding
@@ -100,11 +96,9 @@ class BasicObject
       live_ast_original_instance_eval(*args, &block)
     else
       ::LiveAST::ReplaceEval.
-      module_or_instance_eval(:instance, self, ::Boc.value, args)
+        module_or_instance_eval(:instance, self, ::Kernel.binding.of_caller(1), args)
     end
   end
-
-  ::Boc.enable_basic_object self, :instance_eval
 end
 
 class Module
@@ -115,11 +109,9 @@ class Module
       live_ast_original_module_eval(*args, &block)
     else
       LiveAST::ReplaceEval.
-      module_or_instance_eval(:module, self, Boc.value, args)
+        module_or_instance_eval(:module, self, binding.of_caller(1), args)
     end
   end
-
-  Boc.enable self, :module_eval
 
   remove_method :class_eval
   alias_method :class_eval, :module_eval

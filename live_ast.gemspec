@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "ruby_parser", "~> 3.2.2"
   spec.add_runtime_dependency "ruby2ruby"
 
-  spec.add_development_dependency "boc"
+  spec.add_development_dependency "binding_of_caller"
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "minitest", "~> 4.0"
   spec.add_development_dependency "rake"
