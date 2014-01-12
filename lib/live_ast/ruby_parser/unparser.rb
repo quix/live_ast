@@ -3,7 +3,7 @@ require 'ruby2ruby'
 #
 # Used by +to_ruby+ in LiveAST.
 #
-module LiveASTRubyParser::Unparser
+module LiveAST::RubyParser::Unparser
   #
   # Return a ruby source string which reflects the given AST.
   #

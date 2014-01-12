@@ -1,7 +1,7 @@
 require 'ruby_parser'
 require 'live_ast/base'
 
-class LiveASTRubyParser
+class LiveAST::RubyParser
   #
   # Returns a line-to-sexp hash where sexp corresponds to the method
   # or block defined at the given line.
@@ -38,7 +38,7 @@ class LiveASTRubyParser
   end
 end
 
-LiveASTRubyParser.autoload :Unparser, 'live_ast_ruby_parser/unparser'
-LiveASTRubyParser.autoload :Test, 'live_ast_ruby_parser/test'
+LiveAST::RubyParser.autoload :Unparser, 'live_ast/ruby_parser/unparser'
+LiveAST::RubyParser.autoload :Test, 'live_ast/ruby_parser/test'
 
-LiveAST.parser = LiveASTRubyParser
+LiveAST.parser = LiveAST::RubyParser

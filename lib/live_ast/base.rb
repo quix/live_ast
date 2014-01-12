@@ -16,8 +16,8 @@ module LiveAST
 
     def parser  #:nodoc:
       @parser ||= (
-        require 'live_ast_ruby_parser'
-        LiveASTRubyParser
+        require 'live_ast/ruby_parser'
+        LiveAST::RubyParser
       )
     end
 

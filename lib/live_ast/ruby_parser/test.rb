@@ -2,7 +2,7 @@
 #
 # Used by the LiveAST test suite.
 #
-module LiveASTRubyParser::Test
+module LiveAST::RubyParser::Test
   class << self
     #
     # Whether this is Ryan Davis's unified sexp format.
