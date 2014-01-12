@@ -16,16 +16,8 @@ class LiveAST::RubyParser
 
   def process(sexp)
     case sexp.first
-    when :defn, :defs
+    when :defn, :defs, :iter
       store_sexp(sexp, sexp.line)
-    when :iter
-      #
-      # ruby_parser bug: a method without args attached to a
-      # multi-line block reports the wrong line. workaround.
-      #
-      # http://rubyforge.org/tracker/index.php?func=detail&aid=28940&group_id=439&atid=1778
-      #
-      store_sexp(sexp, sexp[1][3].size == 1 ? sexp.line : sexp[1].line)
     end
 
     sexp.each do |elem|

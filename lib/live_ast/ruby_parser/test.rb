@@ -27,7 +27,7 @@ module LiveAST::RubyParser::Test
   #   end
   #
   def no_arg_def(name, ret)
-    s(:defn, name, s(:args), s(:scope, s(:block, s(:str, ret))))
+    s(:defn, name, s(:args), s(:str, ret))
   end
 
   #
@@ -38,14 +38,14 @@ module LiveAST::RubyParser::Test
   #   end
   #
   def singleton_no_arg_def(name, ret)
-    s(:defs, s(:self), name, s(:args), s(:scope, s(:block, s(:str, ret))))
+    s(:defs, s(:self), name, s(:args), s(:str, ret))
   end
 
   #
   # no_arg_def_return(no_arg_def(:f, "A#f")) == "A#f"
   #
   def no_arg_def_return(ast)
-    ast[3][1][1][1]
+    ast[3][1]
   end
 
   #
@@ -59,8 +59,7 @@ module LiveAST::RubyParser::Test
     s(:defn,
       name,
       s(:args, :x, :y),
-      s(:scope,
-        s(:block, s(:call, s(:lvar, :x), op, s(:arglist, s(:lvar, :y))))))
+      s(:call, s(:lvar, :x), op, s(:lvar, :y)))
   end
 
   #
@@ -75,8 +74,7 @@ module LiveAST::RubyParser::Test
       s(:const, const),
       name,
       s(:args, :x, :y),
-      s(:scope,
-        s(:block, s(:call, s(:lvar, :x), op, s(:arglist, s(:lvar, :y))))))
+      s(:call, s(:lvar, :x), op, s(:lvar, :y)))
   end
 
   #
@@ -94,9 +92,9 @@ module LiveAST::RubyParser::Test
   #
   def binop_define_method(name, op, using = :define_method)
     s(:iter,
-      s(:call, nil, using, s(:arglist, s(:lit, name))),
-      s(:masgn, s(:array, s(:lasgn, :x), s(:lasgn, :y))),
-      s(:call, s(:lvar, :x), op, s(:arglist, s(:lvar, :y))))
+      s(:call, nil, using, s(:lit, name)),
+      s(:args, :x, :y),
+      s(:call, s(:lvar, :x), op, s(:lvar, :y)))
   end
 
   #
@@ -108,9 +106,9 @@ module LiveAST::RubyParser::Test
   #
   def binop_define_method_with_var(var_name, op)
     s(:iter,
-      s(:call, nil, :define_method, s(:arglist, s(:lvar, var_name))),
-      s(:masgn, s(:array, s(:lasgn, :x), s(:lasgn, :y))),
-      s(:call, s(:lvar, :x), op, s(:arglist, s(:lvar, :y))))
+      s(:call, nil, :define_method, s(:lvar, var_name)),
+      s(:args, :x, :y),
+      s(:call, s(:lvar, :x), op, s(:lvar, :y)))
   end
 
   #
@@ -123,9 +121,9 @@ module LiveAST::RubyParser::Test
   def binop_define_singleton_method(name, op, receiver)
     s(:iter,
       s(:call, s(:lvar, receiver), :define_singleton_method,
-        s(:arglist, s(:lit, name))),
-      s(:masgn, s(:array, s(:lasgn, :x), s(:lasgn, :y))),
-      s(:call, s(:lvar, :x), op, s(:arglist, s(:lvar, :y))))
+        s(:lit, name)),
+      s(:args, :x, :y),
+      s(:call, s(:lvar, :x), op, s(:lvar, :y)))
   end
   
   #
@@ -134,7 +132,7 @@ module LiveAST::RubyParser::Test
   #   foo { "bar" }
   #
   def no_arg_block(name, ret)
-    s(:iter, s(:call, nil, name, s(:arglist)), nil, s(:str, ret))
+    s(:iter, s(:call, nil, name), s(:args), s(:str, ret))
   end
   
   #
@@ -144,9 +142,9 @@ module LiveAST::RubyParser::Test
   #
   def binop_block(name, op)
     s(:iter,
-      s(:call, nil, name, s(:arglist)),
-      s(:masgn, s(:array, s(:lasgn, :x), s(:lasgn, :y))),
-      s(:call, s(:lvar, :x), op, s(:arglist, s(:lvar, :y))))
+      s(:call, nil, name),
+      s(:args, :x, :y),
+      s(:call, s(:lvar, :x), op, s(:lvar, :y)))
   end
 
   #
@@ -156,9 +154,9 @@ module LiveAST::RubyParser::Test
   #
   def binop_proc_new(op)
     s(:iter,
-      s(:call, s(:const, :Proc), :new, s(:arglist)),
-      s(:masgn, s(:array, s(:lasgn, :x), s(:lasgn, :y))),
-      s(:call, s(:lvar, :x), op, s(:arglist, s(:lvar, :y))))
+      s(:call, s(:const, :Proc), :new),
+      s(:args, :x, :y),
+      s(:call, s(:lvar, :x), op, s(:lvar, :y)))
   end
 
   #
@@ -172,9 +170,9 @@ module LiveAST::RubyParser::Test
   #  
   def nested_lambdas(str)
     s(:iter,
-      s(:call, nil, :lambda, s(:arglist)),
-      nil,
-      s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, str)))
+      s(:call, nil, :lambda),
+      s(:args),
+      s(:iter, s(:call, nil, :lambda), s(:args), s(:str, str)))
   end
 
   # nested_defs(:f, :g, "foo") returns the ast of
@@ -191,11 +189,9 @@ module LiveAST::RubyParser::Test
     s(:defn,
       u,
       s(:args),
-      s(:scope,
-        s(:block,
-          s(:iter,
-            s(:call, s(:const, :Class), :new, s(:arglist)),
-            nil,
-            s(:defn, v, s(:args), s(:scope, s(:block, s(:str, str))))))))
+      s(:iter,
+        s(:call, s(:const, :Class), :new),
+        s(:args),
+        s(:defn, v, s(:args), s(:str, str))))
   end
 end

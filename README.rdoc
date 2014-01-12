@@ -18,17 +18,17 @@ Live abstract syntax trees of methods and procs.
   #### ASTs of methods
   
   p Greet.instance_method(:default).to_ast
-  # => s(:defn, :default, s(:args), s(:scope, s(:block, s(:str, "hello"))))
+  # => s(:defn, :default, s(:args), s(:str, "hello"))
 
   #### ASTs of lambdas, procs, blocks
 
   f = lambda { "foo" }
   p f.to_ast
-  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "foo"))
+  # => s(:iter, s(:call, nil, :lambda), s(:args), s(:str, "foo"))
 
   def query(&block)
     p block.to_ast
-    # => s(:iter, s(:call, nil, :query, s(:arglist)), nil, s(:str, "bar"))
+    # => s(:iter, s(:call, nil, :query), s(:args), s(:str, "bar"))
   end
 
   query do
@@ -39,11 +39,11 @@ Live abstract syntax trees of methods and procs.
 
   u = ast_eval "lambda { 'dynamic3' }", binding
   p u.to_ast
-  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "dynamic3"))
+  # => s(:iter, s(:call, nil, :lambda), s(:args), s(:str, "dynamic3"))
 
   ast_eval "def v ; 'dynamic4' ; end", binding
   p method(:v).to_ast
-  # => s(:defn, :v, s(:args), s(:scope, s(:block, s(:str, "dynamic4"))))
+  # => s(:defn, :v, s(:args), s(:str, "dynamic4"))
   
   #### ASTs from dynamic code -- fully integrated version
   #### The code below here needs "gem install boc"
@@ -52,11 +52,11 @@ Live abstract syntax trees of methods and procs.
 
   f = eval "lambda { 'dynamic1' }"
   p f.to_ast
-  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "dynamic1"))
+  # => s(:iter, s(:call, nil, :lambda), s(:args), s(:str, "dynamic1"))
 
   eval "def g ; 'dynamic2' ; end"
   p method(:g).to_ast
-  # => s(:defn, :g, s(:args), s(:scope, s(:block, s(:str, "dynamic2"))))
+  # => s(:defn, :g, s(:args), s(:str, "dynamic2"))
   
 == Install
 
@@ -132,7 +132,7 @@ semantics as +eval+ except that the binding argument is required.
 
   u = ast_eval "lambda { 'dynamic3' }", binding
   p u.to_ast
-  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "dynamic3"))
+  # => s(:iter, s(:call, nil, :lambda), s(:args), s(:str, "dynamic3"))
   
 == Full Integration
 
@@ -158,7 +158,7 @@ below for details).
 
   f = eval "lambda { 'dynamic1' }"
   p f.to_ast
-  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "dynamic1"))
+  # => s(:iter, s(:call, nil, :lambda), s(:args), s(:str, "dynamic1"))
 
 Since LiveAST itself is pure ruby, any new platforms supported by
 +boc+ should work with <code>live_ast/full</code>.
@@ -286,15 +286,15 @@ The following alternative interface is available.
   end
 
   p LiveAST.ast(A.instance_method(:f))
-  # => s(:defn, :f, s(:args), s(:scope, s(:block, s(:str, "A#f"))))
+  # => s(:defn, :f, s(:args), s(:str, "A#f"))
 
   p LiveAST.ast(lambda { })
-  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil)
+  # => s(:iter, s(:call, nil, :lambda), s(:args))
 
   f = LiveAST.eval("lambda { }", binding)
 
   p LiveAST.ast(f) 
-  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil)
+  # => s(:iter, s(:call, nil, :lambda), s(:args))
   
   ast_eval  # => raises NameError
 

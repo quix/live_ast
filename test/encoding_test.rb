@@ -28,12 +28,12 @@ class AllEncodingTest < RegularTest
       assert_equal name, str.encoding.to_s
 
       ast = EncodingTest.instance_method("#{abbr}_string").to_ast
-      assert_equal name, no_arg_def_return(ast).encoding.to_s
+      assert_equal "UTF-8", no_arg_def_return(ast).encoding.to_s
       
       LiveAST.load "./test/encoding_test/#{abbr}.rb"
       
       ast = EncodingTest.instance_method("#{abbr}_string").to_ast
-      assert_equal name, no_arg_def_return(ast).encoding.to_s
+      assert_equal "UTF-8", no_arg_def_return(ast).encoding.to_s
     end
   end
 
