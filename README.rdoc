@@ -3,7 +3,8 @@
 
 == Summary
 
-Live abstract syntax trees of methods and procs.
+Live abstract syntax trees of methods and procs. Fork of +live_ast+
+(http://quix.github.com/live_ast).
 
 == Synopsis
 
@@ -46,7 +47,6 @@ Live abstract syntax trees of methods and procs.
   # => s(:defn, :v, s(:args), s(:str, "dynamic4"))
   
   #### ASTs from dynamic code -- fully integrated version
-  #### The code below here needs "gem install boc"
 
   require 'live_ast/full'
 
@@ -60,10 +60,7 @@ Live abstract syntax trees of methods and procs.
   
 == Install
 
-  % gem install live_ast
-
-Or from inside an unpacked .tgz download, <code>rake install</code> /
-<code>rake uninstall</code>.
+  % gem install mvz-live_ast
 
 == Description
 
@@ -79,10 +76,7 @@ RubyParser is the default parsing engine. To replace it with Ripper,
 work with any parser.
 
 The advantage of RubyParser is that it gives the traditional ParseTree
-sexps used by tools such as <code>ruby2ruby</code>. The disadvantage
-is that the newer Ruby 1.9 syntax is not supported. However the 1.8
-syntax restriction only applies to files from which ASTs are actually
-requested. All other files may use 1.9 syntax.
+sexps used by tools such as <code>ruby2ruby</code>.
 
 LiveAST is thread-safe.
 
@@ -90,10 +84,8 @@ Ruby 1.9.2 or higher is required.
 
 == Links
 
-* Home: http://quix.github.com/live_ast
-* Feature Requests, Bug Reports: http://github.com/quix/live_ast/issues
-* Manual Download: http://github.com/quix/live_ast/archives/master
-* Repository: http://github.com/quix/live_ast
+* Home: https://github.com/mvz/live_ast
+* Feature Requests, Bug Reports: https://github.com/mvz/live_ast/issues
 
 == +to_ruby+
 
@@ -137,14 +129,10 @@ semantics as +eval+ except that the binding argument is required.
 == Full Integration
 
 In order for LiveAST to be transparent to the user, +eval+ must be
-replaced. This is accomplished with the help of the +boc+ gem
-(http://quix.github.com/boc).
+replaced. This is accomplished with the help of the +binding_of_caller+ gem
+(https://github.com/banister/binding_of_caller).
 
 To replace +eval+,
-
-  % gem install boc
-
-and then
 
   require 'live_ast/full'
 
@@ -160,8 +148,8 @@ below for details).
   p f.to_ast
   # => s(:iter, s(:call, nil, :lambda), s(:args), s(:str, "dynamic1"))
 
-Since LiveAST itself is pure ruby, any new platforms supported by
-+boc+ should work with <code>live_ast/full</code>.
+Since LiveAST itself is pure ruby, any platforms supported by
++binding_of_caller+ should work with <code>live_ast/full</code>.
 
 == Limitations
 
@@ -248,7 +236,7 @@ To override the default parser with your own,
   LiveAST.parser = YourParser
 
 To test it, provide some examples of what the ASTs look like in
-<code>YourParser::Test</code>. See the +live_ast_ruby_parser+ gem for
+<code>YourParser::Test</code>. See +live_ast/ruby_parser+ for
 reference.
 
 == Noninvasive Mode
@@ -375,13 +363,15 @@ only once. Furthermore, if a file has not been reloaded then it is
 assumed that the file is unmodified between the moment it is
 <code>require</code>d and the moment the first AST is pulled from it.
 
-== Author
+== Authors
 
 * James M. Lawrence < quixoticsycophant@gmail.com >
+* Matijs van Zuijlen < matijs@matijs.net >
 
 == License
   
   Copyright (c) 2011 James M. Lawrence. All rights reserved.
+  Copyright (c) 2014 Matijs van Zuijlen. All rights reserved.
   
   Permission is hereby granted, free of charge, to any person
   obtaining a copy of this software and associated documentation files

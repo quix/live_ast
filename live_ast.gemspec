@@ -2,14 +2,14 @@
 require File.join(File.dirname(__FILE__), 'lib/live_ast/version.rb')
 
 Gem::Specification.new do |spec|
-  spec.name = 'live_ast'
+  spec.name = 'mvz-live_ast'
   spec.version = LiveAST::VERSION
 
   spec.summary = "Live abstract syntax trees of methods and procs."
 
-  spec.authors = ["James M. Lawrence"]
-  spec.email = ["quixoticsycophant@gmail.com"]
-  spec.homepage = "http://quix.github.com/live_ast"
+  spec.authors = ["James M. Lawrence", "Matijs van Zuijlen"]
+  spec.email = "matijs@matijs.net"
+  spec.homepage = "https://github.com/mvz/live_ast"
 
   spec.license = "MIT"
 
