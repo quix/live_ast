@@ -158,13 +158,14 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
     assert_equal orig.message, live.message
 
     [[nil], [Object.new], [3], [4,3,2], (1..10).to_a].each do |args|
-      orig = assert_raises TypeError do
+      orig = assert_raises ArgumentError, TypeError do
         Object.new.live_ast_original_instance_eval(*args)
       end
-      live = assert_raises TypeError do
+      live = assert_raises ArgumentError, TypeError do
         Object.new.instance_eval(*args)
       end
       assert_equal orig.message, live.message
+      assert_equal orig.class, live.class
     end
   end
 

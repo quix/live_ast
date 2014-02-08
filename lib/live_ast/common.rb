@@ -9,7 +9,10 @@ module LiveAST
       rescue NameError
         thing = if arg.nil? then nil else arg.class end
 
-        raise TypeError, "can't convert #{thing.inspect} into String"
+        raise TypeError,
+          RUBY_VERSION < "2.0.0" ?
+          "can't convert #{thing.inspect} into String" :
+          "no implicit conversion of #{thing.inspect} into String"
       end
     end
 
