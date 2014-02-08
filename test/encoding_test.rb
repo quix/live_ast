@@ -19,6 +19,12 @@ class AllEncodingTest < RegularTest
     koi8_shebang KOI8-R
   ]]
 
+  if RUBY_VERSION < '2.0.0'
+    ENC_TESTS['default'] = 'US-ASCII'
+  else
+    ENC_TESTS['default'] = 'UTF-8'
+  end
+
   ENC_TESTS.each_pair do |abbr, name|
     define_method "test_#{abbr}" do
       require_relative "encoding_test/#{abbr}"
