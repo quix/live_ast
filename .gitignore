@@ -3,3 +3,4 @@ html/
 pkg/
 Gemfile.lock
 *.gem
+.bundle/
