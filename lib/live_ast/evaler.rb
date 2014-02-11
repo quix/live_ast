@@ -23,7 +23,7 @@ module LiveAST
         args.tap do
           check_arity(args, 2..4)
           args[0] = arg_to_str(args[0])
-          check_type(args[1], Binding)
+          check_is_binding(args[1])
           args[2] = arg_to_str(args[2]) if args[2]
         end
       end

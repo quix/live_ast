@@ -25,9 +25,12 @@ module LiveAST
       end
     end
 
-    def check_type(obj, klass)
-      unless obj.is_a? klass
-        raise TypeError, "wrong argument type #{obj.class} (expected #{klass})"
+    def check_is_binding(obj)
+      unless obj.is_a? Binding
+        raise TypeError,
+          RUBY_VERSION < "2.1.0" ?
+          "wrong argument type #{obj.class} (expected Binding)" :
+          "wrong argument type #{obj.class} (expected binding)"
       end
     end
 
