@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
                     "Rakefile", ]
   spec.test_files = Dir[ 'test/**/*.rb' ]
 
-  spec.add_runtime_dependency "ruby_parser", "~> 3.3.0"
+  spec.add_runtime_dependency "ruby_parser", "~> 3.3"
   spec.add_runtime_dependency "ruby2ruby"
 
   spec.add_development_dependency "binding_of_caller"
