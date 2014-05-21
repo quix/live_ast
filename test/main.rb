@@ -5,7 +5,6 @@ require 'pp'
 require 'find'
 require 'fileutils'
 
-require 'minitest/unit'
 require 'minitest/mock'
 require 'minitest/autorun'
 
@@ -19,7 +18,7 @@ def define_unsorted_test_case(name, superclass, &block)
   Object.const_set "#{letter}#{name}", klass
 end
 
-class JLMiniTest < MiniTest::Unit::TestCase
+class JLMiniTest < MiniTest::Test
   def self.test_methods
     default = super
     onlies = default.select { |m| m =~ %r!__only\Z! }
