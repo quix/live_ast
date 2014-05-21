@@ -1,4 +1,4 @@
-require_relative 'main'
+require 'main'
 
 class ZZY_ReplaceEvalTest < ReplaceEvalTest
   RESULT = {}

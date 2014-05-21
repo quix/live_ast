@@ -1,4 +1,4 @@
-require_relative 'main'
+require 'main'
 
 class AAC_ToRubyTest < RegularTest
   def setup

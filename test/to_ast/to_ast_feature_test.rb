@@ -1,4 +1,4 @@
-require_relative 'main'
+require 'main'
 
 class AAB_ToASTFeatureTest < BaseTest
   def test_require

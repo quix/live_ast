@@ -1,4 +1,4 @@
-require_relative 'main'
+require 'main'
 
 class AAA_NoninvasiveTest < BaseTest
   def test_no_clutter
