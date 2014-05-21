@@ -5,6 +5,10 @@ require 'live_ast/ast_load'
 class AstLoadTest < BaseTest
   include FileUtils
 
+  def test_defines_ast_load
+    assert private_methods.include?(:ast_load)
+  end
+
   def test_reloading
     noninvasive_ast_reload
   end

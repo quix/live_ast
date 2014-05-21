@@ -23,6 +23,12 @@ namespace :test do
     t.test_files = FileList['test/ast_load/*_test.rb']
   end
 
+  Rake::TestTask.new(:ast_eval) do |t|
+    t.libs = ['lib']
+    t.ruby_opts += ["-w -Itest"]
+    t.test_files = FileList['test/ast_eval/*_test.rb']
+  end
+
   Rake::TestTask.new(:to_ast) do |t|
     t.libs = ['lib']
     t.ruby_opts += ["-w -Itest"]

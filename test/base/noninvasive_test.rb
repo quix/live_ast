@@ -8,8 +8,10 @@ class AAA_NoninvasiveTest < BaseTest
     end
     
     assert !respond_to?(:ast_eval)
+    assert !private_methods.include?(:ast_eval)
     assert !Kernel.respond_to?(:ast_eval)
     assert !respond_to?(:ast_load)
+    assert !private_methods.include?(:ast_load)
     assert !Kernel.respond_to?(:ast_load)
   end
 
