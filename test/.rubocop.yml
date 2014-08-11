@@ -23,3 +23,7 @@ Style/ClassMethods:
 # Allow use of eval (that is sort of the point!)
 Lint/Eval:
   Enabled: false
+
+# Needed for `unfixable`
+Lint/HandleExceptions:
+  Enabled: false

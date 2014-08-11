@@ -36,4 +36,8 @@ Style/Next:
 Style/TrailingComma:
   Enabled: false
 
+# LiveAST sometimes needs to rescue all exceptions
+Lint/RescueException:
+  Enabled: false
+
 inherit_from: .rubocop_todo.yml
