@@ -21,7 +21,7 @@ end
 class JLMiniTest < MiniTest::Test
   def self.test_methods
     default = super
-    onlies = default.select { |m| m =~ %r!__only\Z! }
+    onlies = default.select { |m| m =~ /__only\Z/ }
     if onlies.empty?
       default
     else

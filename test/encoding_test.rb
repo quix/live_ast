@@ -51,7 +51,7 @@ class AllEncodingTest < RegularTest
       LiveAST.load "./test/encoding_test/bad.rb"
     end
     # inconsistent punctuation from Ruby
-    re = %r!\Aunknown encoding name\s*[-:]\s*feynman-diagram\Z!
+    re = /\Aunknown encoding name\s*[-:]\s*feynman-diagram\Z/
     assert_match re, orig.message
     assert_match re, live.message
   end

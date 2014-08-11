@@ -24,8 +24,3 @@ Style/MethodLength:
 # Configuration parameters: PreferredDelimiters.
 Style/PercentLiteralDelimiters:
   Enabled: false
-
-# Offense count: 18
-# Configuration parameters: MaxSlashes.
-Style/RegexpLiteral:
-  Enabled: false
