@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - 'test/encoding_test/*.rb'
+    - 'devel/levitate.rb'
 
 # Allow if (foo = get_foo) style
 Lint/AssignmentInCondition:
