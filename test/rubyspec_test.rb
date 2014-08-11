@@ -4,7 +4,7 @@ require_relative '../devel/levitate'
 #
 # Tests against rubyspec branch which discards '|ast@' tokens
 #
-class ZZZ_RubySpecTest < RegularTest
+class RubySpecTest < RegularTest
   FILES = [
     'core/basicobject/instance_eval_spec.rb',
     'core/binding/eval_spec.rb',

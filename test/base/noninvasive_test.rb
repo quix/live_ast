@@ -1,6 +1,6 @@
 require 'main'
 
-class AAA_NoninvasiveTest < BaseTest
+class NoninvasiveTest < BaseTest
   def test_no_clutter
     [Method, UnboundMethod, Proc].each do |klass|
       assert !klass.instance_methods.include?(:to_ast)

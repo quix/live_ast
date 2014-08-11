@@ -1,6 +1,6 @@
 require 'main'
 
-class ZZY_ReplaceEvalTest < ReplaceEvalTest
+class FullReplaceEvalTest < ReplaceEvalTest
   RESULT = {}
 
   def setup
@@ -34,7 +34,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
 
   def test_def_class
     DEFINE_B.call
-    assert_equal "ZZY_ReplaceEvalTest::B", B.name
+    assert_equal "FullReplaceEvalTest::B", B.name
     assert_equal binop_def(:f, :/), B.instance_method(:f).to_ast
   end
 
@@ -388,7 +388,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
   def test_basic_object
     ::BasicObject.new.instance_eval %{
       t = 33
-      ::ZZY_ReplaceEvalTest::RESULT[:bo_test] = t + 44
+      ::FullReplaceEvalTest::RESULT[:bo_test] = t + 44
     }
     assert_equal 77, RESULT[:bo_test]
   end

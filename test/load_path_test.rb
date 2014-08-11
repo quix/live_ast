@@ -1,6 +1,6 @@
 require_relative 'main'
 
-class AAA_LoadPathTest < BaseTest
+class LoadPathTest < BaseTest
   include FileUtils
 
   def test_load_path
