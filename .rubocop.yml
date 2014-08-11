@@ -44,4 +44,7 @@ Style/Semicolon:
 Style/Proc:
   Enabled: false
 
+# Allow foo.bar rescue nil
+Style/RescueModifier:
+  Enabled: false
 inherit_from: .rubocop_todo.yml

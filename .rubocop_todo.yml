@@ -129,7 +129,3 @@ Style/PercentLiteralDelimiters:
 # Configuration parameters: MaxSlashes.
 Style/RegexpLiteral:
   Enabled: false
-
-# Offense count: 9
-Style/RescueModifier:
-  Enabled: false
