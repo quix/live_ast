@@ -105,11 +105,6 @@ Style/HashSyntax:
 Style/IfUnlessModifier:
   Enabled: false
 
-# Offense count: 7
-# Cop supports --auto-correct.
-Style/IndentArray:
-  Enabled: false
-
 # Offense count: 57
 # Configuration parameters: CountComments.
 Style/MethodLength:

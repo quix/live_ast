@@ -65,11 +65,11 @@ class AAA_LoadPathTest < BaseTest
   def check_errors
     temp_file "# do nothing", "foo.rb" do |path|
       [
-       "foo",
-       "",
-       "/usr",
-       ".",
-       "..",
+        "foo",
+        "",
+        "/usr",
+        ".",
+        "..",
       ].each do |file|
         compare_load_errors(file)
       end

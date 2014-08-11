@@ -81,27 +81,27 @@ class AAA_LoadFileTest < BaseTest
     lib = File.expand_path(File.dirname(__FILE__) + "/../lib")
 
     [
-     # respects a loaded file setting $VERBOSE = true
-     [
-      "false",
-      "true",
-      lambda { |file|
-        Levitate.run file
-      }
-     ],
+      # respects a loaded file setting $VERBOSE = true
+      [
+        "false",
+        "true",
+        lambda { |file|
+          Levitate.run file
+        }
+      ],
 
-     # unfixable: does not respect a loaded file setting $VERBOSE = nil
-     [
-      "true",
-      "false",
-      lambda { |file|
-        unfixable do
-          assert_nothing_raised do
-            Levitate.run file
+      # unfixable: does not respect a loaded file setting $VERBOSE = nil
+      [
+        "true",
+        "false",
+        lambda { |file|
+          unfixable do
+            assert_nothing_raised do
+              Levitate.run file
+            end
           end
-        end
-      }
-     ]
+        }
+      ]
     ].each do |main_value, loaded_value, action|
       loaded_code = %{
         $VERBOSE = #{loaded_value}
