@@ -11,6 +11,10 @@ Lint/AssignmentInCondition:
 Style/LineLength:
   Max: 92
 
+# Always use raise to raise exceptions
+Style/SignalException:
+  EnforcedStyle: only_raise
+
 # Allow non-interpolated strings with double quotes
 Style/StringLiterals:
   Enabled: false
