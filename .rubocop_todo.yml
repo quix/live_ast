@@ -58,11 +58,6 @@ Style/ClassAndModuleChildren:
 Style/ClassLength:
   Max: 593
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/ClassMethods:
-  Enabled: false
-
 # Offense count: 98
 Style/Documentation:
   Enabled: false

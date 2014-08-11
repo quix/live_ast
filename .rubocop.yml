@@ -52,4 +52,8 @@ Style/RescueModifier:
 Style/Lambda:
   Enabled: false
 
+# Allow def A.foo
+Style/ClassMethods:
+  Enabled: false
+
 inherit_from: .rubocop_todo.yml
