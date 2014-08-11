@@ -19,6 +19,10 @@ Style/SignalException:
 Style/StringLiterals:
   Enabled: false
 
+# Allow explicit return with multiple return values
+Style/RedundantReturn:
+  AllowMultipleReturnValues: true
+
 # Allow multi-line blocks of all sorts
 Style/Blocks:
   Enabled: false
