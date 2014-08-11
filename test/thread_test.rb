@@ -3,7 +3,6 @@ require_relative 'main'
 require 'thread'
 
 class ThreadTest < RegularTest
-
   def test_threads
     klass = nil
     mutex = Mutex.new
@@ -35,7 +34,7 @@ class ThreadTest < RegularTest
     stop = true
 
     workers.each { |t| t.join }
-    
+
     assert_equal num_threads, results.size
     results.each { |result|
       assert_equal no_arg_def(:f, "anon#f"), result

@@ -15,31 +15,31 @@ module LiveAST
 
   module Attacher
     VAR_NAME = :@_live_ast
-      
+
     def attach_to_proc(obj, ast)
       obj.instance_variable_set(VAR_NAME, ast)
     end
-    
+
     def fetch_proc_attachment(obj)
       if obj.instance_variable_defined?(VAR_NAME)
         obj.instance_variable_get(VAR_NAME)
       end
     end
-    
+
     def attach_to_method(klass, method, ast)
       unless klass.instance_variable_defined?(VAR_NAME)
         klass.instance_variable_set(VAR_NAME, {})
       end
       klass.instance_variable_get(VAR_NAME)[method] = ast
     end
-    
+
     def fetch_method_attachment(klass, method)
       if klass.instance_variable_defined?(VAR_NAME)
         klass.instance_variable_get(VAR_NAME)[method]
       end
     end
   end
-    
+
   module Linker
     REVISION_TOKEN = "|ast@"
 
@@ -80,9 +80,9 @@ module LiveAST
 
       def fetch_from_cache(file, line)
         cache = @caches[file]
-        if !cache and !file.index(REVISION_TOKEN)
+        if !cache && !file.index(REVISION_TOKEN)
           _, cache =
-            if defined?(IRB) and file == "(irb)"
+            if defined?(IRB) && file == "(irb)"
               new_cache(IRBSpy.code_at(line), file, line, false)
             else
               #

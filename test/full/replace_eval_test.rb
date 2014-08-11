@@ -1,6 +1,6 @@
 require 'main'
 
-class ZZY_ReplaceEvalTest < ReplaceEvalTest
+class FullReplaceEvalTest < ReplaceEvalTest
   RESULT = {}
 
   def setup
@@ -34,7 +34,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
 
   def test_def_class
     DEFINE_B.call
-    assert_equal "ZZY_ReplaceEvalTest::B", B.name
+    assert_equal "FullReplaceEvalTest::B", B.name
     assert_equal binop_def(:f, :/), B.instance_method(:f).to_ast
   end
 
@@ -94,7 +94,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
         }
       end
     end
-  
+
     module S
       class T
         eval %{
@@ -105,7 +105,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
       end
     end
   end
-  
+
   def test_const_lookup_3
     DEFINE_QS.call
     Q::R.new.f
@@ -157,7 +157,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
     end
     assert_equal orig.message, live.message
 
-    [[nil], [Object.new], [3], [4,3,2], (1..10).to_a].each do |args|
+    [[nil], [Object.new], [3], [4, 3, 2], (1..10).to_a].each do |args|
       orig = assert_raises ArgumentError, TypeError do
         Object.new.live_ast_original_instance_eval(*args)
       end
@@ -171,10 +171,10 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
 
   def test_instance_eval_arg_error_with_block
     orig = assert_raises ArgumentError do
-      Object.new.live_ast_original_instance_eval(3,4,5) { }
+      Object.new.live_ast_original_instance_eval(3, 4, 5) {}
     end
     live = assert_raises ArgumentError do
-      Object.new.instance_eval(3,4,5) { }
+      Object.new.instance_eval(3, 4, 5) {}
     end
     assert_equal orig.message, live.message
   end
@@ -223,7 +223,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
       self[:g] = lambda { "g" }
     }
     assert_equal y, live[:y]
-    
+
     assert_equal no_arg_block(:lambda, "g"), live[:g].to_ast
   end
 
@@ -309,7 +309,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
     unfixable do
       assert_equal orig, live
     end
-    
+
     live.first.sub!(/#{Regexp.quote LiveAST::Linker::REVISION_TOKEN}.*\Z/, "")
     assert_equal orig, live
     assert_equal ["test", 102], live
@@ -388,7 +388,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
   def test_basic_object
     ::BasicObject.new.instance_eval %{
       t = 33
-      ::ZZY_ReplaceEvalTest::RESULT[:bo_test] = t + 44
+      ::FullReplaceEvalTest::RESULT[:bo_test] = t + 44
     }
     assert_equal 77, RESULT[:bo_test]
   end
@@ -400,7 +400,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
   end
 
   def test_instance_variables
-    assert_equal 99, Z.new.instance_eval{ @t }
+    assert_equal 99, Z.new.instance_eval { @t }
     assert_equal 99, Z.new.instance_eval("@t")
   end
 end

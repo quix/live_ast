@@ -1,0 +1,63 @@
+AllCops:
+  Exclude:
+    - 'test/encoding_test/*.rb'
+    - 'devel/levitate.rb'
+    - 'devel/levitate_config.rb'
+
+# Allow if (foo = get_foo) style
+Lint/AssignmentInCondition:
+  AllowSafeAssignment: true
+
+# Allow multi-line blocks of all sorts
+Style/Blocks:
+  Enabled: false
+
+Style/DotPosition:
+  EnforcedStyle: trailing
+
+# Require lines to fit in pull requests.
+Style/LineLength:
+  Max: 92
+
+# Always use raise to raise exceptions
+Style/SignalException:
+  EnforcedStyle: only_raise
+
+# Allow non-interpolated strings with double quotes
+Style/StringLiterals:
+  Enabled: false
+
+# Allow explicit return with multiple return values
+Style/RedundantReturn:
+  AllowMultipleReturnValues: true
+
+# Require at least two dependent lines before suggesting a guard clause
+Style/GuardClause:
+  MinBodyLength: 2
+
+# Sometimes an if statement just looks better than next with a guard clause
+Style/Next:
+  Enabled: false
+
+# Support use of and and or for control flow.
+Style/AndOr:
+  Enabled: false
+
+# RuboCop has no setting to accept how vim aligns parameters.
+Style/AlignParameters:
+  Enabled: false
+
+# Allow semantic choice of trailing comma
+Style/TrailingComma:
+  Enabled: false
+
+# LiveAST sometimes needs to rescue all exceptions
+Lint/RescueException:
+  Enabled: false
+
+# Use {} for %-literals
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%':  '{}'
+
+inherit_from: .rubocop_todo.yml

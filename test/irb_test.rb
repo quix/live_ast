@@ -14,7 +14,7 @@ class IRBTest < RegularTest
     with_module(Object, :IRB) do
       with_module(LiveAST, :IRBSpy) do
         LiveAST::IRBSpy.class_eval do
-          def self.code_at(line)
+          def self.code_at(_line)
             "def f ; end"
           end
         end

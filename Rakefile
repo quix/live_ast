@@ -53,7 +53,7 @@ end
 RDoc::Task.new(:rdoc) do |t|
   t.main = "README.rdoc"
   t.title = "LiveAST: Live Abstract Syntax Trees"
-  t.options += ["--visibility", "private" ]
+  t.options += ["--visibility", "private"]
   t.rdoc_files.include("README.rdoc", "CHANGES.rdoc", "lib")
 end
 

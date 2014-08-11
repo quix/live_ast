@@ -1,6 +1,6 @@
 require 'main'
 
-class AAC_ToRubyTest < RegularTest
+class ToRubyTest < RegularTest
   def setup
     super
     require 'live_ast/to_ruby'

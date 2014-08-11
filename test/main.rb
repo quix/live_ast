@@ -21,7 +21,7 @@ end
 class JLMiniTest < MiniTest::Test
   def self.test_methods
     default = super
-    onlies = default.select { |m| m =~ %r!__only\Z! }
+    onlies = default.select { |m| m =~ /__only\Z/ }
     if onlies.empty?
       default
     else
@@ -31,7 +31,7 @@ class JLMiniTest < MiniTest::Test
   end
 
   def delim(char)
-    "\n" << (char*72) << "\n"
+    "\n" << (char * 72) << "\n"
   end
 
   def mu_pp(obj)
@@ -41,11 +41,9 @@ class JLMiniTest < MiniTest::Test
   end
 
   def unfixable
-    begin
-      yield
-      raise "claimed to be unfixable, but assertion succeeded"
-    rescue MiniTest::Assertion
-    end
+    yield
+    raise "claimed to be unfixable, but assertion succeeded"
+  rescue MiniTest::Assertion
   end
 
   def assert_nothing_raised
@@ -53,13 +51,13 @@ class JLMiniTest < MiniTest::Test
     assert_nil nil
   rescue => ex
     raise MiniTest::Assertion,
-    exception_details(ex, "Expected nothing raised, but got:")
+      exception_details(ex, "Expected nothing raised, but got:")
   end
 
-  %w[
+  %w(
     empty equal in_delta in_epsilon includes instance_of
     kind_of match nil operator respond_to same
-  ].each { |name|
+  ).each { |name|
     alias_method "assert_not_#{name}", "refute_#{name}"
   }
 end
@@ -96,14 +94,12 @@ class BaseTest < JLMiniTest
   end
 
   def exception_backtrace
-    begin
-      yield
-    rescue Exception => e
-      e.backtrace
-    end
+    yield
+  rescue Exception => e
+    e.backtrace
   end
 
-  def ignore(*args)
+  def ignore(*_args)
   end
 end
 
@@ -121,18 +117,15 @@ class ReplaceEvalTest < BaseTest
            require 'live_ast/full'
            true
          rescue LoadError
-           if RUBY_ENGINE == "ruby"
-             raise "need: gem install boc"
-           end
+           raise "need: gem install binding_of_caller" if RUBY_ENGINE == "ruby"
            false
          end
 
-    unless ok
-      self.class.class_eval do
-        instance_methods(false).each do |m|
-          remove_method(m)
-          define_method(m) { }
-        end
+    return if ok
+    self.class.class_eval do
+      instance_methods(false).each do |m|
+        remove_method(m)
+        define_method(m) {}
       end
     end
   end

@@ -9,7 +9,7 @@ class RecursiveEvalTest < RegularTest
             "A#f"
           end
         }, binding
-  
+
         ast_eval %{
           ast_eval %{
             remove_method :f
@@ -21,7 +21,7 @@ class RecursiveEvalTest < RegularTest
               "A#g"
             end
           }, binding
-  
+
           LAMBDA = ast_eval %{
             lambda { |x, y| x * y }
           }, binding
@@ -49,4 +49,3 @@ class RecursiveEvalTest < RegularTest
                  A::LAMBDA.to_ast
   end
 end
-

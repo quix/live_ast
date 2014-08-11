@@ -7,7 +7,7 @@ require 'live_ast/base'
     end
   end
 end
-    
+
 class Proc
   # Extract the AST of this object.
   def to_ast

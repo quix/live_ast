@@ -1,6 +1,6 @@
 require 'main'
 
-class AAB_ReloadTest < BaseTest
+class ReloadTest < BaseTest
   include FileUtils
 
   def test_reloading
@@ -9,15 +9,15 @@ class AAB_ReloadTest < BaseTest
 
   def raw_reload
     code_1 = %{
-      class AAB_ReloadTest::A
+      class ReloadTest::A
         def f
           "first A#f"
         end
       end
     }
-  
+
     code_2 = %{
-      class AAB_ReloadTest::A
+      class ReloadTest::A
         def f
           "second A#f"
         end

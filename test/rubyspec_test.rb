@@ -4,7 +4,7 @@ require_relative '../devel/levitate'
 #
 # Tests against rubyspec branch which discards '|ast@' tokens
 #
-class ZZZ_RubySpecTest < RegularTest
+class RubySpecTest < RegularTest
   FILES = [
     'core/basicobject/instance_eval_spec.rb',
     'core/binding/eval_spec.rb',
@@ -13,7 +13,7 @@ class ZZZ_RubySpecTest < RegularTest
     'core/module/class_eval_spec.rb',
     'core/module/module_eval_spec.rb',
   ]
-  
+
   def setup
     super
     puts "\n==== rubyspec"
@@ -26,7 +26,7 @@ class ZZZ_RubySpecTest < RegularTest
         cmd =
           ["mspec", "-t", Levitate.ruby_bin] +
 
-          (["-T"]*Levitate.ruby_opts.size).
+          (["-T"] * Levitate.ruby_opts.size).
           zip(Levitate.ruby_opts).
           flatten +
 

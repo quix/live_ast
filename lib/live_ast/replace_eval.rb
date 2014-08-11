@@ -31,9 +31,7 @@ module LiveAST
 
       def handle_args(args)
         if RUBY_VERSION < '2.0.0'
-          if args.empty?
-            raise ArgumentError, "block not supplied"
-          end
+          raise ArgumentError, "block not supplied" if args.empty?
 
           args[0] = Common.arg_to_str(args[0])
 
@@ -45,12 +43,12 @@ module LiveAST
           LiveAST::Common.check_arity(args, 1..3)
           args[0] = Common.arg_to_str(args[0])
         end
-        
+
         args[1] = Common.arg_to_str(args[1]) if args[1]
       end
     end
   end
-  
+
   # ensure the parser is loaded -- rubygems calls eval
   parser
 end

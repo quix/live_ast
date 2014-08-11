@@ -1,0 +1,37 @@
+inherit_from: ../.rubocop.yml
+
+# Allow multiple expressions per line
+Style/Semicolon:
+  AllowAsExpressionSeparator: true
+
+# Allow Proc.new
+Style/Proc:
+  Enabled: false
+
+# Allow foo.bar rescue nil
+Style/RescueModifier:
+  Enabled: false
+
+# Allow both lambda syntaxes
+Style/Lambda:
+  Enabled: false
+
+# Allow def A.foo
+Style/ClassMethods:
+  Enabled: false
+
+# Allow use of eval (that is sort of the point!)
+Lint/Eval:
+  Enabled: false
+
+# Needed for `unfixable`
+Lint/HandleExceptions:
+  Enabled: false
+
+# Require empty lines between defs except for one-liners
+Style/EmptyLineBetweenDefs:
+  AllowAdjacentOneLineDefs: true
+
+# Allow test classes to have any length
+Style/ClassLength:
+  Enabled: false

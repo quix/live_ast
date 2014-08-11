@@ -98,10 +98,10 @@ class EvalTest < RegularTest
     assert_equal "#{self.class}::C", C.name
     assert_equal C, C.instance_method(:g).owner
 
-    assert_equal binop_define_method(:g, :+), 
+    assert_equal binop_define_method(:g, :+),
                  C.instance_method(:g).to_ast
 
-    assert_equal binop_define_method(:g, :+), 
+    assert_equal binop_define_method(:g, :+),
                  C.new.method(:g).to_ast
   end
 
@@ -164,7 +164,7 @@ class EvalTest < RegularTest
     assert_equal binop_define_method(:g, :/),
                  klass.new.method(:g).to_ast
   end
-  
+
   DEFINE_GH = lambda do
     ast_eval %{
       class G
@@ -172,7 +172,7 @@ class EvalTest < RegularTest
           "G#f"
         end
       end
-  
+
       class H
         def g
           "H#g"
@@ -180,7 +180,7 @@ class EvalTest < RegularTest
       end
     }, binding
   end
-  
+
   def test_reuse_string
     DEFINE_GH.call
     assert_equal "#{self.class}::G", G.name
@@ -191,7 +191,7 @@ class EvalTest < RegularTest
 
     assert_equal no_arg_def(:f, "G#f"),
                  G.new.method(:f).to_ast
-    
+
     assert_equal no_arg_def(:g, "H#g"),
                  H.instance_method(:g).to_ast
 
@@ -258,7 +258,7 @@ class EvalTest < RegularTest
     # sanity check
     assert_not_equal binop_block(:lambda, :+), a.to_ast
   end
-  
+
   # from rubyspec
   def test_to_str_on_file
     file = MiniTest::Mock.new

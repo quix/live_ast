@@ -15,8 +15,8 @@ define_unsorted_test_case "FlushCacheTest", RegularTest do
 
   def uncached_method_from_require
     klass = Class.new do
-      def f ; end
-      def g ; end
+      def f; end
+      def g; end
     end
 
     LiveAST.flush_cache
@@ -66,8 +66,8 @@ define_unsorted_test_case "FlushCacheTest", RegularTest do
 
   def lost_method_from_require
     klass = Class.new do
-      def f ; end
-      def g ; end
+      def f; end
+      def g; end
     end
 
     # check that previous flushing did not cause side effect
@@ -83,14 +83,14 @@ define_unsorted_test_case "FlushCacheTest", RegularTest do
         lambda { "bbb" },
       ]
     }, binding
-    
+
     a_ast = a.to_ast
     assert_equal no_arg_block(:lambda, "aaa"), a_ast
 
     LiveAST.flush_cache
 
     assert_equal a_ast.object_id, a.to_ast.object_id
-    
+
     assert_raises LiveAST::ASTNotFoundError do
       b.to_ast
     end

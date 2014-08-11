@@ -4,9 +4,9 @@ class DefineMethodTest < RegularTest
   WITH_BLOCKS = lambda do
     class A
       {
-        :f => :+,
-        :g => :*,
-        :h => :-,
+        f: :+,
+        g: :*,
+        h: :-,
       }.each_pair do |name, op|
         case op
         when :+
@@ -42,10 +42,10 @@ class DefineMethodTest < RegularTest
   WITH_PROCS = lambda do
     class B
       op = lambda { |x, y| x / y }
-      
+
       no_arg = proc { "B#f" }
 
-      define_method :g, &no_arg ; define_method :f, &op
+      define_method :g, &no_arg; define_method :f, &op
     end
   end
 
