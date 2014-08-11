@@ -35,25 +35,4 @@ Style/Next:
 Style/TrailingComma:
   Enabled: false
 
-# The following overrides are needed for the tests.
-# Allow multiple expressions per line
-Style/Semicolon:
-  AllowAsExpressionSeparator: true
-
-# Allow Proc.new
-Style/Proc:
-  Enabled: false
-
-# Allow foo.bar rescue nil
-Style/RescueModifier:
-  Enabled: false
-
-# Allow both lambda syntaxes
-Style/Lambda:
-  Enabled: false
-
-# Allow def A.foo
-Style/ClassMethods:
-  Enabled: false
-
 inherit_from: .rubocop_todo.yml
