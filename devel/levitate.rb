@@ -129,7 +129,7 @@ class Levitate
     def run_doc_section(file, section, instance, &block)
       contents = File.read(file)
       re = %r!^=+[ \t]#{Regexp.quote(section)}.*?\n(.*?)^=!m
-      if section_contents = contents[re, 1]
+      if (section_contents = contents[re, 1])
         index = 0
         section_contents.scan(%r!^(  \S.*?)(?=(^\S|\Z))!m) { |indented, unused|
           code_sections = indented.split(%r!^  \#\#\#\# output:\s*$!)
