@@ -115,11 +115,6 @@ Style/IfUnlessModifier:
 Style/IndentArray:
   Enabled: false
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/IndentationWidth:
-  Enabled: false
-
 # Offense count: 7
 Style/Lambda:
   Enabled: false
