@@ -124,11 +124,6 @@ Style/IndentationWidth:
 Style/Lambda:
   Enabled: false
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/LineEndConcatenation:
-  Enabled: false
-
 # Offense count: 57
 # Configuration parameters: CountComments.
 Style/MethodLength:
