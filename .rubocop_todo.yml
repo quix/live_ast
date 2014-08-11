@@ -161,11 +161,6 @@ Style/OneLineConditional:
 Style/PercentLiteralDelimiters:
   Enabled: false
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/Proc:
-  Enabled: false
-
 # Offense count: 3
 # Cop supports --auto-correct.
 Style/RedundantBegin:

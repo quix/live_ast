@@ -31,8 +31,13 @@ Style/Blocks:
 Style/TrailingComma:
   Enabled: false
 
-# Allow multiple expressions per line. The tests need this.
+# The following overrides are needed for the tests.
+# Allow multiple expressions per line
 Style/Semicolon:
   AllowAsExpressionSeparator: true
+
+# Allow Proc.new
+Style/Proc:
+  Enabled: false
 
 inherit_from: .rubocop_todo.yml
