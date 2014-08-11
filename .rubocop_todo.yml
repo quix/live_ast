@@ -138,14 +138,6 @@ Style/MethodLength:
 Style/MultilineBlockChain:
   Enabled: false
 
-# Offense count: 2
-Style/MultilineTernaryOperator:
-  Enabled: false
-
-# Offense count: 1
-Style/OneLineConditional:
-  Enabled: false
-
 # Offense count: 82
 # Cop supports --auto-correct.
 # Configuration parameters: PreferredDelimiters.

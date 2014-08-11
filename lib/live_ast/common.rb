@@ -7,12 +7,14 @@ module LiveAST
       begin
         arg.to_str
       rescue NameError
-        thing = if arg.nil? then nil else arg.class end
+        thing = arg.nil? ? nil : arg.class
 
-        raise TypeError,
-          RUBY_VERSION < "2.0.0" ?
-          "can't convert #{thing.inspect} into String" :
-          "no implicit conversion of #{thing.inspect} into String"
+        message = if RUBY_VERSION < "2.0.0"
+                    "can't convert #{thing.inspect} into String"
+                  else
+                    "no implicit conversion of #{thing.inspect} into String"
+                  end
+        raise TypeError, message
       end
     end
 
@@ -27,10 +29,12 @@ module LiveAST
 
     def check_is_binding(obj)
       unless obj.is_a? Binding
-        raise TypeError,
-          RUBY_VERSION < "2.1.0" ?
-          "wrong argument type #{obj.class} (expected Binding)" :
-          "wrong argument type #{obj.class} (expected binding)"
+        message = if RUBY_VERSION < "2.1.0"
+                    "wrong argument type #{obj.class} (expected Binding)"
+                  else
+                    "wrong argument type #{obj.class} (expected binding)"
+                  end
+        raise TypeError, message
       end
     end
 
