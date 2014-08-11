@@ -19,3 +19,7 @@ Style/Lambda:
 # Allow def A.foo
 Style/ClassMethods:
   Enabled: false
+
+# Allow use of eval (that is sort of the point!)
+Lint/Eval:
+  Enabled: false

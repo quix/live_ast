@@ -10,10 +10,6 @@
 Lint/EndAlignment:
   Enabled: false
 
-# Offense count: 30
-Lint/Eval:
-  Enabled: false
-
 # Offense count: 1
 Lint/HandleExceptions:
   Enabled: false
