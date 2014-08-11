@@ -14,11 +14,6 @@ Style/ClassLength:
 Style/Documentation:
   Enabled: false
 
-# Offense count: 10
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
-  Enabled: false
-
 # Offense count: 57
 # Configuration parameters: CountComments.
 Style/MethodLength:

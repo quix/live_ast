@@ -121,12 +121,11 @@ class ReplaceEvalTest < BaseTest
            false
          end
 
-    unless ok
-      self.class.class_eval do
-        instance_methods(false).each do |m|
-          remove_method(m)
-          define_method(m) {}
-        end
+    return if ok
+    self.class.class_eval do
+      instance_methods(false).each do |m|
+        remove_method(m)
+        define_method(m) {}
       end
     end
   end

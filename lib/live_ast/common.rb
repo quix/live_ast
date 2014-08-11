@@ -17,23 +17,22 @@ module LiveAST
     end
 
     def check_arity(args, range)
-      unless range.include? args.size
-        range = 0 if range == (0..0)
+      return if range.include? args.size
 
-        raise ArgumentError,
+      range = 0 if range == (0..0)
+
+      raise ArgumentError,
         "wrong number of arguments (#{args.size} for #{range})"
-      end
     end
 
     def check_is_binding(obj)
-      unless obj.is_a? Binding
-        message = if RUBY_VERSION < "2.1.0"
-                    "wrong argument type #{obj.class} (expected Binding)"
-                  else
-                    "wrong argument type #{obj.class} (expected binding)"
-                  end
-        raise TypeError, message
-      end
+      return if obj.is_a? Binding
+      message = if RUBY_VERSION < "2.1.0"
+                  "wrong argument type #{obj.class} (expected Binding)"
+                else
+                  "wrong argument type #{obj.class} (expected binding)"
+                end
+      raise TypeError, message
     end
 
     def location_for_eval(*args)
