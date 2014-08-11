@@ -134,10 +134,6 @@ Style/LineEndConcatenation:
 Style/MethodLength:
   Max: 46
 
-# Offense count: 1
-Style/MultilineBlockChain:
-  Enabled: false
-
 # Offense count: 82
 # Cop supports --auto-correct.
 # Configuration parameters: PreferredDelimiters.
