@@ -27,3 +27,7 @@ Lint/Eval:
 # Needed for `unfixable`
 Lint/HandleExceptions:
   Enabled: false
+
+# Require empty lines between defs except for one-liners
+Style/EmptyLineBetweenDefs:
+  AllowAdjacentOneLineDefs: true

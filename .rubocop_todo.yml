@@ -19,12 +19,6 @@ Style/ClassLength:
 Style/Documentation:
   Enabled: false
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: AllowAdjacentOneLineDefs.
-Style/EmptyLineBetweenDefs:
-  Enabled: false
-
 # Offense count: 10
 # Configuration parameters: MinBodyLength.
 Style/GuardClause:
