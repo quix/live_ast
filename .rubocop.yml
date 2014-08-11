@@ -47,4 +47,9 @@ Style/Proc:
 # Allow foo.bar rescue nil
 Style/RescueModifier:
   Enabled: false
+
+# Allow both lambda syntaxes
+Style/Lambda:
+  Enabled: false
+
 inherit_from: .rubocop_todo.yml

@@ -110,10 +110,6 @@ Style/IfUnlessModifier:
 Style/IndentArray:
   Enabled: false
 
-# Offense count: 7
-Style/Lambda:
-  Enabled: false
-
 # Offense count: 57
 # Configuration parameters: CountComments.
 Style/MethodLength:
