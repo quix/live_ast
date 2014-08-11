@@ -7,6 +7,10 @@ AllCops:
 Lint/AssignmentInCondition:
   AllowSafeAssignment: true
 
+# Allow multi-line blocks of all sorts
+Style/Blocks:
+  Enabled: false
+
 # Require lines to fit in pull requests.
 Style/LineLength:
   Max: 92
@@ -23,8 +27,8 @@ Style/StringLiterals:
 Style/RedundantReturn:
   AllowMultipleReturnValues: true
 
-# Allow multi-line blocks of all sorts
-Style/Blocks:
+# Sometimes an if statement just looks better than next with a guard clause
+Style/Next:
   Enabled: false
 
 # Allow semantic choice of trailing comma

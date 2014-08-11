@@ -146,11 +146,6 @@ Style/MultilineIfThen:
 Style/MultilineTernaryOperator:
   Enabled: false
 
-# Offense count: 3
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/Next:
-  Enabled: false
-
 # Offense count: 1
 Style/OneLineConditional:
   Enabled: false
