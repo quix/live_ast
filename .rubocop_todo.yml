@@ -144,11 +144,6 @@ Style/MultilineBlockChain:
 Style/PercentLiteralDelimiters:
   Enabled: false
 
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/RedundantBegin:
-  Enabled: false
-
 # Offense count: 18
 # Configuration parameters: MaxSlashes.
 Style/RegexpLiteral:

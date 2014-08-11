@@ -4,18 +4,16 @@ module LiveAST
     module_function
 
     def arg_to_str(arg)
-      begin
-        arg.to_str
-      rescue NameError
-        thing = arg.nil? ? nil : arg.class
+      arg.to_str
+    rescue NameError
+      thing = arg.nil? ? nil : arg.class
 
-        message = if RUBY_VERSION < "2.0.0"
-                    "can't convert #{thing.inspect} into String"
-                  else
-                    "no implicit conversion of #{thing.inspect} into String"
-                  end
-        raise TypeError, message
-      end
+      message = if RUBY_VERSION < "2.0.0"
+                  "can't convert #{thing.inspect} into String"
+                else
+                  "no implicit conversion of #{thing.inspect} into String"
+                end
+      raise TypeError, message
     end
 
     def check_arity(args, range)

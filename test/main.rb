@@ -41,11 +41,9 @@ class JLMiniTest < MiniTest::Test
   end
 
   def unfixable
-    begin
-      yield
-      raise "claimed to be unfixable, but assertion succeeded"
-    rescue MiniTest::Assertion
-    end
+    yield
+    raise "claimed to be unfixable, but assertion succeeded"
+  rescue MiniTest::Assertion
   end
 
   def assert_nothing_raised
@@ -96,11 +94,9 @@ class BaseTest < JLMiniTest
   end
 
   def exception_backtrace
-    begin
-      yield
-    rescue Exception => e
-      e.backtrace
-    end
+    yield
+  rescue Exception => e
+    e.backtrace
   end
 
   def ignore(*args)
