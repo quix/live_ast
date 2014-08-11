@@ -5,7 +5,7 @@ module LiveAST
     MAGIC_COMMENT = /\A(?:#!.*?\n)?\s*\#.*(?:en)?coding\s*[:=]\s*([^\s;]+)/
 
     def self.read(file)
-      contents = File.read(file, :encoding => "BINARY")
+      contents = File.read(file, encoding: "BINARY")
 
       utf8 = contents.sub!(UTF8_BOM, "") ? "UTF-8" : nil
 

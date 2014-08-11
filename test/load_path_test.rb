@@ -19,7 +19,7 @@ class AAA_LoadPathTest < BaseTest
   end
 
   def test_chdir
-    mkdir DATA_DIR, :verbose => false rescue nil
+    mkdir DATA_DIR, verbose: false rescue nil
     Dir.chdir(DATA_DIR) do
       check_load
       check_errors

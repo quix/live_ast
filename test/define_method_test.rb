@@ -4,9 +4,9 @@ class DefineMethodTest < RegularTest
   WITH_BLOCKS = lambda do
     class A
       {
-        :f => :+,
-        :g => :*,
-        :h => :-,
+        f: :+,
+        g: :*,
+        h: :-,
       }.each_pair do |name, op|
         case op
         when :+
