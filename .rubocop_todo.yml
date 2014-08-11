@@ -138,10 +138,6 @@ Style/MethodLength:
 Style/MultilineBlockChain:
   Enabled: false
 
-# Offense count: 1
-Style/MultilineIfThen:
-  Enabled: false
-
 # Offense count: 2
 Style/MultilineTernaryOperator:
   Enabled: false
