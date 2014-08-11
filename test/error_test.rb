@@ -2,9 +2,9 @@ require_relative 'main'
 
 class ErrorTest < RegularTest
   def test_multiple_lambda_same_line
-    a = lambda { } ; b = lambda { }
+    a = lambda {} ; b = lambda {}
     ignore(b)
-    
+
     assert_raises LiveAST::MultipleDefinitionsOnSameLineError do
       a.to_ast
     end
@@ -72,7 +72,7 @@ class ErrorTest < RegularTest
     ast_eval("lambda { }", binding)
     eval("lambda { }")
   end
-  
+
   def test_reload_with_raw_eval_2
     c = ast_eval %{
       Class.new do
@@ -89,12 +89,12 @@ class ErrorTest < RegularTest
       }
       nil
     end
-    
+
     assert_raises LiveAST::RawEvalError do
       c.instance_method(:f).to_ast
     end
   end
-  
+
   def test_bad_binding
     orig = assert_raises TypeError do
       eval("", "bogus")

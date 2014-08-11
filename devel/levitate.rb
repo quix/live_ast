@@ -59,31 +59,31 @@ class Levitate
   attribute :required_ruby_version do
     ">= 0"
   end
-  
+
   attribute :readme_file do
     "README.rdoc"
   end
-  
+
   attribute :history_file do
     "CHANGES.rdoc"
   end
-  
+
   attribute :doc_dir do
     "doc"
   end
-  
+
   attribute :spec_files do
     Dir["./spec/*_{spec,example}.rb"]
   end
-  
+
   attribute :test_files do
     (Dir["./test/test_*.rb"] + Dir["./test/*_test.rb"]).uniq
   end
-  
+
   attribute :cov_dir do
     "coverage"
   end
-  
+
   attribute :spec_output_dir do
     "rspec_output"
   end
@@ -124,7 +124,7 @@ class Levitate
   attribute :rdoc_files do
     files_in_require_paths
   end
-    
+
   attribute :rdoc_title do
     "#{gem_name}: #{summary}".sub(/\.\Z/, "")
   end
@@ -190,7 +190,7 @@ class Levitate
   attribute :readme_contents do
     File.read(readme_file) rescue "FIXME: readme_file"
   end
-  
+
   attribute :sections do
     begin
       data = readme_contents.split(%r!^==\s*(.*?)\s*$!)
@@ -218,7 +218,7 @@ class Levitate
   attribute :summary_sentences do
     1
   end
-  
+
   [:summary, :description].each { |section|
     attribute section do
       begin
@@ -273,7 +273,7 @@ class Levitate
 
   def define_clean
     require 'rake/clean'
-    task :clean do 
+    task :clean do
       Rake::Task[:clobber].invoke
     end
   end
@@ -292,18 +292,18 @@ class Levitate
       no_warnings {
         require 'spec/rake/spectask'
       }
-      
+
       desc "run specs"
       Spec::Rake::SpecTask.new('spec') do |t|
         t.spec_files = spec_files
       end
-    
+
       desc "run specs with text output"
       Spec::Rake::SpecTask.new('text_spec') do |t|
         t.spec_files = spec_files
         t.spec_opts = ['-fs']
       end
-  
+
       desc "run specs with html output"
       Spec::Rake::SpecTask.new('full_spec') do |t|
         t.spec_files = spec_files
@@ -311,7 +311,7 @@ class Levitate
         t.rcov_opts = rcov_options
         t.spec_opts = ["-fh:#{spec_output}"]
       end
-      
+
       suppress_task_warnings :spec, :full_spec, :text_spec
 
       desc "run full_spec then open browser"
@@ -340,7 +340,7 @@ class Levitate
         # if we use at_exit hook instead, it won't run before :release
         MiniTest::Unit.new.run ARGV
       end
-      
+
       desc "run tests with coverage"
       if ruby_18?
         task :full_test do
@@ -361,7 +361,7 @@ class Levitate
           Rake::Task[:test].invoke
         end
       end
-      
+
       desc "run full_test then open browser"
       task :show_test => :full_test do
         show = lambda { open_browser(cov_dir + "/index.html") }
@@ -374,15 +374,15 @@ class Levitate
           end
         end
       end
-      
+
       desc "run tests individually"
       task :test_deps do
         run_each_file(*test_files)
       end
-      
+
       task :prerelease => [:test, :test_deps]
       task :default => :test
-      
+
       CLEAN.add cov_dir
     end
   end
@@ -400,7 +400,7 @@ class Levitate
       ).flatten.map { |t| t.to_s }
       RDoc::RDoc.new.document args
     end
-    
+
     task :clean_doc do
       # normally rm_rf, but mimic rake/clean output
       rm_r(doc_dir) rescue nil
@@ -455,7 +455,7 @@ class Levitate
       Installer.new.uninstall
     end
   end
-  
+
   def define_check_directory
     task :check_directory do
       unless `git status` =~ %r!nothing to commit \(working directory clean\)!
@@ -647,7 +647,7 @@ class Levitate
         pipe.read
       }
     end
-      
+
     def with_warnings(value = true)
       previous = $VERBOSE
       $VERBOSE = value
@@ -657,7 +657,7 @@ class Levitate
         $VERBOSE = previous
       end
     end
-      
+
     def no_warnings(&block)
       with_warnings(nil, &block)
     end
@@ -834,7 +834,7 @@ class Levitate
         end
       end
     end
-  
+
     def uninstall
       @spec.reverse.each do |source, dest|
         if File.directory?(source)

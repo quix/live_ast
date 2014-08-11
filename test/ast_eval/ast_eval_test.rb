@@ -9,4 +9,3 @@ class ASTEvalTest < BaseTest
     assert private_methods.include?(:ast_eval)
   end
 end
-

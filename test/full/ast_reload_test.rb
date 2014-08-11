@@ -26,7 +26,7 @@ class ASTReloadTest < ReplaceEvalTest
 
     temp_file code_1 do |file|
       load file
-    
+
       LiveAST.ast(C.instance_method(:f))
 
       write_file file, code_2
@@ -37,4 +37,3 @@ class ASTReloadTest < ReplaceEvalTest
     end
   end
 end
-

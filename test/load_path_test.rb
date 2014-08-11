@@ -2,7 +2,7 @@ require_relative 'main'
 
 class AAA_LoadPathTest < BaseTest
   include FileUtils
-  
+
   def test_load_path
     $LOAD_PATH.unshift DATA_DIR
     begin
@@ -17,7 +17,7 @@ class AAA_LoadPathTest < BaseTest
       $LOAD_PATH.shift
     end
   end
-  
+
   def test_chdir
     mkdir DATA_DIR, :verbose => false rescue nil
     Dir.chdir(DATA_DIR) do
@@ -43,9 +43,9 @@ class AAA_LoadPathTest < BaseTest
       Object.send(:remove_method, :hello) rescue nil
       load "foo.rb"
       assert_equal "password", hello
-      
+
       write_file path, code_2
-      
+
       Object.send(:remove_method, :goodbye) rescue nil
       LiveAST.load "foo.rb"
       assert_equal "bubbleboy", goodbye

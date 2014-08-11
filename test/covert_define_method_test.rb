@@ -6,7 +6,7 @@ class CovertDefineMethodTest < RegularTest
       def A.my_def(*args, &block)
         define_method(*args, &block)
       end
-      
+
       my_def :h do |x, y|
         x + y
       end

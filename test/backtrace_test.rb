@@ -8,22 +8,22 @@ define_unsorted_test_case "BacktraceTest", RegularTest do
     3.times do
       orig = exception_backtrace do
         eval %{
-  
+
           raise
-  
-  
+
+
         }, binding, "somewhere", 1000
       end
-  
+
       live = exception_backtrace do
         ast_eval %{
-  
+
           raise
-  
-  
+
+
         }, binding, "somewhere", 1000
       end
-      
+
       assert_equal orig.first, live.first
       assert_match(/somewhere:1002/, live.first)
     end
@@ -33,19 +33,19 @@ define_unsorted_test_case "BacktraceTest", RegularTest do
     3.times do
       orig = exception_backtrace do
         eval %{
-  
+
 
           raise
-  
+
         }, binding, __FILE__, (__LINE__ + 9)
       end
-  
+
       live = exception_backtrace do
         ast_eval %{
-  
+
 
           raise
-  
+
         }, binding
       end
 
@@ -59,19 +59,19 @@ define_unsorted_test_case "BacktraceTest", RegularTest do
     3.times do
       orig = exception_backtrace do
         eval %{
-  
+
 
           raise
-  
+
         }, binding, __FILE__, (__LINE__ + 9)
       end
-  
+
       live = exception_backtrace do
         ast_eval %{
-  
+
 
           raise
-  
+
         }, binding, __FILE__, __LINE__
       end
 
@@ -85,19 +85,19 @@ define_unsorted_test_case "BacktraceTest", RegularTest do
     3.times do
       orig = exception_backtrace do
         eval %{
-  
+
 
           raise
-  
+
         }, binding, __FILE__
       end
-  
+
       live = exception_backtrace do
         ast_eval %{
-  
+
 
           raise
-  
+
         }, binding, __FILE__
       end
 
@@ -106,7 +106,7 @@ define_unsorted_test_case "BacktraceTest", RegularTest do
       assert_match(/#{here}/, live.first)
     end
   end
-  
+
   def test_raise_after_eval
     raise_after_eval("raise", false)
     raise_after_eval("1/0", false)
@@ -125,7 +125,7 @@ define_unsorted_test_case "BacktraceTest", RegularTest do
 
 
       }, binding, "somewhere", 1000
-  
+
       live = ast_eval %{
 
           lambda { #{code} }
@@ -147,7 +147,7 @@ define_unsorted_test_case "BacktraceTest", RegularTest do
       end
     end
   end
-  
+
   def test_tokens_stripped
     exception_backtrace do
       ast_eval %{ ast_eval %{ ast_eval %{raise}, binding }, binding }, binding

@@ -83,14 +83,14 @@ define_unsorted_test_case "FlushCacheTest", RegularTest do
         lambda { "bbb" },
       ]
     }, binding
-    
+
     a_ast = a.to_ast
     assert_equal no_arg_block(:lambda, "aaa"), a_ast
 
     LiveAST.flush_cache
 
     assert_equal a_ast.object_id, a.to_ast.object_id
-    
+
     assert_raises LiveAST::ASTNotFoundError do
       b.to_ast
     end

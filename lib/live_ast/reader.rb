@@ -6,7 +6,7 @@ module LiveAST
 
     def self.read(file)
       contents = File.read(file, :encoding => "BINARY")
-      
+
       utf8 = contents.sub!(UTF8_BOM, "") ? "UTF-8" : nil
 
       # magic comment overrides BOM

@@ -125,7 +125,7 @@ module LiveAST::RubyParser::Test
       s(:args, :x, :y),
       s(:call, s(:lvar, :x), op, s(:lvar, :y)))
   end
-  
+
   #
   # no_arg_block(:foo, "bar") returns the ast of
   #
@@ -134,7 +134,7 @@ module LiveAST::RubyParser::Test
   def no_arg_block(name, ret)
     s(:iter, s(:call, nil, name), s(:args), s(:str, ret))
   end
-  
+
   #
   # binop_block(:foo, :+) returns the ast of
   #
@@ -167,7 +167,7 @@ module LiveAST::RubyParser::Test
   #       "foo"
   #     }
   #   }
-  #  
+  #
   def nested_lambdas(str)
     s(:iter,
       s(:call, nil, :lambda),
@@ -184,7 +184,7 @@ module LiveAST::RubyParser::Test
   #       end
   #     end
   #   end
-  #   
+  #
   def nested_defs(u, v, str)
     s(:defn,
       u,

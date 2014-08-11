@@ -2,7 +2,7 @@
 module LiveAST
   module Common
     module_function
-    
+
     def arg_to_str(arg)
       begin
         arg.to_str

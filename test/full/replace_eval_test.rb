@@ -94,7 +94,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
         }
       end
     end
-  
+
     module S
       class T
         eval %{
@@ -105,7 +105,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
       end
     end
   end
-  
+
   def test_const_lookup_3
     DEFINE_QS.call
     Q::R.new.f
@@ -171,10 +171,10 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
 
   def test_instance_eval_arg_error_with_block
     orig = assert_raises ArgumentError do
-      Object.new.live_ast_original_instance_eval(3,4,5) { }
+      Object.new.live_ast_original_instance_eval(3,4,5) {}
     end
     live = assert_raises ArgumentError do
-      Object.new.instance_eval(3,4,5) { }
+      Object.new.instance_eval(3,4,5) {}
     end
     assert_equal orig.message, live.message
   end
@@ -223,7 +223,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
       self[:g] = lambda { "g" }
     }
     assert_equal y, live[:y]
-    
+
     assert_equal no_arg_block(:lambda, "g"), live[:g].to_ast
   end
 
@@ -309,7 +309,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
     unfixable do
       assert_equal orig, live
     end
-    
+
     live.first.sub!(/#{Regexp.quote LiveAST::Linker::REVISION_TOKEN}.*\Z/, "")
     assert_equal orig, live
     assert_equal ["test", 102], live

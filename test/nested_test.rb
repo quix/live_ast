@@ -7,7 +7,7 @@ class NestedTest < RegularTest
         "33"
       }
     }
-    
+
     assert_equal nested_lambdas("33"), a.to_ast
     assert_equal no_arg_block(:lambda, "33"), a.call.to_ast
   end

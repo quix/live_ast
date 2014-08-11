@@ -6,7 +6,7 @@ module Kernel
   def load(file, wrap = false)
     LiveAST.load(file, wrap)
   end
-  
+
   class << self
     remove_method :load
   end

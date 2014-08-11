@@ -32,12 +32,12 @@ class AstLoadTest < BaseTest
 
     temp_file code_1 do |file|
       load file
-    
+
       LiveAST.ast(B.instance_method(:f))
-      
+
       write_file file, code_2
       ast_load file
-      
+
       assert_equal no_arg_def(:f, "second B#f"),
                    LiveAST.ast(B.instance_method(:f))
     end

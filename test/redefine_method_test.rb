@@ -6,10 +6,10 @@ class RedefineMethodTest < RegularTest
       def f
         "old A#f"
       end
-      
+
       PREVIOUS_Af = instance_method(:f)
       remove_method :f
-      
+
       def f(x, y)
         x * y
       end

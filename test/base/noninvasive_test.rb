@@ -6,7 +6,7 @@ class AAA_NoninvasiveTest < BaseTest
       assert !klass.instance_methods.include?(:to_ast)
       assert !klass.instance_methods.include?(:to_ruby)
     end
-    
+
     assert !respond_to?(:ast_eval)
     assert !private_methods.include?(:ast_eval)
     assert !Kernel.respond_to?(:ast_eval)
@@ -39,7 +39,7 @@ class AAA_NoninvasiveTest < BaseTest
 
   def test_ast_eval
     code = %{ lambda { |x, y| x / y } }
-    
+
     expected = binop_block(:lambda, :/)
     result = LiveAST.ast(LiveAST.eval(code, binding))
     assert_equal expected, result

@@ -13,7 +13,7 @@ class ZZZ_RubySpecTest < RegularTest
     'core/module/class_eval_spec.rb',
     'core/module/module_eval_spec.rb',
   ]
-  
+
   def setup
     super
     puts "\n==== rubyspec"

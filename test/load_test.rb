@@ -18,7 +18,7 @@ class AAA_LoadFileTest < BaseTest
       ret = LiveAST.load file
       assert_equal true, ret
       assert_equal :code_a, AAA_LoadFileTest.flag
-      
+
       assert_raises NameError do
         eval("x", TOPLEVEL_BINDING)
       end
@@ -35,16 +35,16 @@ class AAA_LoadFileTest < BaseTest
 
     temp_file code do |file|
       eval("r = 66", TOPLEVEL_BINDING)
-      
+
       ret = LiveAST.load file
       assert_equal true, ret
       assert_equal :code_b, AAA_LoadFileTest.flag
-      
+
       actual = eval("r", TOPLEVEL_BINDING)
       assert_equal 66, actual
     end
   end
-  
+
   def test_c_wrap
     code = %{
       AAA_LoadFileTest.flag = :code_c
@@ -55,7 +55,7 @@ class AAA_LoadFileTest < BaseTest
       ret = LiveAST.load file, true
       assert_equal true, ret
       assert_equal :code_c, AAA_LoadFileTest.flag
-      
+
       assert_raises NameError do
         ZOOM
       end
@@ -70,7 +70,7 @@ class AAA_LoadFileTest < BaseTest
     code = %{
       AAA_LoadFileTest.from_d
     }
-    
+
     temp_file code do |file|
       LiveAST.load file
       assert_equal :code_d, AAA_LoadFileTest.flag

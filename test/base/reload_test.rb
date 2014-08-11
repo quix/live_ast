@@ -15,7 +15,7 @@ class AAB_ReloadTest < BaseTest
         end
       end
     }
-  
+
     code_2 = %{
       class AAB_ReloadTest::A
         def f

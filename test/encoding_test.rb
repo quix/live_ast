@@ -35,9 +35,9 @@ class AllEncodingTest < RegularTest
 
       ast = EncodingTest.instance_method("#{abbr}_string").to_ast
       assert_equal "UTF-8", no_arg_def_return(ast).encoding.to_s
-      
+
       LiveAST.load "./test/encoding_test/#{abbr}.rb"
-      
+
       ast = EncodingTest.instance_method("#{abbr}_string").to_ast
       assert_equal "UTF-8", no_arg_def_return(ast).encoding.to_s
     end
