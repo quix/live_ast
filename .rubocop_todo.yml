@@ -234,8 +234,3 @@ Style/SpaceInsideBrackets:
 # Cop supports --auto-correct.
 Style/SpecialGlobalVars:
   Enabled: false
-
-# Offense count: 7
-# Configuration parameters: EnforcedStyleForMultiline, SupportedStyles.
-Style/TrailingComma:
-  Enabled: false

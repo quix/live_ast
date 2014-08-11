@@ -18,4 +18,8 @@ Style/StringLiterals:
 Style/Blocks:
   Enabled: false
 
+# Allow semantic choice of trailing comma
+Style/TrailingComma:
+  Enabled: false
+
 inherit_from: .rubocop_todo.yml
