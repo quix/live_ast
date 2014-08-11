@@ -12,6 +12,9 @@ Lint/AssignmentInCondition:
 Style/Blocks:
   Enabled: false
 
+Style/DotPosition:
+  EnforcedStyle: trailing
+
 # Require lines to fit in pull requests.
 Style/LineLength:
   Max: 92
