@@ -3,7 +3,6 @@ require_relative 'main'
 require 'thread'
 
 class ThreadTest < RegularTest
-
   def test_threads
     klass = nil
     mutex = Mutex.new

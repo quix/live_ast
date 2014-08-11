@@ -89,11 +89,6 @@ Style/DotPosition:
 Style/EmptyLineBetweenDefs:
   Enabled: false
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/EmptyLinesAroundBody:
-  Enabled: false
-
 # Offense count: 10
 # Configuration parameters: MinBodyLength.
 Style/GuardClause:
