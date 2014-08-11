@@ -32,6 +32,10 @@ Style/RedundantReturn:
 Style/Next:
   Enabled: false
 
+# Support use of and and or for control flow.
+Style/AndOr:
+  Enabled: false
+
 # RuboCop has no setting to accept how vim aligns parameters.
 Style/AlignParameters:
   Enabled: false

@@ -80,9 +80,9 @@ module LiveAST
 
       def fetch_from_cache(file, line)
         cache = @caches[file]
-        if !cache and !file.index(REVISION_TOKEN)
+        if !cache && !file.index(REVISION_TOKEN)
           _, cache =
-            if defined?(IRB) and file == "(irb)"
+            if defined?(IRB) && file == "(irb)"
               new_cache(IRBSpy.code_at(line), file, line, false)
             else
               #
