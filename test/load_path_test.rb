@@ -63,7 +63,7 @@ class AAA_LoadPathTest < BaseTest
   end
 
   def check_errors
-    temp_file "# do nothing", "foo.rb" do |path|
+    temp_file "# do nothing", "foo.rb" do |_path|
       [
         "foo",
         "",
