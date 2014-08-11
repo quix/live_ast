@@ -117,9 +117,7 @@ class ReplaceEvalTest < BaseTest
            require 'live_ast/full'
            true
          rescue LoadError
-           if RUBY_ENGINE == "ruby"
-             raise "need: gem install boc"
-           end
+           raise "need: gem install binding_of_caller" if RUBY_ENGINE == "ruby"
            false
          end
 

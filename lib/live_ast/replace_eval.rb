@@ -31,9 +31,7 @@ module LiveAST
 
       def handle_args(args)
         if RUBY_VERSION < '2.0.0'
-          if args.empty?
-            raise ArgumentError, "block not supplied"
-          end
+          raise ArgumentError, "block not supplied" if args.empty?
 
           args[0] = Common.arg_to_str(args[0])
 

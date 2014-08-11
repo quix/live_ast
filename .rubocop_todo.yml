@@ -78,11 +78,6 @@ Style/EmptyLineBetweenDefs:
 Style/GuardClause:
   Enabled: false
 
-# Offense count: 11
-# Configuration parameters: MaxLineLength.
-Style/IfUnlessModifier:
-  Enabled: false
-
 # Offense count: 57
 # Configuration parameters: CountComments.
 Style/MethodLength:
