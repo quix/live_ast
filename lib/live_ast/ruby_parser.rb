@@ -26,7 +26,7 @@ class LiveAST::RubyParser
   end
 
   def store_sexp(sexp, line)
-    @defs[line] = @defs.has_key?(line) ? :multiple : sexp
+    @defs[line] = @defs.key?(line) ? :multiple : sexp
   end
 end
 
