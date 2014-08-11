@@ -23,4 +23,8 @@ Style/Blocks:
 Style/TrailingComma:
   Enabled: false
 
+# Allow multiple expressions per line. The tests need this.
+Style/Semicolon:
+  AllowAsExpressionSeparator: true
+
 inherit_from: .rubocop_todo.yml
