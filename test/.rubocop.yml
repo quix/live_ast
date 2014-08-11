@@ -31,3 +31,7 @@ Lint/HandleExceptions:
 # Require empty lines between defs except for one-liners
 Style/EmptyLineBetweenDefs:
   AllowAdjacentOneLineDefs: true
+
+# Allow test classes to have any length
+Style/ClassLength:
+  Enabled: false
