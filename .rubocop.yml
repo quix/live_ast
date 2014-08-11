@@ -1,0 +1,17 @@
+# Allow if (foo = get_foo) style
+Lint/AssignmentInCondition:
+  AllowSafeAssignment: true
+
+# Require lines to fit in pull requests.
+Style/LineLength:
+  Max: 92
+
+# Allow non-interpolated strings with double quotes
+Style/StringLiterals:
+  Enabled: false
+
+# Allow multi-line blocks of all sorts
+Style/Blocks:
+  Enabled: false
+
+inherit_from: .rubocop_todo.yml
