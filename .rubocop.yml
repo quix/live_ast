@@ -1,3 +1,7 @@
+AllCops:
+  Exclude:
+    - 'test/encoding_test/*.rb'
+
 # Allow if (foo = get_foo) style
 Lint/AssignmentInCondition:
   AllowSafeAssignment: true
