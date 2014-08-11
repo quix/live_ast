@@ -55,4 +55,9 @@ Style/TrailingComma:
 Lint/RescueException:
   Enabled: false
 
+# Use {} for %-literals
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%':  '{}'
+
 inherit_from: .rubocop_todo.yml

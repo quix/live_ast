@@ -1,7 +1,7 @@
 require_relative 'main'
 
 class AllEncodingTest < RegularTest
-  ENC_TESTS = Hash[*%w[
+  ENC_TESTS = Hash[*%w(
     default US-ASCII
     usascii US-ASCII
     utf8 UTF-8
@@ -17,7 +17,7 @@ class AllEncodingTest < RegularTest
     eucjp EUC-JP
     koi8 KOI8-R
     koi8_shebang KOI8-R
-  ]]
+  )]
 
   if RUBY_VERSION < '2.0.0'
     ENC_TESTS['default'] = 'US-ASCII'

@@ -18,9 +18,3 @@ Style/Documentation:
 # Configuration parameters: CountComments.
 Style/MethodLength:
   Max: 46
-
-# Offense count: 82
-# Cop supports --auto-correct.
-# Configuration parameters: PreferredDelimiters.
-Style/PercentLiteralDelimiters:
-  Enabled: false

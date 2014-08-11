@@ -54,10 +54,10 @@ class JLMiniTest < MiniTest::Test
     exception_details(ex, "Expected nothing raised, but got:")
   end
 
-  %w[
+  %w(
     empty equal in_delta in_epsilon includes instance_of
     kind_of match nil operator respond_to same
-  ].each { |name|
+  ).each { |name|
     alias_method "assert_not_#{name}", "refute_#{name}"
   }
 end
