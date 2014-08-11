@@ -15,8 +15,8 @@ define_unsorted_test_case "FlushCacheTest", RegularTest do
 
   def uncached_method_from_require
     klass = Class.new do
-      def f ; end
-      def g ; end
+      def f; end
+      def g; end
     end
 
     LiveAST.flush_cache
@@ -66,8 +66,8 @@ define_unsorted_test_case "FlushCacheTest", RegularTest do
 
   def lost_method_from_require
     klass = Class.new do
-      def f ; end
-      def g ; end
+      def f; end
+      def g; end
     end
 
     # check that previous flushing did not cause side effect

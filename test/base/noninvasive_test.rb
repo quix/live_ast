@@ -32,7 +32,7 @@ class AAA_NoninvasiveTest < BaseTest
   end
 
   def test_lambda
-    a = lambda { |x, y| x ** y }
+    a = lambda { |x, y| x**y }
 
     assert_equal binop_block(:lambda, :**), LiveAST.ast(a)
   end

@@ -26,7 +26,7 @@ class ZZZ_RubySpecTest < RegularTest
         cmd =
           ["mspec", "-t", Levitate.ruby_bin] +
 
-          (["-T"]*Levitate.ruby_opts.size).
+          (["-T"] * Levitate.ruby_opts.size).
           zip(Levitate.ruby_opts).
           flatten +
 

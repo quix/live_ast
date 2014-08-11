@@ -2,7 +2,7 @@ require_relative 'main'
 
 class ErrorTest < RegularTest
   def test_multiple_lambda_same_line
-    a = lambda {} ; b = lambda {}
+    a = lambda {}; b = lambda {}
     ignore(b)
 
     assert_raises LiveAST::MultipleDefinitionsOnSameLineError do
@@ -12,7 +12,7 @@ class ErrorTest < RegularTest
 
   DEFINE_A = lambda do
     class A
-      def f ; end ; def g ; end
+      def f; end; def g; end
     end
   end
 

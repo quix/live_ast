@@ -85,7 +85,7 @@ class Levitate
 
     def instance_exec2(obj, *args, &block)
       method_name = ["_", obj.object_id, "_", Thread.current.object_id].join
-      (class << obj ; self ; end).class_eval do
+      (class << obj; self; end).class_eval do
         define_method method_name, &block
         begin
           obj.send(method_name, *args)

@@ -20,10 +20,10 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = ">= 1.9.2"
 
-  spec.files = Dir[ '{devel,lib,test}/**/*.rb',
-                    "*.rdoc",
-                    "Rakefile", ]
-  spec.test_files = Dir[ 'test/**/*.rb' ]
+  spec.files = Dir['{devel,lib,test}/**/*.rb',
+                   "*.rdoc",
+                   "Rakefile"]
+  spec.test_files = Dir['test/**/*.rb']
 
   spec.add_runtime_dependency "ruby_parser", "~> 3.3"
   spec.add_runtime_dependency "ruby2ruby"
@@ -34,10 +34,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rdoc"
 
-  spec.rdoc_options = [ "--main", "README.rdoc",
-                        "--title", "LiveAST: Live Abstract Syntax Trees",
-                        "--visibility", "private" ]
-  spec.extra_rdoc_files = [ "README.rdoc", "CHANGES.rdoc" ]
+  spec.rdoc_options = ["--main", "README.rdoc",
+                       "--title", "LiveAST: Live Abstract Syntax Trees",
+                       "--visibility", "private"]
+  spec.extra_rdoc_files = ["README.rdoc", "CHANGES.rdoc"]
 
   spec.require_paths = ["lib"]
 end

@@ -45,7 +45,7 @@ class DefineMethodTest < RegularTest
 
       no_arg = proc { "B#f" }
 
-      define_method :g, &no_arg ; define_method :f, &op
+      define_method :g, &no_arg; define_method :f, &op
     end
   end
 

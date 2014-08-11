@@ -157,7 +157,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
     end
     assert_equal orig.message, live.message
 
-    [[nil], [Object.new], [3], [4,3,2], (1..10).to_a].each do |args|
+    [[nil], [Object.new], [3], [4, 3, 2], (1..10).to_a].each do |args|
       orig = assert_raises ArgumentError, TypeError do
         Object.new.live_ast_original_instance_eval(*args)
       end
@@ -171,10 +171,10 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
 
   def test_instance_eval_arg_error_with_block
     orig = assert_raises ArgumentError do
-      Object.new.live_ast_original_instance_eval(3,4,5) {}
+      Object.new.live_ast_original_instance_eval(3, 4, 5) {}
     end
     live = assert_raises ArgumentError do
-      Object.new.instance_eval(3,4,5) {}
+      Object.new.instance_eval(3, 4, 5) {}
     end
     assert_equal orig.message, live.message
   end
@@ -400,7 +400,7 @@ class ZZY_ReplaceEvalTest < ReplaceEvalTest
   end
 
   def test_instance_variables
-    assert_equal 99, Z.new.instance_eval{ @t }
+    assert_equal 99, Z.new.instance_eval { @t }
     assert_equal 99, Z.new.instance_eval("@t")
   end
 end
