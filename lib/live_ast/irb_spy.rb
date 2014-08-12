@@ -9,7 +9,7 @@ module LiveAST
       def code_at(line)
         unless @history
           raise NotImplementedError,
-          "LiveAST cannot access history for this IRB input method"
+            "LiveAST cannot access history for this IRB input method"
         end
         grow = 0
         begin
