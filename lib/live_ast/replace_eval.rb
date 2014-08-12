@@ -64,6 +64,7 @@ module LiveAST
   parser
 end
 
+# Override for Kernel#eval and Kernel.eval
 module Kernel
   class << self
     alias_method :live_ast_original_singleton_eval, :eval
@@ -80,6 +81,7 @@ module Kernel
   end
 end
 
+# Override for Binding#eval
 class Binding
   alias_method :live_ast_original_binding_eval, :eval
 
@@ -88,6 +90,7 @@ class Binding
   end
 end
 
+# Override for BasicObject#instance_eval
 class BasicObject
   alias_method :live_ast_original_instance_eval, :instance_eval
 
@@ -101,6 +104,7 @@ class BasicObject
   end
 end
 
+# Overrides for Module#module_eval and Module#class_eval
 class Module
   alias_method :live_ast_original_module_eval, :module_eval
 
