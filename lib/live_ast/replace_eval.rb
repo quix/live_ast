@@ -42,7 +42,7 @@ module LiveAST
       def handle_args_20(args)
         LiveAST::Common.check_arity(args, 1..3)
         args[0] = Common.arg_to_str(args[0])
-        args[1] = Common.arg_to_str(args[1]) if args[1]
+        args[1] = Common.arg_to_str(args[1]) if args.length > 1
       end
 
       def handle_args_pre_20(args)
@@ -55,7 +55,7 @@ module LiveAST
             "wrong number of arguments: instance_eval(src) or instance_eval{..}"
         end
 
-        args[1] = Common.arg_to_str(args[1]) if args[1]
+        args[1] = Common.arg_to_str(args[1]) if args.length > 1
       end
     end
   end

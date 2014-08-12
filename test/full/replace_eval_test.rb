@@ -169,6 +169,25 @@ class FullReplaceEvalTest < ReplaceEvalTest
     end
   end
 
+  describe "instance_eval argument errors" do
+    before do
+      require 'live_ast/full'
+    end
+
+    let(:orig) { assert_raises(ArgumentError, TypeError) {
+      Object.new.live_ast_original_instance_eval(*args) } }
+    let(:live) { assert_raises(ArgumentError, TypeError) {
+        Object.new.instance_eval(*args) } }
+
+    describe "when the second argument is nil" do
+      let(:args) { ['1', nil] }
+      it "raises the same error as the original" do
+        assert_equal orig.message, live.message
+        assert_equal orig.class, live.class
+      end
+    end
+  end
+
   def test_instance_eval_arg_error_with_block
     orig = assert_raises ArgumentError do
       Object.new.live_ast_original_instance_eval(3, 4, 5) {}
