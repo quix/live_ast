@@ -60,14 +60,6 @@ $VERBOSE = nil
 module Kernel
   class << self
     alias_method :live_ast_original_singleton_eval, :eval
-
-    def eval(*args)
-      LiveAST::Common.check_arity(args, 1..4)
-      LiveAST.eval(
-        "::Kernel.live_ast_original_instance_eval do;" << args[0] << ";end",
-        args[1] || binding.of_caller(1),
-        *LiveAST::Common.location_for_eval(*args[1..3]))
-    end
   end
 
   private
