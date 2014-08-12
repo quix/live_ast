@@ -58,8 +58,6 @@ module Kernel
     alias_method :live_ast_original_singleton_eval, :eval
   end
 
-  private
-
   alias_method :live_ast_original_eval, :eval
 
   def eval(*args)
