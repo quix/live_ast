@@ -1,6 +1,7 @@
 doc/
 html/
 pkg/
+tmp/
 Gemfile.lock
 *.gem
 .bundle/
