@@ -1,6 +1,11 @@
 
 = live_ast Changes
 
+== Version 1.1.1
+
+* Support Ruby 2.0 and 2.1
+* Update RubyParser dependency
+
 == Version 1.1.0
 
 * incorporate default parser in the main gem
