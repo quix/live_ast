@@ -1,6 +1,15 @@
 
 = live_ast Changes
 
+== Upcoming
+
+* Update dependencies
+* Improve test suite:
+  - Separate suites for different sets of loaded live_ast features
+  - Eliminate test run order dependencies
+* Clean up code
+* Fix error handling for nil file argument of instance_eval
+
 == Version 1.1.1
 
 * Support Ruby 2.0 and 2.1
