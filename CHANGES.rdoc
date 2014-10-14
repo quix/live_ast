@@ -1,7 +1,7 @@
 
 = live_ast Changes
 
-== Upcoming
+== Version 1.1.2
 
 * Update dependencies
 * Improve test suite:
