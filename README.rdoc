@@ -326,15 +326,14 @@ paranoia; the noninvasive option may be the most appropriate.
 +ast_eval+ and +load+ cache all incoming code, while
 <code>require</code>d files are cached on a need-to-know basis. When
 an AST is requested, the corresponding source file is parsed and
-discarded, leaving behind method and block ASTs. +to_ast+ removes an
+discarded, leaving behind method and block ASTs. +to_ast+ fetches an
 AST from the cache and attaches it to the appropriate object (a Proc
 or Module).
 
 Ignored, unextracted ASTs will therefore linger in the cache. Since
 sexps are generally small there is little need for concern unless one
-is continually evaling/reloading <em>and</em> failing to extract the
-sexps. Nevertheless it is possible that old ASTs will eventually need
-to be garbage collected. To flush the cache,
+is continually evaling/reloading. Nevertheless it is possible that old
+ASTs will eventually need to be garbage collected. To flush the cache,
 
 (1) Check that +to_ast+ has been called on all objects whose ASTs are
 desired.
