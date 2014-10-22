@@ -9,7 +9,7 @@ module LiveAST
       @asts ||= LiveAST.parser.new.parse(@source).tap do
         @source = nil
       end
-      @asts.delete(line - @user_line + 1)
+      @asts.fetch(line - @user_line + 1, nil)
     end
   end
 
