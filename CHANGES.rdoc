@@ -1,6 +1,11 @@
 
 = live_ast Changes
 
+== Upcoming
+
+* Keep ASTs in the cache when they are fetched, allowing aliased methods to
+  retrieve their AST under both names.
+
 == Version 1.1.2
 
 * Update dependencies
