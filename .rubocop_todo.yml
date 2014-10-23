@@ -11,5 +11,5 @@ Style/Documentation:
 
 # Offense count: 44
 # Configuration parameters: CountComments.
-Style/MethodLength:
+Metrics/MethodLength:
   Max: 36

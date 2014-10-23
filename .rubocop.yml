@@ -8,16 +8,16 @@ AllCops:
 Lint/AssignmentInCondition:
   AllowSafeAssignment: true
 
+# Require lines to fit in pull requests.
+Metrics/LineLength:
+  Max: 92
+
 # Allow multi-line blocks of all sorts
 Style/Blocks:
   Enabled: false
 
 Style/DotPosition:
   EnforcedStyle: trailing
-
-# Require lines to fit in pull requests.
-Style/LineLength:
-  Max: 92
 
 # Always use raise to raise exceptions
 Style/SignalException:
@@ -41,7 +41,7 @@ Style/Next:
 
 # Support use of and and or for control flow.
 Style/AndOr:
-  Enabled: false
+  EnforcedStyle: conditionals
 
 # RuboCop has no setting to accept how vim aligns parameters.
 Style/AlignParameters:
