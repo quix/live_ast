@@ -6,7 +6,7 @@ class AliasTest < RegularTest
       "A#f"
     end
 
-    alias g f
+    alias_method :g, :f
   end
 
   def test_alias_unbound_method
@@ -21,4 +21,3 @@ class AliasTest < RegularTest
     assert_equal expected, A.new.method(:g).to_ast
   end
 end
-

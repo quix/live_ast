@@ -174,10 +174,16 @@ class FullReplaceEvalTest < ReplaceEvalTest
       require 'live_ast/full'
     end
 
-    let(:orig) { assert_raises(ArgumentError, TypeError) {
-      Object.new.live_ast_original_instance_eval(*args) } }
-    let(:live) { assert_raises(ArgumentError, TypeError) {
-        Object.new.instance_eval(*args) } }
+    let(:orig) {
+      assert_raises(ArgumentError, TypeError) do
+        Object.new.live_ast_original_instance_eval(*args)
+      end
+    }
+    let(:live) {
+      assert_raises(ArgumentError, TypeError) do
+        Object.new.instance_eval(*args)
+      end
+    }
 
     describe "when the second argument is nil" do
       let(:args) { ['1', nil] }

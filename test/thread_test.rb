@@ -33,7 +33,7 @@ class ThreadTest < RegularTest
     sleep(0.2)
     stop = true
 
-    workers.each { |t| t.join }
+    workers.each(&:join)
 
     assert_equal num_threads, results.size
     results.each { |result|
