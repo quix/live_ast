@@ -15,11 +15,10 @@ module LiveAST
       @defs
     end
 
+    STOREABLE_SEXP_TYPES = [:defn, :defs, :iter]
+
     def process(sexp)
-      case sexp.first
-      when :defn, :defs, :iter
-        store_sexp(sexp, sexp.line)
-      end
+      store_sexp(sexp, sexp.line) if STOREABLE_SEXP_TYPES.include? sexp.first
 
       sexp.each do |elem|
         process(elem) if elem.is_a? Sexp
