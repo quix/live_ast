@@ -99,7 +99,10 @@ class BasicObject
       live_ast_original_instance_eval(*args, &block)
     else
       ::LiveAST::ReplaceEval.
-        module_or_instance_eval(:instance, self, ::Kernel.binding.of_caller(1), args)
+        module_or_instance_eval(:instance,
+                                self,
+                                ::Kernel.binding.of_caller(1),
+                                args)
     end
   end
 end
