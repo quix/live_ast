@@ -13,7 +13,7 @@ module LiveAST
         end
         grow = 0
         begin
-          code = @history[line..(line + grow)].join
+          code = @history[line..(line + grow)].join("\n")
           LiveAST.parser.new.parse(code) or raise "#{LiveAST.parser} error"
         rescue
           grow += 1
