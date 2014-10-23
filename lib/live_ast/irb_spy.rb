@@ -7,20 +7,23 @@ module LiveAST
       attr_writer :history
 
       def code_at(line)
-        unless @history
-          raise NotImplementedError,
-            "LiveAST cannot access history for this IRB input method"
+        code = ""
+        checked_history[line..-1].each do |code_line|
+          code << code_line << "\n"
+          return code if can_parse code
         end
-        grow = 0
-        begin
-          code = @history[line..(line + grow)].join("\n")
-          LiveAST.parser.new.parse(code) or raise "#{LiveAST.parser} error"
-        rescue
-          grow += 1
-          retry if line + grow < @history.size
-          raise
-        end
-        code
+      end
+
+      def can_parse(code)
+        LiveAST.parser.new.parse(code)
+      rescue
+        false
+      end
+
+      def checked_history
+        return @history if @history
+        raise NotImplementedError,
+          "LiveAST cannot access history for this IRB input method"
       end
     end
   end
