@@ -83,5 +83,15 @@ class ToRubyTest < RegularTest
     end.instance_method(:f).to_ruby
     assert_equal src, dst
   end
+
+  def test_to_ast_after_to_ruby
+    src = %{lambda { "moo" }}
+    expected_ast = ast_eval(src, binding).to_ast
+
+    lmb = ast_eval(src, binding)
+    lmb.to_ruby
+
+    assert_equal expected_ast, lmb.to_ast
+  end
 end if LiveAST.parser::Test.respond_to?(:unparser_matches_ruby2ruby?) &&
        LiveAST.parser::Test.unparser_matches_ruby2ruby?

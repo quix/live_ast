@@ -5,6 +5,7 @@
 
 * Keep ASTs in the cache when they are fetched, allowing aliased methods to
   retrieve their AST under both names.
+* Do not destroy the AST when creating ruby source
 
 == Version 1.1.2
 
