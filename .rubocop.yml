@@ -13,7 +13,7 @@ Metrics/LineLength:
   Max: 92
 
 # Allow multi-line blocks of all sorts
-Style/Blocks:
+Style/BlockDelimiters:
   Enabled: false
 
 Style/DotPosition:
@@ -48,7 +48,7 @@ Style/AlignParameters:
   Enabled: false
 
 # Allow semantic choice of trailing comma
-Style/TrailingComma:
+Style/TrailingCommaInLiteral:
   Enabled: false
 
 # LiveAST sometimes needs to rescue all exceptions
