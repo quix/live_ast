@@ -25,11 +25,11 @@ Live abstract syntax trees of methods and procs. Fork of +live_ast+
 
   f = lambda { "foo" }
   p f.to_ast
-  # => s(:iter, s(:call, nil, :lambda), s(:args), s(:str, "foo"))
+  # => s(:iter, s(:call, nil, :lambda), 0, s(:str, "foo"))
 
   def query(&block)
     p block.to_ast
-    # => s(:iter, s(:call, nil, :query), s(:args), s(:str, "bar"))
+    # => s(:iter, s(:call, nil, :query), 0, s(:str, "bar"))
   end
 
   query do
@@ -40,7 +40,7 @@ Live abstract syntax trees of methods and procs. Fork of +live_ast+
 
   u = ast_eval "lambda { 'dynamic3' }", binding
   p u.to_ast
-  # => s(:iter, s(:call, nil, :lambda), s(:args), s(:str, "dynamic3"))
+  # => s(:iter, s(:call, nil, :lambda), 0, s(:str, "dynamic3"))
 
   ast_eval "def v ; 'dynamic4' ; end", binding
   p method(:v).to_ast
@@ -52,7 +52,7 @@ Live abstract syntax trees of methods and procs. Fork of +live_ast+
 
   f = eval "lambda { 'dynamic1' }"
   p f.to_ast
-  # => s(:iter, s(:call, nil, :lambda), s(:args), s(:str, "dynamic1"))
+  # => s(:iter, s(:call, nil, :lambda), 0, s(:str, "dynamic1"))
 
   eval "def g ; 'dynamic2' ; end"
   p method(:g).to_ast
@@ -124,7 +124,7 @@ semantics as +eval+ except that the binding argument is required.
 
   u = ast_eval "lambda { 'dynamic3' }", binding
   p u.to_ast
-  # => s(:iter, s(:call, nil, :lambda), s(:args), s(:str, "dynamic3"))
+  # => s(:iter, s(:call, nil, :lambda), 0, s(:str, "dynamic3"))
   
 == Full Integration
 
@@ -146,7 +146,7 @@ below for details).
 
   f = eval "lambda { 'dynamic1' }"
   p f.to_ast
-  # => s(:iter, s(:call, nil, :lambda), s(:args), s(:str, "dynamic1"))
+  # => s(:iter, s(:call, nil, :lambda), 0, s(:str, "dynamic1"))
 
 Since LiveAST itself is pure ruby, any platforms supported by
 +binding_of_caller+ should work with <code>live_ast/full</code>.
@@ -277,12 +277,12 @@ The following alternative interface is available.
   # => s(:defn, :f, s(:args), s(:str, "A#f"))
 
   p LiveAST.ast(lambda { })
-  # => s(:iter, s(:call, nil, :lambda), s(:args))
+  # => s(:iter, s(:call, nil, :lambda), 0)
 
   f = LiveAST.eval("lambda { }", binding)
 
   p LiveAST.ast(f) 
-  # => s(:iter, s(:call, nil, :lambda), s(:args))
+  # => s(:iter, s(:call, nil, :lambda), 0)
   
   ast_eval  # => raises NameError
 
