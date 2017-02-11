@@ -18,17 +18,17 @@ Gem::Specification.new do |spec|
     generated code.
   DESC
 
-  spec.required_ruby_version = ">= 1.9.2"
+  spec.required_ruby_version = ">= 2.1.0"
 
   spec.files = Dir['{devel,lib,test}/**/*.rb',
                    "*.rdoc",
                    "Rakefile"]
   spec.test_files = Dir['test/**/*.rb']
 
-  spec.add_runtime_dependency "ruby_parser", "~> 3.3"
-  spec.add_runtime_dependency "ruby2ruby"
+  spec.add_runtime_dependency "ruby_parser", "~> 3.8.4"
+  spec.add_runtime_dependency "ruby2ruby", "~> 2.3.2"
 
-  spec.add_development_dependency "binding_of_caller"
+  spec.add_development_dependency "binding_of_caller", "~> 0.7.2"
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "minitest", "~> 5.0"
   spec.add_development_dependency "rake"

@@ -134,7 +134,7 @@ module LiveAST
       #   foo { "bar" }
       #
       def no_arg_block(name, ret)
-        s(:iter, s(:call, nil, name), s(:args), s(:str, ret))
+        s(:iter, s(:call, nil, name), 0, s(:str, ret))
       end
 
       #
@@ -173,8 +173,8 @@ module LiveAST
       def nested_lambdas(str)
         s(:iter,
           s(:call, nil, :lambda),
-          s(:args),
-          s(:iter, s(:call, nil, :lambda), s(:args), s(:str, str)))
+          0,
+          s(:iter, s(:call, nil, :lambda), 0, s(:str, str)))
       end
 
       # nested_defs(:f, :g, "foo") returns the ast of
@@ -193,7 +193,7 @@ module LiveAST
           s(:args),
           s(:iter,
             s(:call, s(:const, :Class), :new),
-            s(:args),
+            0,
             s(:defn, v, s(:args), s(:str, str))))
       end
     end

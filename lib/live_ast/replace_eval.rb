@@ -32,29 +32,8 @@ module LiveAST
       private
 
       def handle_args(args)
-        if RUBY_VERSION < '2.0.0'
-          handle_args_pre_20(args)
-        else
-          handle_args_20(args)
-        end
-      end
-
-      def handle_args_20(args)
         LiveAST::Common.check_arity(args, 1..3)
         args[0] = Common.arg_to_str(args[0])
-        args[1] = Common.arg_to_str(args[1]) if args.length > 1
-      end
-
-      def handle_args_pre_20(args)
-        raise ArgumentError, "block not supplied" if args.empty?
-
-        args[0] = Common.arg_to_str(args[0])
-
-        unless (1..3).include? args.size
-          raise ArgumentError,
-            "wrong number of arguments: instance_eval(src) or instance_eval{..}"
-        end
-
         args[1] = Common.arg_to_str(args[1]) if args.length > 1
       end
     end

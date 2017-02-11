@@ -8,11 +8,7 @@ module LiveAST
     rescue NameError
       thing = arg.nil? ? nil : arg.class
 
-      message = if RUBY_VERSION < "2.0.0"
-                  "can't convert #{thing.inspect} into String"
-                else
-                  "no implicit conversion of #{thing.inspect} into String"
-                end
+      message = "no implicit conversion of #{thing.inspect} into String"
       raise TypeError, message
     end
 
@@ -21,17 +17,18 @@ module LiveAST
 
       range = 0 if range == (0..0)
 
-      raise ArgumentError,
-        "wrong number of arguments (#{args.size} for #{range})"
+      message = if RUBY_VERSION < "2.3.0"
+                  "wrong number of arguments (#{args.size} for #{range})"
+                else
+                  "wrong number of arguments (given #{args.size}, expected #{range})"
+                end
+      raise ArgumentError, message
     end
 
     def check_is_binding(obj)
       return if obj.is_a? Binding
-      message = if RUBY_VERSION < "2.1.0"
-                  "wrong argument type #{obj.class} (expected Binding)"
-                else
-                  "wrong argument type #{obj.class} (expected binding)"
-                end
+
+      message = "wrong argument type #{obj.class} (expected binding)"
       raise TypeError, message
     end
 
