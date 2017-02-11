@@ -80,7 +80,7 @@ sexps used by tools such as <code>ruby2ruby</code>.
 
 LiveAST is thread-safe.
 
-Ruby 1.9.2 or higher is required.
+Ruby 2.1.0 or higher is required.
 
 == Links
 
