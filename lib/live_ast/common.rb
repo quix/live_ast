@@ -21,8 +21,12 @@ module LiveAST
 
       range = 0 if range == (0..0)
 
-      raise ArgumentError,
-        "wrong number of arguments (#{args.size} for #{range})"
+      message = if RUBY_VERSION < "2.3.0"
+                  "wrong number of arguments (#{args.size} for #{range})"
+                else
+                  "wrong number of arguments (given #{args.size}, expected #{range})"
+                end
+      raise ArgumentError, message
     end
 
     def check_is_binding(obj)
