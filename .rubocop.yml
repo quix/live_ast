@@ -35,6 +35,11 @@ Style/RedundantReturn:
 Style/GuardClause:
   MinBodyLength: 2
 
+# This test requires its constant to be mutable
+Style/MutableConstant:
+  Exclude:
+    - 'test/full/replace_eval_test.rb'
+
 # Sometimes an if statement just looks better than next with a guard clause
 Style/Next:
   Enabled: false
