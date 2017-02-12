@@ -1,5 +1,5 @@
 module LiveAST
-  class MultipleDefinitionsOnSameLineError < ScriptError
+  class MultipleDefinitionsOnSameLineError < RuntimeError
     def message
       "AST requested for a method or block that shares a line " \
         "with another method or block."

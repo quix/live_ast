@@ -6,7 +6,7 @@ class AliasTest < RegularTest
       "A#f"
     end
 
-    alias_method :g, :f
+    alias g f
   end
 
   def test_alias_unbound_method

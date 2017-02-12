@@ -13,7 +13,7 @@ Metrics/LineLength:
   Max: 92
 
 # Allow multi-line blocks of all sorts
-Style/Blocks:
+Style/BlockDelimiters:
   Enabled: false
 
 Style/DotPosition:
@@ -35,6 +35,11 @@ Style/RedundantReturn:
 Style/GuardClause:
   MinBodyLength: 2
 
+# This test requires its constant to be mutable
+Style/MutableConstant:
+  Exclude:
+    - 'test/full/replace_eval_test.rb'
+
 # Sometimes an if statement just looks better than next with a guard clause
 Style/Next:
   Enabled: false
@@ -48,7 +53,7 @@ Style/AlignParameters:
   Enabled: false
 
 # Allow semantic choice of trailing comma
-Style/TrailingComma:
+Style/TrailingCommaInLiteral:
   Enabled: false
 
 # LiveAST sometimes needs to rescue all exceptions

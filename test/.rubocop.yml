@@ -25,7 +25,7 @@ Style/ClassMethods:
   Enabled: false
 
 # Allow use of eval (that is sort of the point!)
-Lint/Eval:
+Security/Eval:
   Enabled: false
 
 # Needed for `unfixable`

@@ -9,16 +9,16 @@ require 'live_ast/error'
 require 'live_ast/irb_spy' if defined?(IRB)
 
 module LiveAST
-  NATIVE_EVAL = Kernel.method(:eval)  #:nodoc:
+  NATIVE_EVAL = Kernel.method(:eval) #:nodoc:
 
   class << self
-    attr_writer :parser  #:nodoc:
+    attr_writer :parser #:nodoc:
 
-    def parser  #:nodoc:
-      @parser ||= (
+    def parser #:nodoc:
+      @parser ||= begin
         require 'live_ast/ruby_parser'
         LiveAST::RubyParser
-      )
+      end
     end
 
     #
@@ -26,7 +26,7 @@ module LiveAST
     #
     # Equivalent to <code>obj.to_ast</code>.
     #
-    def ast(obj)  #:nodoc:
+    def ast(obj) #:nodoc:
       case obj
       when Method, UnboundMethod
         Linker.find_method_ast(obj.owner, obj.name, *obj.source_location)
@@ -50,7 +50,7 @@ module LiveAST
     #
     # Equivalent to <code>Kernel#ast_eval</code>.
     #
-    def eval(*args)  #:nodoc:
+    def eval(*args) #:nodoc:
       Evaler.eval(args[0], *args)
     end
 
@@ -59,14 +59,14 @@ module LiveAST
     #
     # Equivalent to <code>Kernel#ast_load</code>.
     #
-    def load(file, wrap = false)  #:nodoc:
+    def load(file, wrap = false) #:nodoc:
       Loader.load(file, wrap)
     end
 
     #
     # strip the revision token from a string
     #
-    def strip_token(file)  #:nodoc:
+    def strip_token(file) #:nodoc:
       file.sub(/#{Regexp.quote Linker::REVISION_TOKEN}[a-z]+/, "")
     end
   end

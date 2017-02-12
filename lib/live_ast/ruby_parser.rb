@@ -15,7 +15,7 @@ module LiveAST
       @defs
     end
 
-    STOREABLE_SEXP_TYPES = [:defn, :defs, :iter]
+    STOREABLE_SEXP_TYPES = [:defn, :defs, :iter].freeze
 
     def process(sexp)
       store_sexp(sexp, sexp.line) if STOREABLE_SEXP_TYPES.include? sexp.first
