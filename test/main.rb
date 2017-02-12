@@ -36,8 +36,8 @@ class JLMiniTest < MiniTest::Test
 
   def mu_pp(obj)
     delim("_") <<
-    obj.pretty_inspect.chomp <<
-    delim("=")
+      obj.pretty_inspect.chomp <<
+      delim("=")
   end
 
   def unfixable
@@ -99,8 +99,7 @@ class BaseTest < JLMiniTest
     e.backtrace
   end
 
-  def ignore(*_args)
-  end
+  def ignore(*_args); end
 end
 
 class RegularTest < BaseTest

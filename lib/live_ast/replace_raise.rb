@@ -3,7 +3,7 @@ require 'live_ast/base'
 module Kernel
   private
 
-  alias_method :live_ast_original_raise, :raise
+  alias live_ast_original_raise raise
 
   def raise(*args)
     ex = begin

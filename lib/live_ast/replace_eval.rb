@@ -46,23 +46,24 @@ end
 # Override for Kernel#eval and Kernel.eval
 module Kernel
   class << self
-    alias_method :live_ast_original_singleton_eval, :eval
+    alias live_ast_original_singleton_eval eval
   end
 
-  alias_method :live_ast_original_eval, :eval
+  alias live_ast_original_eval eval
 
   def eval(*args)
     LiveAST::Common.check_arity(args, 1..4)
     LiveAST.eval(
       args[0],
       args[1] || binding.of_caller(1),
-      *LiveAST::Common.location_for_eval(*args[1..3]))
+      *LiveAST::Common.location_for_eval(*args[1..3])
+    )
   end
 end
 
 # Override for Binding#eval
 class Binding
-  alias_method :live_ast_original_binding_eval, :eval
+  alias live_ast_original_binding_eval eval
 
   def eval(*args)
     LiveAST.eval(args[0], self, *args[1..-1])
@@ -71,7 +72,7 @@ end
 
 # Override for BasicObject#instance_eval
 class BasicObject
-  alias_method :live_ast_original_instance_eval, :instance_eval
+  alias live_ast_original_instance_eval instance_eval
 
   def instance_eval(*args, &block)
     if block
@@ -88,7 +89,7 @@ end
 
 # Overrides for Module#module_eval and Module#class_eval
 class Module
-  alias_method :live_ast_original_module_eval, :module_eval
+  alias live_ast_original_module_eval module_eval
 
   def module_eval(*args, &block)
     if block
@@ -100,5 +101,5 @@ class Module
   end
 
   remove_method :class_eval
-  alias_method :class_eval, :module_eval
+  alias class_eval module_eval
 end

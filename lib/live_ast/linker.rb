@@ -41,7 +41,7 @@ module LiveAST
   end
 
   module Linker
-    REVISION_TOKEN = "|ast@"
+    REVISION_TOKEN = "|ast@".freeze
 
     @caches = {}
     @counter = "a"

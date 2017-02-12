@@ -9,7 +9,7 @@ module LiveAST
         file, line = location_for_eval(bind, *rest)
         file = LiveAST.strip_token(file)
 
-        key, _ = Linker.new_cache_synced(parser_source, file, line, false)
+        key, = Linker.new_cache_synced(parser_source, file, line, false)
 
         begin
           NATIVE_EVAL.call(evaler_source, bind, key, line)
