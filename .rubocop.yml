@@ -3,6 +3,7 @@ AllCops:
     - 'test/encoding_test/*.rb'
     - 'devel/levitate.rb'
     - 'devel/levitate_config.rb'
+    - 'vendor/**/*'
 
 # Allow if (foo = get_foo) style
 Lint/AssignmentInCondition:
