@@ -5,6 +5,10 @@ AllCops:
     - 'devel/levitate_config.rb'
     - 'vendor/**/*'
 
+# Assume the programmer knows how bracketed block syntax works
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
 # Allow if (foo = get_foo) style
 Lint/AssignmentInCondition:
   AllowSafeAssignment: true
@@ -13,6 +17,11 @@ Lint/AssignmentInCondition:
 Lint/HandleExceptions:
   Exclude:
     - 'test/**/*'
+
+# LiveAST sometimes needs to rescue all exceptions
+Lint/RescueException:
+  Enabled: false
+
 # Allow test classes to have any length
 Metrics/ClassLength:
   Exclude:
@@ -47,6 +56,7 @@ Style/EmptyLineBetweenDefs:
 Style/Lambda:
   Exclude:
     - 'test/**/*'
+
 # Allow Proc.new in tests
 Style/Proc:
   Exclude:
@@ -68,6 +78,10 @@ Style/SignalException:
 # Allow non-interpolated strings with double quotes
 Style/StringLiterals:
   Enabled: false
+
+# Prefer symbols to look like symbols
+Style/SymbolArray:
+  EnforcedStyle: brackets
 
 # Allow explicit return with multiple return values
 Style/RedundantReturn:
@@ -98,13 +112,10 @@ Style/AlignParameters:
 Style/TrailingCommaInLiteral:
   Enabled: false
 
-# LiveAST sometimes needs to rescue all exceptions
-Lint/RescueException:
-  Enabled: false
-
-# Use {} for %-literals
+# Use {} for %-literals, and revert to previous RuboCop default for %w
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     '%':  '{}'
+    '%w': ()
 
 inherit_from: .rubocop_todo.yml

@@ -1,4 +1,5 @@
 # encoding: us-ascii
+
 module LiveAST
   module Reader
     UTF8_BOM = /\A\xef\xbb\xbf/
