@@ -2,7 +2,6 @@ require 'rake/clean'
 require 'bundler/gem_tasks'
 require 'rake/testtask'
 require 'rdoc/task'
-require 'rubocop/rake_task'
 
 namespace :test do
   desc 'run tests'
@@ -58,8 +57,4 @@ RDoc::Task.new(:rdoc) do |t|
   t.rdoc_files.include("README.rdoc", "CHANGES.rdoc", "lib")
 end
 
-RuboCop::RakeTask.new do |task|
-  task.options << '--display-cop-names'
-end
-
-task default: ['test:all', :rubocop]
+task default: 'test:all'
