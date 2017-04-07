@@ -9,16 +9,57 @@ AllCops:
 Lint/AssignmentInCondition:
   AllowSafeAssignment: true
 
+# Needed for `unfixable` in tests
+Lint/HandleExceptions:
+  Exclude:
+    - 'test/**/*'
+# Allow test classes to have any length
+Metrics/ClassLength:
+  Exclude:
+    - 'test/**/*'
+
 # Require lines to fit in pull requests.
 Metrics/LineLength:
   Max: 92
+
+# Allow use of eval in tests (that is sort of the point!)
+Security/Eval:
+  Exclude:
+    - 'test/**/*'
 
 # Allow multi-line blocks of all sorts
 Style/BlockDelimiters:
   Enabled: false
 
+# Allow def A.foo in tests
+Style/ClassMethods:
+  Exclude:
+    - 'test/**/*'
+
 Style/DotPosition:
   EnforcedStyle: trailing
+
+# Require empty lines between defs except for one-liners
+Style/EmptyLineBetweenDefs:
+  AllowAdjacentOneLineDefs: true
+
+# Allow both lambda syntaxes in tests
+Style/Lambda:
+  Exclude:
+    - 'test/**/*'
+# Allow Proc.new in tests
+Style/Proc:
+  Exclude:
+    - 'test/**/*'
+
+# Allow foo.bar rescue nil in tests
+Style/RescueModifier:
+  Exclude:
+    - 'test/**/*'
+
+# Allow multiple expressions per line
+Style/Semicolon:
+  AllowAsExpressionSeparator: true
 
 # Always use raise to raise exceptions
 Style/SignalException:
