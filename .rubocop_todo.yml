@@ -29,12 +29,6 @@ Metrics/MethodLength:
 Style/Documentation:
   Enabled: false
 
-# Offense count: 1
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
-  Exclude:
-    - 'lib/live_ast/loader.rb'
-
 # Offense count: 8
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: snake_case, normalcase, non_integer
