@@ -360,7 +360,7 @@ class FullReplaceEvalTest < ReplaceEvalTest
 
     x = 5
     eval %{
-      assert_equal(3, eval(%{ eval("1 + 2") }))
+      assert_equal(3, eval(' eval("1 + 2") '))
       x = 6
     }
     assert_equal 6, x
