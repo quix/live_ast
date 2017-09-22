@@ -56,6 +56,11 @@ Style/ClassMethods:
   Exclude:
     - 'test/**/*'
 
+# Stop this cop from complaining about us-ascii encoding
+Style/Encoding:
+  Exclude:
+    - 'lib/live_ast/reader.rb'
+
 # Allow both lambda syntaxes in tests
 Style/Lambda:
   Exclude:
