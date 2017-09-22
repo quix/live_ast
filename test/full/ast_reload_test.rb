@@ -8,7 +8,7 @@ class ASTReloadTest < ReplaceEvalTest
   end
 
   def ast_reload
-    code_1 = %{
+    code1 = %{
       class ASTReloadTest::C
         def f
           "first C#f"
@@ -16,7 +16,7 @@ class ASTReloadTest < ReplaceEvalTest
       end
     }
 
-    code_2 = %{
+    code2 = %{
       class ASTReloadTest::C
         def f
           "second C#f"
@@ -24,12 +24,12 @@ class ASTReloadTest < ReplaceEvalTest
       end
     }
 
-    temp_file code_1 do |file|
+    temp_file code1 do |file|
       load file
 
       LiveAST.ast(C.instance_method(:f))
 
-      write_file file, code_2
+      write_file file, code2
       load file
 
       assert_equal no_arg_def(:f, "second C#f"),

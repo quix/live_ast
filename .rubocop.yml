@@ -5,6 +5,17 @@ AllCops:
     - 'devel/levitate_config.rb'
     - 'vendor/**/*'
 
+# RuboCop has no setting to accept how vim aligns parameters.
+Layout/AlignParameters:
+  Enabled: false
+
+Layout/DotPosition:
+  EnforcedStyle: trailing
+
+# Require empty lines between defs except for one-liners
+Layout/EmptyLineBetweenDefs:
+  AllowAdjacentOneLineDefs: true
+
 # Assume the programmer knows how bracketed block syntax works
 Lint/AmbiguousBlockAssociation:
   Enabled: false
@@ -45,12 +56,10 @@ Style/ClassMethods:
   Exclude:
     - 'test/**/*'
 
-Style/DotPosition:
-  EnforcedStyle: trailing
-
-# Require empty lines between defs except for one-liners
-Style/EmptyLineBetweenDefs:
-  AllowAdjacentOneLineDefs: true
+# Stop this cop from complaining about us-ascii encoding
+Style/Encoding:
+  Exclude:
+    - 'lib/live_ast/reader.rb'
 
 # Allow both lambda syntaxes in tests
 Style/Lambda:
@@ -103,10 +112,6 @@ Style/Next:
 # Support use of and and or for control flow.
 Style/AndOr:
   EnforcedStyle: conditionals
-
-# RuboCop has no setting to accept how vim aligns parameters.
-Style/AlignParameters:
-  Enabled: false
 
 # Allow semantic choice of trailing comma
 Style/TrailingCommaInLiteral:

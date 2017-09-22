@@ -14,7 +14,7 @@ class AstLoadTest < BaseTest
   end
 
   def noninvasive_ast_reload
-    code_1 = %{
+    code1 = %{
       class AstLoadTest::B
         def f
           "first B#f"
@@ -22,7 +22,7 @@ class AstLoadTest < BaseTest
       end
     }
 
-    code_2 = %{
+    code2 = %{
       class AstLoadTest::B
         def f
           "second B#f"
@@ -30,12 +30,12 @@ class AstLoadTest < BaseTest
       end
     }
 
-    temp_file code_1 do |file|
+    temp_file code1 do |file|
       load file
 
       LiveAST.ast(B.instance_method(:f))
 
-      write_file file, code_2
+      write_file file, code2
       ast_load file
 
       assert_equal no_arg_def(:f, "second B#f"),

@@ -150,7 +150,7 @@ define_unsorted_test_case "BacktraceTest", RegularTest do
 
   def test_tokens_stripped
     lines = exception_backtrace do
-      ast_eval %{ ast_eval %{ ast_eval %{raise}, binding }, binding }, binding
+      ast_eval %{ ast_eval ' ast_eval "raise", binding ', binding }, binding
     end
     lines.each do |line|
       assert_nil line.index(LiveAST::Linker::REVISION_TOKEN)
