@@ -8,7 +8,7 @@ class ReloadTest < BaseTest
   end
 
   def raw_reload
-    code_1 = %{
+    code1 = %{
       class ReloadTest::A
         def f
           "first A#f"
@@ -16,7 +16,7 @@ class ReloadTest < BaseTest
       end
     }
 
-    code_2 = %{
+    code2 = %{
       class ReloadTest::A
         def f
           "second A#f"
@@ -24,12 +24,12 @@ class ReloadTest < BaseTest
       end
     }
 
-    temp_file code_1 do |file|
+    temp_file code1 do |file|
       load file
 
       LiveAST.ast(A.instance_method(:f))
 
-      write_file file, code_2
+      write_file file, code2
       load file
 
       # forced a raw-reload inconsistency -- verify bogus
