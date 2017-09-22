@@ -1,6 +1,12 @@
 
 = live_ast Changes
 
+== Version 1.2.0
+
+* Drop support for Rubies below 2.1
+* Handle multi-line definitions in IRB correctly
+* Tighten and update dependencies
+
 == Version 1.1.3
 
 * Keep ASTs in the cache when they are fetched, allowing aliased methods to
