@@ -38,7 +38,7 @@ Style/GuardClause:
 # Offense count: 8
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: snake_case, normalcase, non_integer
-Style/VariableNumber:
+Naming/VariableNumber:
   Exclude:
     - 'test/ast_load/ast_load_test.rb'
     - 'test/base/reload_test.rb'
