@@ -16,7 +16,7 @@ module LiveAST
 
       def can_parse(code)
         LiveAST.parser.new.parse(code)
-      rescue
+      rescue StandardError
         false
       end
 

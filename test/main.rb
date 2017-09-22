@@ -49,7 +49,7 @@ class JLMiniTest < MiniTest::Test
   def assert_nothing_raised
     yield
     assert_nil nil
-  rescue => ex
+  rescue StandardError => ex
     raise MiniTest::Assertion,
       exception_details(ex, "Expected nothing raised, but got:")
   end
@@ -81,7 +81,7 @@ class BaseTest < JLMiniTest
       yield path
     ensure
       FileUtils.rm_f path
-      FileUtils.rmdir DATA_DIR rescue nil
+      FileUtils.rmdir DATA_DIR
     end
   end
 
