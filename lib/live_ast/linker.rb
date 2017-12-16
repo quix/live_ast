@@ -21,9 +21,7 @@ module LiveAST
     end
 
     def fetch_proc_attachment(obj)
-      if obj.instance_variable_defined?(VAR_NAME)
-        obj.instance_variable_get(VAR_NAME)
-      end
+      obj.instance_variable_get(VAR_NAME) if obj.instance_variable_defined?(VAR_NAME)
     end
 
     def attach_to_method(klass, method, ast)
