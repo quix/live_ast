@@ -60,6 +60,12 @@ Style/ClassMethods:
   Exclude:
     - 'test/**/*'
 
+# Stack trace is less important in tests
+# TODO: Look into details later
+Style/EvalWithLocation:
+  Exclude:
+    - 'test/**/*'
+
 # Stop this cop from complaining about us-ascii encoding
 Style/Encoding:
   Exclude:
