@@ -36,7 +36,7 @@ Lint/RescueException:
 # Uniform block layout
 Layout/SpaceBeforeBlockBraces:
   EnforcedStyleForEmptyBraces: space
-      
+
 # Allow test classes to have any length
 Metrics/ClassLength:
   Exclude:
