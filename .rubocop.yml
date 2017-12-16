@@ -1,0 +1,136 @@
+AllCops:
+  Exclude:
+    - 'test/encoding_test/*.rb'
+    - 'devel/levitate.rb'
+    - 'devel/levitate_config.rb'
+    - 'vendor/**/*'
+
+# RuboCop has no setting to accept how vim aligns parameters.
+Layout/AlignParameters:
+  Enabled: false
+
+Layout/DotPosition:
+  EnforcedStyle: trailing
+
+# Require empty lines between defs except for one-liners
+Layout/EmptyLineBetweenDefs:
+  AllowAdjacentOneLineDefs: true
+
+# Assume the programmer knows how bracketed block syntax works
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
+# Allow if (foo = get_foo) style
+Lint/AssignmentInCondition:
+  AllowSafeAssignment: true
+
+# Needed for `unfixable` in tests
+Lint/HandleExceptions:
+  Exclude:
+    - 'test/**/*'
+
+# LiveAST sometimes needs to rescue all exceptions
+Lint/RescueException:
+  Enabled: false
+
+# Uniform block layout
+Layout/SpaceBeforeBlockBraces:
+  EnforcedStyleForEmptyBraces: space
+
+# Allow test classes to have any length
+Metrics/ClassLength:
+  Exclude:
+    - 'test/**/*'
+
+# Require lines to fit in pull requests.
+Metrics/LineLength:
+  Max: 92
+
+# Allow use of eval in tests (that is sort of the point!)
+Security/Eval:
+  Exclude:
+    - 'test/**/*'
+
+# Allow multi-line blocks of all sorts
+Style/BlockDelimiters:
+  Enabled: false
+
+# Allow def A.foo in tests
+Style/ClassMethods:
+  Exclude:
+    - 'test/**/*'
+
+# Stack trace is less important in tests
+# TODO: Look into details later
+Style/EvalWithLocation:
+  Exclude:
+    - 'test/**/*'
+
+# Stop this cop from complaining about us-ascii encoding
+Style/Encoding:
+  Exclude:
+    - 'lib/live_ast/reader.rb'
+
+# Allow both lambda syntaxes in tests
+Style/Lambda:
+  Exclude:
+    - 'test/**/*'
+
+# Allow Proc.new in tests
+Style/Proc:
+  Exclude:
+    - 'test/**/*'
+
+# Allow foo.bar rescue nil in tests
+Style/RescueModifier:
+  Exclude:
+    - 'test/**/*'
+
+# Allow multiple expressions per line
+Style/Semicolon:
+  AllowAsExpressionSeparator: true
+
+# Always use raise to raise exceptions
+Style/SignalException:
+  EnforcedStyle: only_raise
+
+# Allow non-interpolated strings with double quotes
+Style/StringLiterals:
+  Enabled: false
+
+# Prefer symbols to look like symbols
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
+# Allow explicit return with multiple return values
+Style/RedundantReturn:
+  AllowMultipleReturnValues: true
+
+# Require at least two dependent lines before suggesting a guard clause
+Style/GuardClause:
+  MinBodyLength: 2
+
+# This test requires its constant to be mutable
+Style/MutableConstant:
+  Exclude:
+    - 'test/full/replace_eval_test.rb'
+
+# Sometimes an if statement just looks better than next with a guard clause
+Style/Next:
+  Enabled: false
+
+# Support use of and and or for control flow.
+Style/AndOr:
+  EnforcedStyle: conditionals
+
+# Allow semantic choice of trailing comma
+Style/TrailingCommaInLiteral:
+  Enabled: false
+
+# Use {} for %-literals, and revert to previous RuboCop default for %w
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%':  '{}'
+    '%w': ()
+
+inherit_from: .rubocop_todo.yml

@@ -1,6 +1,38 @@
 
 = live_ast Changes
 
+== Version 1.2.0
+
+* Drop support for Rubies below 2.1
+* Handle multi-line definitions in IRB correctly
+* Tighten and update dependencies
+
+== Version 1.1.3
+
+* Keep ASTs in the cache when they are fetched, allowing aliased methods to
+  retrieve their AST under both names.
+* Do not destroy the AST when creating ruby source
+
+== Version 1.1.2
+
+* Update dependencies
+* Improve test suite:
+  - Separate suites for different sets of loaded live_ast features
+  - Eliminate test run order dependencies
+* Clean up code
+* Fix error handling for nil file argument of instance_eval
+
+== Version 1.1.1
+
+* Support Ruby 2.0 and 2.1
+* Update RubyParser dependency
+
+== Version 1.1.0
+
+* incorporate default parser in the main gem
+* update RubyParser dependency
+* use binding_of_caller gem instead of boc
+
 == Version 1.0.2
 
 * handle -unix, -dos, -mac special encoding suffixes

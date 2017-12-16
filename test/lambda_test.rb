@@ -26,6 +26,13 @@ class LambdaTest < RegularTest
     assert_equal expected, a.to_ast
   end
 
+  def test_stabby_lambda
+    a = ->(x, y) { x - y }
+
+    expected = binop_block(:lambda, :-)
+    assert_equal expected, a.to_ast
+  end
+
   def test_proc
     a = proc { |x, y| x / y }
 

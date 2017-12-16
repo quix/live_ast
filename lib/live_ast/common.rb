@@ -2,30 +2,34 @@
 module LiveAST
   module Common
     module_function
-    
-    def arg_to_str(arg)
-      begin
-        arg.to_str
-      rescue NameError
-        thing = if arg.nil? then nil else arg.class end
 
-        raise TypeError, "can't convert #{thing.inspect} into String"
-      end
+    def arg_to_str(arg)
+      arg.to_str
+    rescue NameError
+      thing = arg.nil? ? nil : arg.class
+
+      message = "no implicit conversion of #{thing.inspect} into String"
+      raise TypeError, message
     end
 
     def check_arity(args, range)
-      unless range.include? args.size
-        range = 0 if range == (0..0)
+      return if range.include? args.size
 
-        raise ArgumentError,
-        "wrong number of arguments (#{args.size} for #{range})"
-      end
+      range = 0 if range == (0..0)
+
+      message = if RUBY_VERSION < "2.3.0"
+                  "wrong number of arguments (#{args.size} for #{range})"
+                else
+                  "wrong number of arguments (given #{args.size}, expected #{range})"
+                end
+      raise ArgumentError, message
     end
 
-    def check_type(obj, klass)
-      unless obj.is_a? klass
-        raise TypeError, "wrong argument type #{obj.class} (expected #{klass})"
-      end
+    def check_is_binding(obj)
+      return if obj.is_a? Binding
+
+      message = "wrong argument type #{obj.class} (expected binding)"
+      raise TypeError, message
     end
 
     def location_for_eval(*args)

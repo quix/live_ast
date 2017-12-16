@@ -5,7 +5,7 @@ class RubygemsTest < RegularTest
   def test_rubygems
     lib = File.expand_path(File.dirname(__FILE__) + "/../lib")
     extra_req =
-      if defined?(LiveASTRipper) and LiveAST.parser == LiveASTRipper
+      if defined?(LiveASTRipper) && LiveAST.parser == LiveASTRipper
         %{require 'live_ast_ripper'}
       else
         ""

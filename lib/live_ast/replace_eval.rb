@@ -1,5 +1,5 @@
 require 'live_ast/base'
-require 'boc'
+require 'binding_of_caller'
 
 module LiveAST
   module ReplaceEval
@@ -29,101 +29,77 @@ module LiveAST
         Thread.current[:_live_ast_arg_cache] ||= {}
       end
 
+      private
+
       def handle_args(args)
-        if args.empty?
-          raise ArgumentError, "block not supplied"
-        end
-        
+        LiveAST::Common.check_arity(args, 1..3)
         args[0] = Common.arg_to_str(args[0])
-        
-        unless (1..3).include? args.size
-          raise ArgumentError,
-          "wrong number of arguments: instance_eval(src) or instance_eval{..}"
-        end
-        
-        args[1] = Common.arg_to_str(args[1]) if args[1]
+        args[1] = Common.arg_to_str(args[1]) if args.length > 1
       end
     end
   end
-  
+
   # ensure the parser is loaded -- rubygems calls eval
   parser
 end
 
-# squelch alias warnings
-prev_verbose = $VERBOSE
-$VERBOSE = nil
-
+# Override for Kernel#eval and Kernel.eval
 module Kernel
   class << self
-    alias_method :live_ast_original_singleton_eval, :eval
-
-    def eval(*args)
-      LiveAST::Common.check_arity(args, 1..4)
-      LiveAST.eval(
-        "::Kernel.live_ast_original_instance_eval do;" << args[0] << ";end",
-        args[1] || Boc.value,
-        *LiveAST::Common.location_for_eval(*args[1..3]))
-    end
-
-    Boc.enable self, :eval
+    alias live_ast_original_singleton_eval eval
   end
 
-  private
-
-  alias_method :live_ast_original_eval, :eval
+  alias live_ast_original_eval eval
 
   def eval(*args)
     LiveAST::Common.check_arity(args, 1..4)
     LiveAST.eval(
       args[0],
-      args[1] || Boc.value,
-      *LiveAST::Common.location_for_eval(*args[1..3]))
+      args[1] || binding.of_caller(1),
+      *LiveAST::Common.location_for_eval(*args[1..3])
+    )
   end
-
-  Boc.enable self, :eval
 end
 
+# Override for Binding#eval
 class Binding
-  alias_method :live_ast_original_binding_eval, :eval
+  alias live_ast_original_binding_eval eval
 
   def eval(*args)
     LiveAST.eval(args[0], self, *args[1..-1])
   end
 end
 
+# Override for BasicObject#instance_eval
 class BasicObject
-  alias_method :live_ast_original_instance_eval, :instance_eval
+  alias live_ast_original_instance_eval instance_eval
 
   def instance_eval(*args, &block)
     if block
       live_ast_original_instance_eval(*args, &block)
     else
       ::LiveAST::ReplaceEval.
-      module_or_instance_eval(:instance, self, ::Boc.value, args)
+        module_or_instance_eval(:instance,
+                                self,
+                                ::Kernel.binding.of_caller(1),
+                                args)
     end
   end
-
-  ::Boc.enable_basic_object self, :instance_eval
 end
 
+# Overrides for Module#module_eval and Module#class_eval
 class Module
-  alias_method :live_ast_original_module_eval, :module_eval
+  alias live_ast_original_module_eval module_eval
 
   def module_eval(*args, &block)
     if block
       live_ast_original_module_eval(*args, &block)
     else
       LiveAST::ReplaceEval.
-      module_or_instance_eval(:module, self, Boc.value, args)
+        module_or_instance_eval(:module, self, binding.of_caller(1), args)
     end
   end
 
-  Boc.enable self, :module_eval
-
   remove_method :class_eval
-  alias_method :class_eval, :module_eval
+  alias class_eval module_eval
 end
-
-# unsquelch alias warnings
-$VERBOSE = prev_verbose

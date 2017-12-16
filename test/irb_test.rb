@@ -1,4 +1,5 @@
 require_relative 'main'
+require 'live_ast/irb_spy'
 
 class IRBTest < RegularTest
   def with_module(parent, child)
@@ -10,16 +11,31 @@ class IRBTest < RegularTest
     end
   end
 
-  def test_irb
+  def setup
+    LiveAST::IRBSpy.history = [
+      nil,
+      "class Foo; def bar; 'bar'; end; end",
+      "class Bar",
+      "  def foo",
+      "    'foo'",
+      "  end",
+      "end"
+    ]
+  end
+
+  def test_single_line
     with_module(Object, :IRB) do
-      with_module(LiveAST, :IRBSpy) do
-        LiveAST::IRBSpy.class_eval do
-          def self.code_at(line)
-            "def f ; end"
-          end
-        end
-        LiveAST::Linker.fetch_from_cache("(irb)", 1)
-      end
+      expected = no_arg_def(:bar, "bar")
+      result = LiveAST::Linker.fetch_from_cache("(irb)", 1)
+      assert_equal expected, result
+    end
+  end
+
+  def test_multiple_lines
+    with_module(Object, :IRB) do
+      expected = no_arg_def(:foo, "foo")
+      result = LiveAST::Linker.fetch_from_cache("(irb)", 3)
+      assert_equal expected, result
     end
   end
 end

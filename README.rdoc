@@ -3,7 +3,8 @@
 
 == Summary
 
-Live abstract syntax trees of methods and procs.
+Live abstract syntax trees of methods and procs. Fork of +live_ast+
+(http://quix.github.com/live_ast).
 
 == Synopsis
 
@@ -18,17 +19,17 @@ Live abstract syntax trees of methods and procs.
   #### ASTs of methods
   
   p Greet.instance_method(:default).to_ast
-  # => s(:defn, :default, s(:args), s(:scope, s(:block, s(:str, "hello"))))
+  # => s(:defn, :default, s(:args), s(:str, "hello"))
 
   #### ASTs of lambdas, procs, blocks
 
   f = lambda { "foo" }
   p f.to_ast
-  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "foo"))
+  # => s(:iter, s(:call, nil, :lambda), 0, s(:str, "foo"))
 
   def query(&block)
     p block.to_ast
-    # => s(:iter, s(:call, nil, :query, s(:arglist)), nil, s(:str, "bar"))
+    # => s(:iter, s(:call, nil, :query), 0, s(:str, "bar"))
   end
 
   query do
@@ -39,31 +40,27 @@ Live abstract syntax trees of methods and procs.
 
   u = ast_eval "lambda { 'dynamic3' }", binding
   p u.to_ast
-  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "dynamic3"))
+  # => s(:iter, s(:call, nil, :lambda), 0, s(:str, "dynamic3"))
 
   ast_eval "def v ; 'dynamic4' ; end", binding
   p method(:v).to_ast
-  # => s(:defn, :v, s(:args), s(:scope, s(:block, s(:str, "dynamic4"))))
+  # => s(:defn, :v, s(:args), s(:str, "dynamic4"))
   
   #### ASTs from dynamic code -- fully integrated version
-  #### The code below here needs "gem install boc"
 
   require 'live_ast/full'
 
   f = eval "lambda { 'dynamic1' }"
   p f.to_ast
-  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "dynamic1"))
+  # => s(:iter, s(:call, nil, :lambda), 0, s(:str, "dynamic1"))
 
   eval "def g ; 'dynamic2' ; end"
   p method(:g).to_ast
-  # => s(:defn, :g, s(:args), s(:scope, s(:block, s(:str, "dynamic2"))))
+  # => s(:defn, :g, s(:args), s(:str, "dynamic2"))
   
 == Install
 
-  % gem install live_ast
-
-Or from inside an unpacked .tgz download, <code>rake install</code> /
-<code>rake uninstall</code>.
+  % gem install mvz-live_ast
 
 == Description
 
@@ -79,21 +76,16 @@ RubyParser is the default parsing engine. To replace it with Ripper,
 work with any parser.
 
 The advantage of RubyParser is that it gives the traditional ParseTree
-sexps used by tools such as <code>ruby2ruby</code>. The disadvantage
-is that the newer Ruby 1.9 syntax is not supported. However the 1.8
-syntax restriction only applies to files from which ASTs are actually
-requested. All other files may use 1.9 syntax.
+sexps used by tools such as <code>ruby2ruby</code>.
 
 LiveAST is thread-safe.
 
-Ruby 1.9.2 or higher is required.
+Ruby 2.1.0 or higher is required.
 
 == Links
 
-* Home: http://quix.github.com/live_ast
-* Feature Requests, Bug Reports: http://github.com/quix/live_ast/issues
-* Manual Download: http://github.com/quix/live_ast/archives/master
-* Repository: http://github.com/quix/live_ast
+* Home: https://github.com/mvz/live_ast
+* Feature Requests, Bug Reports: https://github.com/mvz/live_ast/issues
 
 == +to_ruby+
 
@@ -132,19 +124,15 @@ semantics as +eval+ except that the binding argument is required.
 
   u = ast_eval "lambda { 'dynamic3' }", binding
   p u.to_ast
-  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "dynamic3"))
+  # => s(:iter, s(:call, nil, :lambda), 0, s(:str, "dynamic3"))
   
 == Full Integration
 
 In order for LiveAST to be transparent to the user, +eval+ must be
-replaced. This is accomplished with the help of the +boc+ gem
-(http://quix.github.com/boc).
+replaced. This is accomplished with the help of the +binding_of_caller+ gem
+(https://github.com/banister/binding_of_caller).
 
 To replace +eval+,
-
-  % gem install boc
-
-and then
 
   require 'live_ast/full'
 
@@ -158,10 +146,10 @@ below for details).
 
   f = eval "lambda { 'dynamic1' }"
   p f.to_ast
-  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil, s(:str, "dynamic1"))
+  # => s(:iter, s(:call, nil, :lambda), 0, s(:str, "dynamic1"))
 
-Since LiveAST itself is pure ruby, any new platforms supported by
-+boc+ should work with <code>live_ast/full</code>.
+Since LiveAST itself is pure ruby, any platforms supported by
++binding_of_caller+ should work with <code>live_ast/full</code>.
 
 == Limitations
 
@@ -248,7 +236,7 @@ To override the default parser with your own,
   LiveAST.parser = YourParser
 
 To test it, provide some examples of what the ASTs look like in
-<code>YourParser::Test</code>. See the +live_ast_ruby_parser+ gem for
+<code>YourParser::Test</code>. See +live_ast/ruby_parser+ for
 reference.
 
 == Noninvasive Mode
@@ -286,15 +274,15 @@ The following alternative interface is available.
   end
 
   p LiveAST.ast(A.instance_method(:f))
-  # => s(:defn, :f, s(:args), s(:scope, s(:block, s(:str, "A#f"))))
+  # => s(:defn, :f, s(:args), s(:str, "A#f"))
 
   p LiveAST.ast(lambda { })
-  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil)
+  # => s(:iter, s(:call, nil, :lambda), 0)
 
   f = LiveAST.eval("lambda { }", binding)
 
   p LiveAST.ast(f) 
-  # => s(:iter, s(:call, nil, :lambda, s(:arglist)), nil)
+  # => s(:iter, s(:call, nil, :lambda), 0)
   
   ast_eval  # => raises NameError
 
@@ -338,15 +326,14 @@ paranoia; the noninvasive option may be the most appropriate.
 +ast_eval+ and +load+ cache all incoming code, while
 <code>require</code>d files are cached on a need-to-know basis. When
 an AST is requested, the corresponding source file is parsed and
-discarded, leaving behind method and block ASTs. +to_ast+ removes an
+discarded, leaving behind method and block ASTs. +to_ast+ fetches an
 AST from the cache and attaches it to the appropriate object (a Proc
 or Module).
 
 Ignored, unextracted ASTs will therefore linger in the cache. Since
 sexps are generally small there is little need for concern unless one
-is continually evaling/reloading <em>and</em> failing to extract the
-sexps. Nevertheless it is possible that old ASTs will eventually need
-to be garbage collected. To flush the cache,
+is continually evaling/reloading. Nevertheless it is possible that old
+ASTs will eventually need to be garbage collected. To flush the cache,
 
 (1) Check that +to_ast+ has been called on all objects whose ASTs are
 desired.
@@ -375,13 +362,15 @@ only once. Furthermore, if a file has not been reloaded then it is
 assumed that the file is unmodified between the moment it is
 <code>require</code>d and the moment the first AST is pulled from it.
 
-== Author
+== Authors
 
 * James M. Lawrence < quixoticsycophant@gmail.com >
+* Matijs van Zuijlen < matijs@matijs.net >
 
 == License
   
   Copyright (c) 2011 James M. Lawrence. All rights reserved.
+  Copyright (c) 2014 Matijs van Zuijlen. All rights reserved.
   
   Permission is hereby granted, free of charge, to any person
   obtaining a copy of this software and associated documentation files
@@ -403,4 +392,27 @@ assumed that the file is unmodified between the moment it is
   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 
+LiveAST includes the source code of live_ast_ruby_parser, which is licensed as
+follows:
 
+  Copyright (c) 2011 James M. Lawrence. All rights reserved.
+  
+  Permission is hereby granted, free of charge, to any person
+  obtaining a copy of this software and associated documentation files
+  (the "Software"), to deal in the Software without restriction,
+  including without limitation the rights to use, copy, modify, merge,
+  publish, distribute, sublicense, and/or sell copies of the Software,
+  and to permit persons to whom the Software is furnished to do so,
+  subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be
+  included in all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+  BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
